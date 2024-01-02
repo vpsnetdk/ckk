@@ -1,7 +1,7 @@
 #!/bin/bash
+#declare -x hora=$(printf '%(%H:%M:%S)T') fecha=$(printf '%(%D)T') soporte="@drowkid01"
 
-hora=$(printf '%(%H:%M:%S)T');fecha=$(printf '%(%D)T');soporte="@drowkid01"
-declare -A color=( [0]="\e[1;30m" [1]="\e[1;31m" [2]="\e[1;32m" [3]="\e[1;33m" [4]="\e[1;34m" [5]="\e[1;35m" [6]="\e[1;36m" [7]="\e[1;37m" )
+declare -A color=( [0]="\e[1;30m" [1]="\e[1;31m" [2]="\e[1;32m" [3]="\e[1;33m" [4]="\e[34m" [5]="\e[35m" [6]="\e[36m" [7]="\e[37m" )
 
 function menu(){
   local options=${#@} array
@@ -35,13 +35,35 @@ pid=$!
     echo -ne "  \033[1;33m[\033[1;31m>>>>>>>>>>>>>>>>>>>>\033[1;33m] ${color[2]}	INSTALADO \033[0m\n" && sleep 0.5s
 }
 
-function checkdir(){
-	local dir=$1
-		[[ ! -d "${dir}" ]] && mkdir -p "${dir}"
+function ip(){
+ip1=$(wget -qO- ifconfig.me) && ip2=$(wget -qO- ipinfo.io/ip);ip3=$(dig +short myip.opendns.com @resolver1.opendns.com);ip4=$(dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | awk -F'"' '{ print $2}')
+		[[ $(echo $ip1|grep $ip3) != $(echo $ip2|grep $ip4) ]] && ip="" || ip="$(echo $ip2|grep $ip3)"
 }
 
-function printTitle(){
-	local text=$1
-		echo -e "		${color[0]} [\e[1;32m•\e[1;30m] \033[32m$text \e[1;30m[\e[1;32m•\e[1;30m]"
+function checkip(){
+ip
+  ipkid=$(curl -sSL https://www.dropbox.com/scl/fi/r0aq5ktpzwqt2jk1ttl0t/control-ip.txt?rlkey=zamri80wt4w6pcbjl3vbiflfm&dl=0)
+		[[ $(echo $ipkid|grep $ip) != "" ]] && version=`curl -sSL https://www.dropbox.com/scl/fi/2ezxth7khvty1la3zj980/version.log?rlkey=z5sq1zxye02pyj27nl34bb8z6&dl=0` || version=''
+				echo -e "${version}"
+
+}
+
+function printTitle
+{
+    echo -e "\n\e[1;31m$(printf '%0.s-' $(seq 1 ${#1}))\n\033[32m$1\033[1;91m\n$(printf '%0.s-' $(seq 1 ${#1}))\n\e[0m"
+}
+
+function msg(){
+mand=$1 text=$2
+	case $mand in
+	"-bar") echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m" ;;
+	"-bar2") echo -e "\e[1;30m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m" ;;
+	"-ne") echo -ne "\e[1;30m [\e[1;32m•\e[1;30m] \e[32m$text \e[32m";read $3 ;;
+	"-r"|"-ama"|"-N"|"-azu"|"-verd"|"-m")
+	   exec=$(echo $mand|tr -d "-")
+		  color=$(jq '{color: {ama: "3", r: "1", azu: "4", N: "0", verd: "2", m: "5"}}' -n|jq -r .color.$exec)
+			echo -e "${color[$color]}$text"
+	;;
+	esac
 }
 
