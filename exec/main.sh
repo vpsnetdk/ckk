@@ -53,6 +53,11 @@ function printTitle
     echo -e "\n\e[1;31m$(printf '%0.s-' $(seq 1 ${#1}))\n\033[32m$1\033[1;91m\n$(printf '%0.s-' $(seq 1 ${#1}))\n\e[0m"
 }
 
+function checkdir(){
+	local dir=$1
+		[[ ! -d "${dir}" ]] && mkdir -p "${dir}"
+}
+
 function msg(){
 mand=$1 text=$2
 	case $mand in
