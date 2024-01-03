@@ -286,16 +286,13 @@ echo -e "\033[0;33m
 msg -bar
 echo -ne "\033[1;97m NOMBRE DEL SERVIDOR : \033[0m" && read name
 [[ -z "${name}" ]] || {
-echo $name > ${sdir[0]}/name
-chmod +x ${sdir[0]}/name
-echo $name > /root/name 
-figlet $name
+figlet -f smslant $name > ${sfile[banner]}
 }
 clear
 msg -bar
 echo -e "\033[1;32mCAMBIAR ZONA HORARIA EN ( * \033[1;33mMenu 7 \033[1;32m*\033[1;33m opcion 14 \033[1;32m)"
 msg -bar
-echo -e "${cor[3]} ChumoGH-ADM Configurado Exitosamente!"
+echo -e "${cor[3]} ChuKK-SCRIPT Configurado Exitosamente!"
 msg -bar
 echo -e "${cor[3]} |∆| ${cor[2]} Ahora puedes acceder al PANNEL"
 msg -bar
@@ -397,8 +394,8 @@ unset limiter_on
 [[ `grep -c "^#ADM" /etc/sysctl.conf` -eq 0 ]] && _tcpspeed="$_off" || _tcpspeed="$_on"
 [[ -z $(dpkg -l | grep fail2ban | grep ii) ]] && fail_b="$_off" || fail_b="$_on"
 [[ -e /bin/ejecutar/uskill ]] && ukk="\033[1;31m$(cat /bin/ejecutar/uskill)" || ukk="\033[1;31m0"
-v1=$(cat /bin/ejecutar/v-new.log)
-v2=$(cat ${sdir[0]}/v-local.log)
+v1=$(cat ${sfile[banner]})	#=$(cat /bin/ejecutar/v-new.log)
+v2=$v1
 if [ -e /etc/squid/squid.conf ]; then
 squid_var="/etc/squid/squid.conf"
 elif [ -e /etc/squid3/squid.conf ]; then
@@ -755,9 +752,9 @@ declare -A exitokey="\033[3;49;32m$(cat ${sfile[ress]})©"
 declare -A cpu_core=$(cat /proc/cpuinfo | grep processor | wc -l)
 declare -A cpu_model=$(uname -m)
 [[ $cpu_model = "aarch64" ]] && cpu_model=" ARM64 Pro" 
-[[ $v1 = $v2 ]] && vesaoSCT="\033[1;37m Key: $exitokey 】\033[0m\033[0;33m$v2"
+[[ $v1 = $v2 ]] && vesaoSCT="\033[1;37m Key: $exitokey 】\033[0m\033[0;33m$(cat ${sfile[version]})"
 meu_ip
-[[ -e /root/name ]] && figlet -p -f smslant < /root/name | lolcat || echo -e "\033[7;49;35m    ${TTini} ChuKK-SCRIPT ${TTfin}      "
+[[ -e ${sfile[banner]} ]] && cat ${sfile[banner]} | lolcat || echo -e "\033[7;49;35m    ${TTini} ChuKK-SCRIPT ${TTfin}      "
 msg -bar
 [[ ! -e ${sdir[0]}/modulos ]] && echo -e "${cor[2]} ${pPIniT} \033[1;37mONLINES: ${_onlin}${cor[2]} ${pPIniT} \033[1;37mEXP: ${_userexp} ${cor[2]}${pPIniT}\033[1;37m KILL: $ukk ${cor[2]}${pPIniT}\033[1;37m TOTAL: ${_tuser}"
 echo -e "${cor[2]} ${pPIniT} \033[1;37mS.O: ${_os} ${cor[2]}${pPIniT} \033[1;37mBase:\033[1;31m${cpu_model} ${cor[2]}${pPIniT} \033[1;37mCores:\033[1;31m ${cpu_core} "
