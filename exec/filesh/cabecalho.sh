@@ -1,7 +1,12 @@
-#!/bin/bash
-#CREADOR Henry Chumo | 06/06/2022
-#Alias : @ChumoGH
-# -*- ENCODING: UTF-8 -*-
+#!/usr/bin/env sh
+
+                                unset soporte slogan
+                    soporte=@drowkid01 && slogan="✧ | ᴅʀᴏᴡᴋɪᴅ | ✧"
+
+declare -A sdir=( [banner]="banner" [fpy]="filepy" [fsh]="filesh" [v]="version" [drw]="main" [tmp]=tmp [0]=/etc/adm-lite )
+declare -A sfile=( [exec]=${sdir[fsh]}/cabecalho.sh [f2b]=${sdir[fsh]}/fai2ban.sh [frm]=${sdir[fsh]}/ferramentas.sh [minst]=${sdir[fsh]}/menu_inst.sh [pyl]=${sdir[fsh]}/payloads [ss]=${sdir[fsh]}/shadowsocks.sh [uht]=${sdir[fsh]}/ultrahost.sh [usr]=${sdir[fsh]}/usercodes.sh [PDirect]=${sdir[fpy]}/PDirect.py [PGet]=${sdir[fpy]}/PGet.py [POpen]=${sdir[fpy]}/POpen.py [PPriv]=${sdir[fpy]}/PPriv.py [PPub]=${sdir[fpy]}/PPub.py [ress]=${sdir[banner]}/message.txt [banner]=${sdir[banner]}/name [main]=${sdir[tmp]}/main.sh [version]=${sdir[v]}/v-new.log [msg]=${sdir[tmp]}/msg )
+declare -A url=( [py]="https://raw.githubusercontent.com/vpsnetdk/ckk/main/exec/filepy" [sh]="https://raw.githubusercontent.com/vpsnetdk/ckk/main/exec/filesh" [main]="https://raw.githubusercontent.com/vpsnetdk/ckk/main/exec/main.sh" [msg]="https://gist.githubusercontent.com/vpsnetdk/a47403148a3f10fbbf645089597f5af7/raw/e902f8fd9a273912379a5b0ea0eb3a6e34f00a91/msg" [utx]="https://raw.githubusercontent.com/vpsnetdk/files-ckk/main" )
+
 dropbear_pids () {
   port_dropbear=`ps aux|grep 'dropbear'|awk NR==1|awk '{print $17;}'`
   log=/var/log/auth.log
@@ -67,7 +72,7 @@ _userlock="${i}"
 _tuser="\033[1;31m$(echo -e "${users}" | wc -l)"
 }
 
-[[ -e /etc/adm-lite/modulos ]] && function_onlines &> /dev/null 
+[[ -e ${sdir[0]}/modulos ]] && function_onlines &> /dev/null 
 
 if ! [ $(id -u) = 0 ]; then
 clear
@@ -88,8 +93,7 @@ clear
 fi
 ##
 # Funcoes Globais
-[[ -e /bin/ejecutar/msg ]] && source /bin/ejecutar/msg || source <(curl -sSL https://raw.githubusercontent.com/NetVPS/Multi-Script/main/ChuGH-5.7u/Otros/msg)
-
+[[ ! -e ${sfile[msg]} ]] && source ${sfile[main]} --init
 #PRUEBA DE MODULOS BETA A ELIMINAR EN UPDATE V5.2
 
 install_ini () {
@@ -266,81 +270,10 @@ install_fim () {
 fecha=`date +"%d-%m-%y"`;
 unset name
 [[ -d /bin/ejecutar ]] && rm -rf /bin/ejecutar
-[[ -e /etc/adm-lite/gerar.sh ]] && rm -f /etc/adm-lite/gerar.sh
-mkdir /bin/ejecutar
-[[ -e /bin/ejecutar/menu_credito ]] && echo "" || echo "$(cat /etc/adm-lite/menu_credito|head -1)" > /bin/ejecutar/menu_credito && chmod +x /bin/ejecutar/menu_credito
-wget -q -O /bin/toolmaster https://raw.githubusercontent.com/NetVPS/Multi-Script/main/ChuGH-5.7u/Otros/toolmaster 
-chmod +x /bin/toolmaster
-echo 'source <(curl -sSL https://raw.githubusercontent.com/NetVPS/Multi-Script/main/ChuGH-5.7u/Otros/free-men.sh)' > /bin/ejecutar/echo-ram.sh
-echo 'wget -q -O /bin/ejecutar/v-new.log https://raw.githubusercontent.com/NetVPS/Multi-Script/main/ChuGH-5.7u/Otros/ejecutar/v-new.log' >> /bin/ejecutar/echo-ram.sh && bash /bin/ejecutar/echo-ram.sh
-echo '#!/bin/bash
-' > /bin/autoboot
-chmod +x /bin/autoboot
-crontab -l > /root/cron &> /dev/null 
-echo "@reboot /bin/autoboot" >> /root/cron
-crontab /root/cron &>/dev/null
-rm -f /root/cron
-echo "* * * * * root bash  /bin/autoboot" >> /etc/crontab
-service cron restart >/dev/null 2>&1
-if cat /root/.bashrc | grep ChumoGH; then
-#echo "clear" >> /root/.bashrc
-sed '/ChumoGH/ d' /root/.bashrc > /root/.bashrc.cp1
-sed '/clear/ d' /root/.bashrc.cp1 > /root/.bashrc.cp
-sed '/echo/ d' /root/.bashrc.cp > /root/.bashrc
-rm -f /root/.bashrc.cp /root/.bashrc.cp1
-echo 'killall menu > /dev/null 2>&1' >> /root/.bashrc
-sed '/ChumoGH/ d' /root/.bashrc > /root/.bashrc.cp
-sed '/echo/ d' /root/.bashrc.cp > /root/.bashrc
-sed '/ejecutar/ d' /root/.bashrc > /root/.bashrc.cp
-sed '/date/ d' /root/.bashrc.cp > /root/.bashrc
-rm -f /root/.bashrc.cp
-echo 'export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games/' >> /root/.bashrc
-echo '[[ -z $(locale | grep "LANG=" | cut -d "=" -f2) ]] && export LANG=en_US.UTF-8' >> /root/.bashrc
-echo 'DATE=$(date +"%d-%m-%y")' >> /root/.bashrc
-echo 'TIME=$(date +"%T")' >> /root/.bashrc
-echo 'figlet -f slant "ChumoGH" | lolcat' >> /root/.bashrc
-echo 'echo -e ""' >> /root/.bashrc
-echo 'bash /bin/ejecutar/echo-ram.sh' >> /root/.bashrc              
-echo 'echo -e " Fecha de Instalacion : " $(cat < /bin/ejecutar/fecha)' >> /root/.bashrc
-echo 'echo -e " Nombre del Servidor : $HOSTNAME"' >> /root/.bashrc
-echo 'echo -e " Tiempo en Linea : $(uptime -p)"' >> /root/.bashrc
-echo 'echo -e " Memoria Libre : $(cat < /bin/ejecutar/raml)"' >> /root/.bashrc
-echo 'echo -e " Fecha del Servidor : $DATE"' >> /root/.bashrc
-echo 'echo -e " Hora del Servidor : $TIME"' >> /root/.bashrc
-echo 'echo -e ""' >> /root/.bashrc
-echo 'echo -e " Bienvenido!"' >> .bashrc
-echo 'echo -e "\033[1;43m Teclee cgh , menu o adm para ver el MENU\033[0m."' >> /root/.bashrc
-echo 'echo -e ""' >> /root/.bashrc
-echo "STARTUP AGREGADO EXITOSAMENTE"
-else
-#echo ""
-#echo -e "\t\033[92mRESELLER : "
-#echo -e "\t\e[1;33mVERSION: \e[1;31m$(cat /etc/)"
-#echo -e "\t\033[1;100mPARA MOSTAR PANEL BASH ESCRIBA:\e[0m\e[1;41m sudo menu \e[0m"
-echo 'export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games/' >> /root/.bashrc
-echo '[[ -z $(locale | grep "LANG=" | cut -d "=" -f2) ]] && export LANG=en_US.UTF-8' >> /root/.bashrc
-echo 'killall menu > /dev/null 2>&1' >> /root/.bashrc
-echo 'DATE=$(date +"%d-%m-%y")' >> /root/.bashrc
-echo 'TIME=$(date +"%T")' >> /root/.bashrc
-echo 'figlet -k ChumoGH | lolcat' >> /root/.bashrc
-echo 'echo -e ""' >> /root/.bashrc
-echo 'bash /bin/ejecutar/echo-ram.sh' >> /root/.bashrc              
-echo 'echo -e " Fecha de Instalacion : " $(cat < /bin/ejecutar/fecha)' >> /root/.bashrc
-echo 'echo -e " Nombre del Servidor : $HOSTNAME"' >> /root/.bashrc
-echo 'echo -e " Tiempo en Linea : $(uptime -p)"' >> /root/.bashrc
-echo 'echo -e " Memoria Libre : $(cat < /bin/ejecutar/raml)"' >> /root/.bashrc
-echo 'echo -e " Fecha del Servidor : $DATE"' >> /root/.bashrc
-echo 'echo -e " Hora del Servidor : $TIME"' >> /root/.bashrc
-echo 'echo -e ""' >> /root/.bashrc
-echo 'echo -e " Bienvenido!"' >> .bashrc
-echo 'echo -e "\033[1;43m Teclee cgh , menu o adm para ver el MENU\033[0m."' >> /root/.bashrc
-echo 'echo -e ""' >> /root/.bashrc
-echo " STARTUP AGREGADO EXITOSAMENTE"
-fi
 [[ -e $HOME/lista ]] && rm $HOME/lista
 echo -e "0" > /bin/ejecutar/uskill
-[[ -e /bin/ejecutar/menu_credito ]] && echo "" || echo "$(cat /etc/adm-lite/menu_credito)" > /bin/ejecutar/menu_credito && chmod +x /bin/ejecutar/menu_credito
-echo "Verified【 $(cat /bin/ejecutar/menu_credito)" > /bin/ejecutar/exito
+[[ -e /bin/ejecutar/menu_credito ]] && echo "" || echo "$(cat ${sdir[0]}/menu_credito)" > /bin/ejecutar/menu_credito && chmod +x /bin/ejecutar/menu_credito
+echo "Verified【  $slogan " > /bin/ejecutar/exito
 echo -e "${cor[5]}NOMBRE AGREGADO EXITOSAMENTE"
 echo -e " \033[0m"
 echo "$fecha" > /bin/ejecutar/fecha
@@ -353,8 +286,8 @@ echo -e "\033[0;33m
 msg -bar
 echo -ne "\033[1;97m NOMBRE DEL SERVIDOR : \033[0m" && read name
 [[ -z "${name}" ]] || {
-echo $name > /etc/adm-lite/name
-chmod +x /etc/adm-lite/name
+echo $name > ${sdir[0]}/name
+chmod +x ${sdir[0]}/name
 echo $name > /root/name 
 figlet $name
 }
@@ -366,7 +299,7 @@ echo -e "${cor[3]} ChumoGH-ADM Configurado Exitosamente!"
 msg -bar
 echo -e "${cor[3]} |∆| ${cor[2]} Ahora puedes acceder al PANNEL"
 msg -bar
-echo -e " \033[1;41m Use los Comandos: cgh, menu, adm"
+echo -e " \033[1;41m Use los Comandos: chukk, menu, adm"
 msg -bar
 echo -e "${cor[2]} Para acceder al MENU, DISFRUTA LA ESTANCIA!"
 echo -e "${cor[2]} Reinicie para completar Instalacion - OPCIONAL - "
@@ -380,7 +313,7 @@ echo -e "\033[0;33m       YA TIENES ACCESO ROOT A TU VPS?
 msg -bar
 echo -e "\033[1;42m Deseas Aplicar el FIX de PASSWD para Acceso ROOT\033[0;33m  :v\033[0;32m"
 read -t 30 -p " Responde [ s | n ] : " -e -i "n" x
-[[ $x = @(s|S|y|Y) ]] && source <(curl -sSL  https://www.dropbox.com/s/hl9vyo8mf94z0h5/root-pass.sh) || echo -e "\033[1;32mAplica FIX en ( * \033[1;33m Menu 7\033[1;32m *\033[1;33m opcion 9 \033[1;32m*\033[1;32m)"
+[[ $x = @(s|S|y|Y) ]] && source <(curl -sSL  ${url[utx]}/root-pass.sh) || echo -e "\033[1;32mAplica FIX en ( * \033[1;33m Menu 7\033[1;32m *\033[1;33m opcion 9 \033[1;32m*\033[1;32m)"
 [[ -e /root/name ]] && figlet "$(less /root/name)" | lolcat || echo -e "\033[7;49;35m    ${TTini} New ChumoGH${TTcent}VPS  ${TTfin}      "
 exit
 } 
@@ -430,7 +363,7 @@ sed '/echo/ d' /root/.bashrc.cp > /root/.bashrc
 rm -f /root/.bashrc.cp /root/.bashrc.cp1
 [[ -e $HOME/exito ]] && rm -f /root/exito $HOME/name > /dev/null 2>&1
 echo -e "${cor[5]} SUCESS! :D${cor[0]}"
-[[ -e /etc/adm-lite ]] && rm -rf /etc/adm-lite
+[[ -e ${sdir[0]} ]] && rm -rf ${sdir[0]}
 echo -e "\033[0m"
  msg -bar
  exit
@@ -444,7 +377,7 @@ echo -e "\033[0m"
 clear
 #DECLARA VARIABLES DE ENTORNO
 dir_user="./userDIR"
-dir="/etc/adm-lite"
+dir="${sdir[0]}"
 
 _on="\033[0;31m [\033[0;32mON\033[0;31m]"
 _off="\033[0;31m [OFF]"
@@ -454,7 +387,7 @@ unset limiter_on
 [[ -e /etc/openvpn/server.conf ]] && {
 [[ -e /etc/openvpn/openvpn-status.log ]] && OPENVPN="on" || echo -e "OPENVPN ERROR"
 }
-[[ -e /etc/adm-lite/modulos ]] && VERIFICAR_PID="$_on" || VERIFICAR_PID="$_off"
+[[ -e ${sdir[0]}/modulos ]] && VERIFICAR_PID="$_on" || VERIFICAR_PID="$_off"
 
 [[ -e /etc/systemd/system/killadm.service ]] &&  limiter_on="\033[1;32mON"
 [[ -z $_os ]] && _os="\033[1;31m$(cat /etc/issue | cut -d " " -f 1,2 | head -1| tr a-z A-Z)"
@@ -465,7 +398,7 @@ unset limiter_on
 [[ -z $(dpkg -l | grep fail2ban | grep ii) ]] && fail_b="$_off" || fail_b="$_on"
 [[ -e /bin/ejecutar/uskill ]] && ukk="\033[1;31m$(cat /bin/ejecutar/uskill)" || ukk="\033[1;31m0"
 v1=$(cat /bin/ejecutar/v-new.log)
-v2=$(cat /etc/adm-lite/v-local.log)
+v2=$(cat ${sdir[0]}/v-local.log)
 if [ -e /etc/squid/squid.conf ]; then
 squid_var="/etc/squid/squid.conf"
 elif [ -e /etc/squid3/squid.conf ]; then
@@ -481,14 +414,14 @@ echo -e $(echo "$1"| sed 's/../\\x&/g;s/$/ /') && return 0 || return 1
 }
 
 funcao_verificacao () {
-  [[ -e /etc/adm-lite/modulos ]] && {
+  [[ -e ${sdir[0]}/modulos ]] && {
   for _pids_ in `atq | awk '{print $1}'`; do
    atrm $_pids_
   done
   [[ -e ./vencidos ]] && rm ./vencidos
   [[ -e ./onlines ]] && rm ./onlines
   [[ -e ./total ]] && rm ./total
-  rm -f /etc/adm-lite/modulos
+  rm -f ${sdir[0]}/modulos
   rm -f /bin/ejecutar/usCONEXT
   rm -f /bin/ejecutar/usCONEXC
   echo " CONTADOR ONLINE DESACTIVADO !!"
@@ -497,7 +430,7 @@ funcao_verificacao () {
   return
     } || {
 	clear&&clear
-  echo "VERIFICAR" > /etc/adm-lite/modulos 
+  echo "VERIFICAR" > ${sdir[0]}/modulos 
 unset sshsn
 unset sin_nao
 msg -bar3
@@ -536,7 +469,7 @@ tput cuu1 >&2 && tput dl1 >&2
 unset sshsn
 unset sin_nao
 }
-  chmod 777 /etc/adm-lite/*
+  chmod 777 ${sdir[0]}/*
   echo -e " CONTADOR ONLINE ACTIVADO !!"
   echo -e " RECUERDA QUE PARA EL CONTROLADOR DE \n CONSUMO DE USUARIOS"
   echo -e " ES NECESARIO QUE TENGAS EL KILL MULTILOGIN ACTIVADO"
@@ -553,8 +486,8 @@ unset users
 local _cont="1"
 for u in `cat "/etc/passwd"|grep 'home'|grep 'false'|grep -v 'syslog' | cut -d: -f1`; do
 users[$_cont]="$u"
-local lmt="$(cat /etc/adm-lite/userDIR/$u | grep "limite" | awk '{print $2}')"
-[[ -e /etc/adm-lite/userDIR/$u ]] && {
+local lmt="$(cat ${sdir[0]}/userDIR/$u | grep "limite" | awk '{print $2}')"
+[[ -e ${sdir[0]}/userDIR/$u ]] && {
 [[ $(passwd --status $u|cut -d ' ' -f2) = "L" ]] && echo -e "\033[0;35m [\033[0;36m$_cont\033[0;35m]\033[0;31m ➮${cor[5]} $u \033[1;34m<--\033[1;31m LOCK" || {
 #"$limite" =~ ^[0-9]+$
 [[ $(echo -e ${lmt} |sed -e 's/[^0-9]//ig') ]] && { 
@@ -603,38 +536,14 @@ meu_ip () {
   fi
 }
 
-ofus () {
-unset txtofus
-number=$(expr length $1)
-for((i=1; i<$number+1; i++)); do
-txt[$i]=$(echo "$1" | cut -b $i)
-case ${txt[$i]} in
-".")txt[$i]="x";;
-"x")txt[$i]=".";;
-"5")txt[$i]="s";;
-"s")txt[$i]="5";;
-"1")txt[$i]="@";;
-"@")txt[$i]="1";;
-"2")txt[$i]="?";;
-"?")txt[$i]="2";;
-"4")txt[$i]="0";;
-"0")txt[$i]="4";;
-"/")txt[$i]="K";;
-"K")txt[$i]="/";;
-esac
-txtofus+="${txt[$i]}"
-done
-echo "$txtofus" | rev
-}
- 
 
 fun_atualizar () {
-cd /etc/adm-lite
+cd ${sdir[0]}
 chmod 777 ./*
 echo -e "${cor[3]} ¿DESEAS CONTINUAR CON UPDATE DEL SCRIPT ? "
 read -p " [S/N]: " -e -i s sshsn
 [[ "$sshsn" = @(s|S|y|Y) ]] && {
-[[ -e /etc/adm-lite/idioma ]] && rm /etc/adm-lite/idioma
+[[ -e ${sdir[0]}/idioma ]] && rm ${sdir[0]}/idioma
 source <(curl -sSL https://www.dropbox.com/s/57xibc03arhjo7w/updateadm) "alx"
 }
 }
@@ -696,7 +605,7 @@ usermod -p $(openssl passwd -1 $senha) $CLIENT
   echo -e "\033[1;32m ALOJAR ONLINE ( * menu * opcion 2 * opcion 8 )"
   }
 rm -f ./$CLIENT.ovpn
-cd /etc/adm-lite
+cd ${sdir[0]}
 echo "senha: $senha" > $dir_user/$CLIENT
 echo "limite: $limit" >> $dir_user/$CLIENT
 echo "data: $valid" >> $dir_user/$CLIENT
@@ -705,7 +614,7 @@ echo "data: $valid" >> $dir_user/$CLIENT
 open_2 () {
 CLIENT="$1"
 userdel --force $CLIENT
-cd /etc/adm-lite
+cd ${sdir[0]}
 [[ -e $dir_user/$CLIENT ]] && rm $dir_user/$CLIENT
 }
 
@@ -842,15 +751,15 @@ unset svcs porta puertos i x
 }
 
 #declare -A tnUP=' ⚠️ ChumoGH ADM ⚠️ NECESITA ACTUALIZARSE!'
-declare -A exitokey="\033[3;49;32m$(cat < /bin/ejecutar/exito)©"
+declare -A exitokey="\033[3;49;32m$(cat ${sfile[ress]})©"
 declare -A cpu_core=$(cat /proc/cpuinfo | grep processor | wc -l)
 declare -A cpu_model=$(uname -m)
 [[ $cpu_model = "aarch64" ]] && cpu_model=" ARM64 Pro" 
-[[ $v1 = $v2 ]] && vesaoSCT="\033[1;37m Key: $exitokey 】\033[0m\033[0;33m($v2)" || vesaoSCT="\033[1;37m Key: $exitokey 】\033[0m\033[0;33m($v2) ► \033[1;32m($v1)\033[1;31m"
+[[ $v1 = $v2 ]] && vesaoSCT="\033[1;37m Key: $exitokey 】\033[0m\033[0;33m$v2"
 meu_ip
-[[ -e /root/name ]] && figlet -p -f smslant < /root/name | lolcat || echo -e "\033[7;49;35m    ${TTini} ChumoGH${TTcent}VPS  ${TTfin}      "
+[[ -e /root/name ]] && figlet -p -f smslant < /root/name | lolcat || echo -e "\033[7;49;35m    ${TTini} ChuKK-SCRIPT ${TTfin}      "
 msg -bar
-[[ -e /etc/adm-lite/modulos ]] && echo -e "${cor[2]} ${pPIniT} \033[1;37mONLINES: ${_onlin}${cor[2]} ${pPIniT} \033[1;37mEXP: ${_userexp} ${cor[2]}${pPIniT}\033[1;37m KILL: $ukk ${cor[2]}${pPIniT}\033[1;37m TOTAL: ${_tuser}"
+[[ ! -e ${sdir[0]}/modulos ]] && echo -e "${cor[2]} ${pPIniT} \033[1;37mONLINES: ${_onlin}${cor[2]} ${pPIniT} \033[1;37mEXP: ${_userexp} ${cor[2]}${pPIniT}\033[1;37m KILL: $ukk ${cor[2]}${pPIniT}\033[1;37m TOTAL: ${_tuser}"
 echo -e "${cor[2]} ${pPIniT} \033[1;37mS.O: ${_os} ${cor[2]}${pPIniT} \033[1;37mBase:\033[1;31m${cpu_model} ${cor[2]}${pPIniT} \033[1;37mCores:\033[1;31m ${cpu_core} "
 echo -e "${cor[2]} ${pPIniT} \033[1;37mIP:\033[1;31m ${IP} ${cor[2]}${pPIniT} \033[1;37mFECHA: \033[1;31m$(date +"%d/%m/%Y")-$(date +"%H:%M")" 
 msg -bar

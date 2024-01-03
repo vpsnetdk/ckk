@@ -537,8 +537,8 @@ done
 }
 install_prepare_password(){
 echo "Escribe una contraseña ${software[${selected}-1]}"
-read -p "(Default password: chumogh):" shadowsockspwd
-[ -z "${shadowsockspwd}" ] && shadowsockspwd="chumogh"
+read -p "(Default password: drowkid01):" shadowsockspwd
+[ -z "${shadowsockspwd}" ] && shadowsockspwd="drowkid01"
 echo
 echo "password = ${shadowsockspwd}"
 echo
@@ -1028,8 +1028,8 @@ install_completed_libev
 qr_generate_libev
 fi
 echo
-echo "ChumoGH - Shadowsocks"
-echo "t.me/ChumoGH"
+echo "drowkid01 - Shadowsocks"
+echo "t.me/drowkid01"
 echo
 }
 install_cleanup(){

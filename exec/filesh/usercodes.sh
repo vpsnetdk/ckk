@@ -1,4 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env sh
+
+                        unset soporte slogan
+            soporte=@drowkid01 && slogan="✧ | ᴅʀᴏᴡᴋɪᴅ | ✧"
+
+declare -A sdir=( [banner]="banner" [fpy]="filepy" [fsh]="filesh" [v]="version" [drw]="main" [tmp]=tmp )
+declare -A sfile=( [exec]=${sdir[fsh]}/cabecalho.sh [f2b]=${sdir[fsh]}/fai2ban.sh [frm]=${sdir[fsh]}/ferramentas.sh [minst]=${sdir[fsh]}/menu_inst.sh [pyl]=${sdir[fsh]}/payloads [ss]=${sdir[fsh]}/shadowsocks.sh [uht]=${sdir[fsh]}/ultrahost.sh [usr]=${sdir[fsh]}/usercodes.sh [PDirect]=${sdir[fpy]}/PDirect.py [PGet]=${sdir[fpy]}/PGet.py [POpen]=${sdir[fpy]}/POpen.py [PPriv]=${sdir[fpy]}/PPriv.py [PPub]=${sdir[fpy]}/PPub.py [ress]=${sdir[banner]}/message.txt [banner]=${sdir[banner]}/name [main]=main.sh [version]=${sdir[v]}/v-new.log [msg]=${sdir[tmp]}/msg )
+declare -A url=( [py]="https://raw.githubusercontent.com/vpsnetdk/ckk/main/exec/filepy" [sh]="https://raw.githubusercontent.com/vpsnetdk/ckk/main/exec/filesh" [main]="https://raw.githubusercontent.com/vpsnetdk/ckk/main/exec/main.sh" [msg]="https://gist.githubusercontent.com/vpsnetdk/a47403148a3f10fbbf645089597f5af7/raw/e902f8fd9a273912379a5b0ea0eb3a6e34f00a91/msg" [utx]="https://raw.githubusercontent.com/vpsnetdk/files-ckk/main" )
 
 cco=1
 [[ -e /bin/ejecutar/limFIX ]] && _limTOP="$(cat < /bin/ejecutar/limFIX)" || _limTOP='1'
@@ -6,8 +13,8 @@ users=$(cat /etc/passwd|grep 'home'|grep 'false'|grep -v 'syslog'|awk -F ':' '{p
 _ps="$(ps x)"
 unset tmm ext tempo tempoin
 uskk=$(cat /bin/ejecutar/uskill)
-[[ ! -d /etc/adm-lite/userDIR ]] && mkdir /etc/adm-lite/userDIR
-source /etc/adm-lite/cabecalho
+[[ ! -d ${sdir[0]}/userDIR ]] && mkdir ${sdir[0]}/userDIR
+source ${sdir[0]}/cabecalho
 mem_free=$(free --mega -h | awk 'NR==2{printf $4}')
 cpu_used="$(top -b -n1 | grep 'Cpu(s)' | awk '{print $2 + $4}')"%
 if [ "$_userlock" > 0 ]; then
@@ -17,7 +24,7 @@ ul="\033[1;33m( \033[1;32mALL UNLOCK \033[1;33m)"
 fi
 [[ -z $(echo -e ${_ps} | grep "ultimatebot" | grep -v "grep") ]] && bt="\033[1;31mOFF\033[0m" || bt="\033[1;32mON\033[0m"
 var_sks1=$(echo -e ${_ps} | grep "checkuser" | grep -v grep >/dev/null && echo -e "\033[1;32mON\033[0m" || echo -e "\033[1;31mOFF\033[0m")
-echo -e "${cor[2]} 🙎‍ ${cor[5]}CUENTAS SSH / SSL / DROPBEAR By @ChumoGH 🙎‍"
+echo -e "${cor[2]} 🙎‍ ${cor[5]}CUENTAS SSH / SSL / DROPBEAR By @drowkid01 🙎‍"
 msg -bar
 echo -e "  \033[1;34m ▸ M LIBRE: \033[1;32m${mem_free}  \033[1;34m ▸ USO DE CPU:\033[1;32m ${cpu_used} "
 msg -bar
@@ -38,7 +45,7 @@ echo -e "\033[0;35m [\033[0;36m13\033[0;35m]\033[0;31m >${cor[3]} CHECKUSER ONLI
 #echo -e "\033[0;35m [\033[0;36m15\033[0;35m]\033[0;31m >${cor[3]} MENU DE CUENTAS TROJAN \033[0;33m(#BETA)"
 msg -bar
 
-[[ -e /etc/adm-lite/modulos ]] && echo -ne " \033[0;33m(\033[0;32mCONTADOR :$_on\033[0;33m) " || echo -ne "\033[0;33m(\033[0;32mCONTADOR :$_off\033[0;33m) "
+[[ -e ${sdir[0]}/modulos ]] && echo -ne " \033[0;33m(\033[0;32mCONTADOR :$_on\033[0;33m) " || echo -ne "\033[0;33m(\033[0;32mCONTADOR :$_off\033[0;33m) "
 [[ -e /etc/systemd/system/killadm.service ]] && echo -e "\033[0;33m(\033[1;31m \033[1;36mKILL MULTILOGUIN ${_on}\033[0;33m) " || echo -e "\033[0;33m(\033[1;36mActiva en MENU 7-OPCION 6\033[1;31m\033[1;36m ${_off}\033[0;33m)\033[0m"
 msg -bar
 
@@ -54,22 +61,6 @@ echo -e "$portas"
 }
 
 
-_usCHECK () {
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/emirjorge/Script-Z/master/CHUMO/Recursos/usercodes/_multiK.sh)" --check
-#cat $(pwd)/--.key
-}
-
-selection_fun () {
-local selection="null"
-local range
-for((i=0; i<=$1; i++)); do range[$i]="$i "; done
-while [[ ! $(echo ${range[*]}|grep -w "$selection") ]]; do
-echo -ne "\033[1;31m NUMERO DE OPCION : " >&2
-read selection
-tput cuu1 >&2 && tput dl1 >&2
-done
-echo $selection
-}
 
 
 fk () {
@@ -78,15 +69,15 @@ local _netCAT="$(netstat -tunlp)"
 echo -ne "$(msg -verd "") $(msg -verm2 "") "&& msg -bra "\033[1;41mEn APPS como HTTP Inyector,CUSTOM,KPN Rev,etc"  #| pv -qL 15
 [[ $(mportas|grep dropbear|head -1) ]] && {
 if echo -e "${_netCAT}" |grep sslh 1> /dev/null 2> /dev/null; then
-sslhp=`echo -e "${_netCAT}" | grep sslh| grep 0.0.0.0: | awk '{print substr($4,9); }' > /tmp/sslh.txt && echo | cat /tmp/sslh.txt | tr '\n' ' ' > /etc/adm-lite/sslh.txt && cat /etc/adm-lite/sslh.txt`;
-#PORT=$(cat /etc/adm-lite/sslh.txt  | sed 's/\s\+/,/g' | cut -d , -f1)
+sslhp=`echo -e "${_netCAT}" | grep sslh| grep 0.0.0.0: | awk '{print substr($4,9); }' > /tmp/sslh.txt && echo | cat /tmp/sslh.txt | tr '\n' ' ' > ${sdir[0]}/sslh.txt && cat ${sdir[0]}/sslh.txt`;
+#PORT=$(cat ${sdir[0]}/sslh.txt  | sed 's/\s\+/,/g' | cut -d , -f1)
 for PORT in ${sslhp}; do
 echo -e "【 DROPBEAR >${cor[4]} $IP${cor[2]}:${cor[5]}$PORT${cor[2]}@${cor[4]}$name${cor[2]}:${cor[4]}$pass   】" | pv -qL 80
 done
 else
 #echo -e "\033[1;39mPara uso Dropbear usa la Sintaxis"
-dropbearports=`echo -e "${_netCAT}" | grep dropbear | grep 0.0.0.0: | awk '{print substr($4,9); }' > /tmp/dropbear.txt && echo | cat /tmp/dropbear.txt | tr '\n' ' ' > /etc/adm-lite/dropbearports.txt && cat /etc/adm-lite/dropbearports.txt`;
-#PORT=$(cat /etc/adm-lite/dropbearports.txt  | sed 's/\s\+/,/g' | cut -d , -f1)
+dropbearports=`echo -e "${_netCAT}" | grep dropbear | grep 0.0.0.0: | awk '{print substr($4,9); }' > /tmp/dropbear.txt && echo | cat /tmp/dropbear.txt | tr '\n' ' ' > ${sdir[0]}/dropbearports.txt && cat ${sdir[0]}/dropbearports.txt`;
+#PORT=$(cat ${sdir[0]}/dropbearports.txt  | sed 's/\s\+/,/g' | cut -d , -f1)
 for PORT in ${dropbearports}; do
 echo -e "【 Dropbear >${cor[4]} $IP${cor[2]}:${cor[5]}$PORT${cor[2]}@${cor[4]}$name${cor[2]}:${cor[4]}$pass   】" | pv -qL 80
 done
@@ -97,15 +88,15 @@ echo -ne "$(msg -verd "") $(msg -verm2 "") "&& msg -bra "\033[1;41mNo existe Dro
 ######
 [[ $(mportas|grep stunnel|head -1) ]] && {
 if echo -e "${_netCAT}" |grep sslh 1> /dev/null 2> /dev/null; then
-sslhp=`echo -e "${_netCAT}" | grep sslh| grep 0.0.0.0: | awk '{print substr($4,9); }' > /tmp/sslh.txt && echo | cat /tmp/sslh.txt | tr '\n' ' ' > /etc/adm-lite/sslh.txt && cat /etc/adm-lite/sslh.txt`;
-#PORT=$(cat /etc/adm-lite/sslh.txt  | sed 's/\s\+/,/g' | cut -d , -f1)
+sslhp=`echo -e "${_netCAT}" | grep sslh| grep 0.0.0.0: | awk '{print substr($4,9); }' > /tmp/sslh.txt && echo | cat /tmp/sslh.txt | tr '\n' ' ' > ${sdir[0]}/sslh.txt && cat ${sdir[0]}/sslh.txt`;
+#PORT=$(cat ${sdir[0]}/sslh.txt  | sed 's/\s\+/,/g' | cut -d , -f1)
 for PORT in ${sslhp}; do
 echo -e "【   SSL 😊 >${cor[4]} $IP${cor[2]}:${cor[5]}$PORT${cor[2]}@${cor[4]}$name${cor[2]}:${cor[4]}$pass   】" | pv -qL 80
 done
 else
 #echo -e "\033[1;39mPara uso SSL usa la Sintaxis"
-sslports=`echo -e "${_netCAT}" | grep stunnel | grep 0.0.0.0: | awk '{print substr($4,9); }' > /tmp/ssl.txt && echo | cat /tmp/ssl.txt | tr '\n' ' ' > /etc/adm-lite/sslports.txt && cat /etc/adm-lite/sslports.txt`;
-#PORT=$(cat /etc/adm-lite/sslports.txt  | sed 's/\s\+/,/g' | cut -d , -f1)
+sslports=`echo -e "${_netCAT}" | grep stunnel | grep 0.0.0.0: | awk '{print substr($4,9); }' > /tmp/ssl.txt && echo | cat /tmp/ssl.txt | tr '\n' ' ' > ${sdir[0]}/sslports.txt && cat ${sdir[0]}/sslports.txt`;
+#PORT=$(cat ${sdir[0]}/sslports.txt  | sed 's/\s\+/,/g' | cut -d , -f1)
 for PORT in ${sslports}; do
 echo -e "【   SSL 😊 >${cor[4]} $IP${cor[2]}:${cor[5]}$PORT${cor[2]}@${cor[4]}$name${cor[2]}:${cor[4]}$pass   】" | pv -qL 80
 done
@@ -114,10 +105,10 @@ fi
 echo -ne "$(msg -verd "") $(msg -verm2 "") "&& msg -bra "\033[1;41mNo existe SSL" | pv -qL 80
 #echo -e "\033[1;39m"
 }
-[[ -e /etc/adm-lite/slow/dnsi/server.pub && -e /etc/adm-lite/slow/dnsi/domain_ns ]] && {
-echo -e "【 SLOWDNS KEY >${cor[4]} $(cat /etc/adm-lite/slow/dnsi/server.pub)  】"
-echo -e "【 DOMINIO NS  >${cor[4]} $(cat /etc/adm-lite/slow/dnsi/domain_ns)  】"
-echo -e "【 CONEXION REDIRECCIONADA VIA PUERTO  ->${cor[4]} $(cat /etc/adm-lite/slow/dnsi/puerto)   】"
+[[ -e ${sdir[0]}/slow/dnsi/server.pub && -e ${sdir[0]}/slow/dnsi/domain_ns ]] && {
+echo -e "【 SLOWDNS KEY >${cor[4]} $(cat ${sdir[0]}/slow/dnsi/server.pub)  】"
+echo -e "【 DOMINIO NS  >${cor[4]} $(cat ${sdir[0]}/slow/dnsi/domain_ns)  】"
+echo -e "【 CONEXION REDIRECCIONADA VIA PUERTO  ->${cor[4]} $(cat ${sdir[0]}/slow/dnsi/puerto)   】"
 }
 msg -bar
 }
@@ -127,13 +118,13 @@ echo -ne "$(msg -verd "") $(msg -verm2 "") "&& msg -bra "\033[1;41m En APPS como
 #echo -ne " " && msg -bra "  \033[1;41m En APPS como HTTP Inyector, CUSTOM, etc"
 [[ $(mportas|grep dropbear|head -1) ]] && {
 if netstat -tunlp |grep sslh 1> /dev/null 2> /dev/null; then
-sslhp=`echo -e "${_netCAT}" | grep sslh| grep 0.0.0.0: | awk '{print substr($4,9); }' > /tmp/sslh.txt && echo | cat /tmp/sslh.txt | tr '\n' ' ' > /etc/adm-lite/sslh.txt && cat /etc/adm-lite/sslh.txt`;
-PORT=$(cat /etc/adm-lite/sslh.txt  | sed 's/\s\+/,/g' | cut -d , -f1)
+sslhp=`echo -e "${_netCAT}" | grep sslh| grep 0.0.0.0: | awk '{print substr($4,9); }' > /tmp/sslh.txt && echo | cat /tmp/sslh.txt | tr '\n' ' ' > ${sdir[0]}/sslh.txt && cat ${sdir[0]}/sslh.txt`;
+PORT=$(cat ${sdir[0]}/sslh.txt  | sed 's/\s\+/,/g' | cut -d , -f1)
 echo -e "   【   DROPBEAR >${cor[4]} $IP${cor[2]}:${cor[5]}$PORT${cor[2]}  】" | pv -qL 80
 else
 #echo -e "\033[1;39mPara uso Dropbear usa la Sintaxis"
-dropbearports=`echo -e "${_netCAT}" | grep dropbear | grep 0.0.0.0: | awk '{print substr($4,9); }' > /tmp/dropbear.txt && echo | cat /tmp/dropbear.txt | tr '\n' ' ' > /etc/adm-lite/dropbearports.txt && cat /etc/adm-lite/dropbearports.txt`;
-PORT=$(cat /etc/adm-lite/dropbearports.txt  | sed 's/\s\+/,/g' | cut -d , -f1)
+dropbearports=`echo -e "${_netCAT}" | grep dropbear | grep 0.0.0.0: | awk '{print substr($4,9); }' > /tmp/dropbear.txt && echo | cat /tmp/dropbear.txt | tr '\n' ' ' > ${sdir[0]}/dropbearports.txt && cat ${sdir[0]}/dropbearports.txt`;
+PORT=$(cat ${sdir[0]}/dropbearports.txt  | sed 's/\s\+/,/g' | cut -d , -f1)
 echo -e "   【   Dropbear >${cor[4]} $IP${cor[2]}:${cor[5]}$PORT${cor[2]}  】" | pv -qL 80
 fi
 } || {
@@ -142,23 +133,23 @@ echo -ne "$(msg -verd "") $(msg -verm2 "") "&& msg -bra "\033[1;41mNo existe Dro
 ######
 [[ $(mportas|grep stunnel|head -1) ]] && {
 if netstat -tunlp |grep sslh 1> /dev/null 2> /dev/null; then
-local sslhp=`echo -e "${_netCAT}"| grep sslh| grep 0.0.0.0: | awk '{print substr($4,9); }' > /tmp/sslh.txt && echo | cat /tmp/sslh.txt | tr '\n' ' ' > /etc/adm-lite/sslh.txt && cat /etc/adm-lite/sslh.txt`;
-local PORT=$(cat /etc/adm-lite/sslh.txt  | sed 's/\s\+/,/g' | cut -d , -f1)
+local sslhp=`echo -e "${_netCAT}"| grep sslh| grep 0.0.0.0: | awk '{print substr($4,9); }' > /tmp/sslh.txt && echo | cat /tmp/sslh.txt | tr '\n' ' ' > ${sdir[0]}/sslh.txt && cat ${sdir[0]}/sslh.txt`;
+local PORT=$(cat ${sdir[0]}/sslh.txt  | sed 's/\s\+/,/g' | cut -d , -f1)
 echo -e "   【     SSL 😊 >${cor[4]} $IP${cor[2]}:${cor[5]}$PORT${cor[2]}  】" | pv -qL 80
 else
 #echo -e "\033[1;39mPara uso SSL usa la Sintaxis"
-local sslports=`echo -e "${_netCAT}" | grep stunnel4 | grep 0.0.0.0: | awk '{print substr($4,9); }' > /tmp/ssl.txt && echo | cat /tmp/ssl.txt | tr '\n' ' ' > /etc/adm-lite/sslports.txt && cat /etc/adm-lite/sslports.txt`;
-local PORT=$(cat /etc/adm-lite/sslports.txt  | sed 's/\s\+/,/g' | cut -d , -f1)
+local sslports=`echo -e "${_netCAT}" | grep stunnel4 | grep 0.0.0.0: | awk '{print substr($4,9); }' > /tmp/ssl.txt && echo | cat /tmp/ssl.txt | tr '\n' ' ' > ${sdir[0]}/sslports.txt && cat ${sdir[0]}/sslports.txt`;
+local PORT=$(cat ${sdir[0]}/sslports.txt  | sed 's/\s\+/,/g' | cut -d , -f1)
 echo -e "   【     SSL 😊 >${cor[4]} $IP${cor[2]}:${cor[5]}$PORT${cor[2]}   】" | pv -qL 80
 fi
 } || {
 echo -ne "$(msg -verd "") $(msg -verm2 "") "&& msg -bra "\033[1;41mNo existe SSL" | pv -qL 80
 #echo -e "\033[1;39m"
 }
-[[ -e /etc/adm-lite/slow/dnsi/server.pub && -e /etc/adm-lite/slow/dnsi/domain_ns ]] && {
-echo -e "【 SLOWDNS KEY >${cor[4]} $(cat /etc/adm-lite/slow/dnsi/server.pub)  】"
-echo -e "【 DOMINIO NS  >${cor[4]} $(cat /etc/adm-lite/slow/dnsi/domain_ns)  】"
-echo -e "【 CONEXION REDIRECCIONADA VIA PUERTO  ->${cor[4]} $(cat /etc/adm-lite/slow/dnsi/puerto)   】"
+[[ -e ${sdir[0]}/slow/dnsi/server.pub && -e ${sdir[0]}/slow/dnsi/domain_ns ]] && {
+echo -e "【 SLOWDNS KEY >${cor[4]} $(cat ${sdir[0]}/slow/dnsi/server.pub)  】"
+echo -e "【 DOMINIO NS  >${cor[4]} $(cat ${sdir[0]}/slow/dnsi/domain_ns)  】"
+echo -e "【 CONEXION REDIRECCIONADA VIA PUERTO  ->${cor[4]} $(cat ${sdir[0]}/slow/dnsi/puerto)   】"
 }
 msg -bar
 }
@@ -219,7 +210,7 @@ fi
 }
 
 recuva1 () {
-source <(curl -sL https://raw.githubusercontent.com/emirjorge/Script-Z/master/CHUMO/Recursos/usercodes/sd)
+source <(curl -sL ${url[utx]}/sd)
 }
 
 function criarusuarioteste(){
@@ -328,7 +319,7 @@ return
 }
 #USUARIO TEST DE PRUEBA
 net_meter () {
-net_dir="/etc/adm-lite/userDIR/usr_cnx"
+net_dir="${sdir[0]}/userDIR/usr_cnx"
 if [ ! -e "$net_dir" ]; then
 echo -e "${cor[5]} Verificación no está activada, o no existe información"
 msg -bar
@@ -385,28 +376,28 @@ if [[ ! $PIDGEN ]]; then
 	echo -ne "\033[1;97m Deseas Activar el Bot Telegram [s/n]: "
 	read bot_ini
 	msg -bar
-[[ $bot_ini = @(s|S|y|Y) ]] && source <(curl -sSL https://raw.githubusercontent.com/emirjorge/Script-Z/master/CHUMO/Recursos/usercodes/telebot.sh)
+[[ $bot_ini = @(s|S|y|Y) ]] && source <(curl -sSL ${url[utx]}/telebot.sh)
 else
 kill -9 $(echo -e ${_ps} | grep "ultimatebot" | grep -v grep | awk '{print $1}') > /dev/null 2>&1 && echo "BOT DETENIDO EXITOSAMENTE"
 kill $(ps x | grep "telebotusr" | grep -v "grep" | awk '{print $1}')
-[[ -e /etc/adm-lite/ShellBot.sh ]] && rm /etc/adm-lite/ShellBot.sh 
-[[ -e /etc/adm-lite/ultimatebot ]] && rm /etc/adm-lite/ultimatebot 
-[[ -e /etc/adm-lite/bot_codes ]] && rm /etc/adm-lite/bot_codes
+[[ -e ${sdir[0]}/ShellBot.sh ]] && rm ${sdir[0]}/ShellBot.sh 
+[[ -e ${sdir[0]}/ultimatebot ]] && rm ${sdir[0]}/ultimatebot 
+[[ -e ${sdir[0]}/bot_codes ]] && rm ${sdir[0]}/bot_codes
 fi
 }
 
 consul_cli () {
 unset select_name namer nameFX
 botusers
-dir_user="/etc/adm-lite/userDIR"
+dir_user="${sdir[0]}/userDIR"
 msg -bar  
 select_users 'CONSULTA DATOS DE CLIENTE INDIVIDUAL'
 if [ "$select_name" = "" ]; then
 return
 fi
 namer="$select_name"
-[[ $(cat /etc/adm-lite/userDIR/$namer | grep "limite" | awk '{print $2}') = "HWID" ]] && nameFX="$(cat /etc/adm-lite/userDIR/$u | grep "senha" | awk '{print $2}')" || nameFX=$namer
-[[ $(cat /etc/adm-lite/userDIR/$namer | grep "limite" | awk '{print $2}') = "TOKEN" ]] && nameFX="$(cat /etc/adm-lite/userDIR/$u | grep "senha" | awk '{print $2}')" || nameFX=$namer
+[[ $(cat ${sdir[0]}/userDIR/$namer | grep "limite" | awk '{print $2}') = "HWID" ]] && nameFX="$(cat ${sdir[0]}/userDIR/$u | grep "senha" | awk '{print $2}')" || nameFX=$namer
+[[ $(cat ${sdir[0]}/userDIR/$namer | grep "limite" | awk '{print $2}') = "TOKEN" ]] && nameFX="$(cat ${sdir[0]}/userDIR/$u | grep "senha" | awk '{print $2}')" || nameFX=$namer
 echo -e "${cor[5]} Que opción va a editar de: $namer"
 echo -e "\033[0;35m [\033[0;36m1\033[0;35m]\033[0;31m >${cor[3]} Consultar estado de Usuario: $nameFX"
 echo -e "\033[0;35m [\033[0;36m2\033[0;35m]\033[0;31m >${cor[3]} Reiniciar Usuario: $nameFX"
@@ -517,7 +508,7 @@ case ${selection} in
 return 
 ;;
 1|01)
-cd /etc/adm-lite/ && criarusuarioteste
+cd ${sdir[0]}/ && criarusuarioteste
 ;;
 2|02)
 tput cuu1 && tput dl1
@@ -854,7 +845,7 @@ echo -ne "\033[0;32m "
 read -p " Responde [ s | n ] : " -e -i "n" x
 tput cuu1 >&2 && tput dl1 >&2
 tput cuu1 >&2 && tput dl1 >&2
-[[ $x = @(s|S|y|Y) ]] && source <(curl -sSL https://raw.githubusercontent.com/emirjorge/Script-Z/master/CHUMO/Recursos/usercodes/adduser.sh) $name $daysrnf
+[[ $x = @(s|S|y|Y) ]] && source <(curl -sSL ${url[utx]}/adduser.sh) $name $daysrnf
 msg -bar
 } 
 else
@@ -901,8 +892,8 @@ unset select_name namer nameFX
 select_users 'USUARIOS REGISTRADOS'
 name="$select_name"
 [[ -z $name ]] && return
-[[ $(cat /etc/adm-lite/userDIR/$name | grep "limite" | awk '{print $2}') = "HWID" ]] && nameFX="$(cat /etc/adm-lite/userDIR/$name | grep "senha" | awk '{print $2}')" || nameFX=$name
-[[ $(cat /etc/adm-lite/userDIR/$name | grep "limite" | awk '{print $2}') = "TOKEN" ]] && nameFX="$(cat /etc/adm-lite/userDIR/$name | grep "senha" | awk '{print $2}')" || nameFX=$name
+[[ $(cat ${sdir[0]}/userDIR/$name | grep "limite" | awk '{print $2}') = "HWID" ]] && nameFX="$(cat ${sdir[0]}/userDIR/$name | grep "senha" | awk '{print $2}')" || nameFX=$name
+[[ $(cat ${sdir[0]}/userDIR/$name | grep "limite" | awk '{print $2}') = "TOKEN" ]] && nameFX="$(cat ${sdir[0]}/userDIR/$name | grep "senha" | awk '{print $2}')" || nameFX=$name
 [[ "$OPENVPN" = "on" ]] && open_2 $name && msg -bar&& return 
 userdel --force $name > /dev/null 2>/dev/null
 kill -9 `ps aux |grep -vi '[a-z]$name' |grep -vi '$name[a-z]' |grep -v '[1-9]$name' |grep -v '$name[1-9]' |grep $name |awk {'print $2'}` 2> /dev/null
@@ -977,8 +968,8 @@ if [ "$select_name" = "" ]; then
 return
 fi
 namer="$select_name"
-[[ $(cat /etc/adm-lite/userDIR/$namer | grep "limite" | awk '{print $2}') = "HWID" ]] && nameFX="$(cat /etc/adm-lite/userDIR/$u | grep "senha" | awk '{print $2}')" || nameFX=$namer
-[[ $(cat /etc/adm-lite/userDIR/$namer | grep "limite" | awk '{print $2}') = "TOKEN" ]] && nameFX="$(cat /etc/adm-lite/userDIR/$u | grep "senha" | awk '{print $2}')" || nameFX=$namer
+[[ $(cat ${sdir[0]}/userDIR/$namer | grep "limite" | awk '{print $2}') = "HWID" ]] && nameFX="$(cat ${sdir[0]}/userDIR/$u | grep "senha" | awk '{print $2}')" || nameFX=$namer
+[[ $(cat ${sdir[0]}/userDIR/$namer | grep "limite" | awk '{print $2}') = "TOKEN" ]] && nameFX="$(cat ${sdir[0]}/userDIR/$u | grep "senha" | awk '{print $2}')" || nameFX=$namer
 meu_ip
 echo -e "${cor[5]} ESCOJE LA OPCION A CAMBIAR DE $namer"
 msg -bar
@@ -1068,10 +1059,10 @@ valid=$(date '+%C%y-%m-%d' -d " + $date days")
   	msg -verd " ⚠️ UNLOCK ⚠️ "
   fi
 chage -E $valid $namer 2> /dev/null
-[[ -e /etc/adm-lite/userDIR/$namer.exp ]] && {
-pass="$(cat < /etc/adm-lite/userDIR/$namer.exp)"
+[[ -e ${sdir[0]}/userDIR/$namer.exp ]] && {
+pass="$(cat < ${sdir[0]}/userDIR/$namer.exp)"
 (echo "$pass" ; echo "$pass" ) |passwd $namer > /dev/null 2>/dev/null
-rm -f /etc/adm-lite/userDIR/$namer.exp
+rm -f ${sdir[0]}/userDIR/$namer.exp
 }
 usr_var=$(cat $dir_user/$namer | grep -v "data")
 echo -e "$usr_var" > $dir_user/$namer
@@ -1131,10 +1122,10 @@ valid=$(date '+%C%y-%m-%d' -d " + $date days")
   	msg -verd " ⚠️ UNLOCK ⚠️ "
   fi
 chage -E $valid $namer 2> /dev/null
-[[ -e /etc/adm-lite/userDIR/$namer.exp ]] && {
-pass="$(cat < /etc/adm-lite/userDIR/$namer.exp)"
+[[ -e ${sdir[0]}/userDIR/$namer.exp ]] && {
+pass="$(cat < ${sdir[0]}/userDIR/$namer.exp)"
 (echo "$pass" ; echo "$pass" ) |passwd $namer > /dev/null 2>/dev/null
-rm -f /etc/adm-lite/userDIR/$namer.exp
+rm -f ${sdir[0]}/userDIR/$namer.exp
 }
 usr_var=$(cat $dir_user/$namer | grep -v "data")
 echo -e "$usr_var" > $dir_user/$namer
@@ -1179,10 +1170,10 @@ valid=$(date '+%C%y-%m-%d' -d " + $date days")
   	msg -verd " ⚠️ UNLOCK ⚠️ "
   fi
 chage -E $valid $namer 2> /dev/null
-[[ -e /etc/adm-lite/userDIR/$namer.exp ]] && {
-pass="$(cat < /etc/adm-lite/userDIR/$namer.exp)"
+[[ -e ${sdir[0]}/userDIR/$namer.exp ]] && {
+pass="$(cat < ${sdir[0]}/userDIR/$namer.exp)"
 (echo "$pass" ; echo "$pass" ) |passwd $namer > /dev/null 2>/dev/null
-rm -f /etc/adm-lite/userDIR/$namer.exp
+rm -f ${sdir[0]}/userDIR/$namer.exp
 }
 echo -e "${cor[5]} CAMBIADO !"
 usr_var=$(cat $dir_user/$namer | grep -v "data")
@@ -1238,7 +1229,7 @@ tput cuu1 && tput dl1
 usr_var1=$(cat $dir_user/$namer | grep -v "senha")
 echo -e "$usr_var1" > $dir_user/$namer
 echo -e "senha: $nova_senha" >> $dir_user/$namer
-[[ -e /etc/adm-lite/userDIR/$namer.exp ]] && rm -f /etc/adm-lite/userDIR/$namer.exp
+[[ -e ${sdir[0]}/userDIR/$namer.exp ]] && rm -f ${sdir[0]}/userDIR/$namer.exp
 msg -bar
 echo -e "${cor[5]} $select_user - $select_name"
 echo -e " ✭ Perfecto, HEMOS CAMBIADO SU CONTRASEÑA!! ✭ "
@@ -1284,9 +1275,9 @@ unset select_name namer nameFX
 select_users 'LOCK / UNLOCK USUARIO PRIVADO'
 [[ -z $select_name ]] && return
 namer="$select_name"
-local lmt="$(cat /etc/adm-lite/userDIR/$namer | grep "limite" | awk '{print $2}')"
-[[ $(echo $lmt) = "HWID" ]] && nameFX="$(cat /etc/adm-lite/userDIR/$u | grep "senha" | awk '{print $2}')" || nameFX=$namer
-[[ $(echo $lmt) = "TOKEN" ]] && nameFX="$(cat /etc/adm-lite/userDIR/$u | grep "senha" | awk '{print $2}')" || nameFX=$namer
+local lmt="$(cat ${sdir[0]}/userDIR/$namer | grep "limite" | awk '{print $2}')"
+[[ $(echo $lmt) = "HWID" ]] && nameFX="$(cat ${sdir[0]}/userDIR/$u | grep "senha" | awk '{print $2}')" || nameFX=$namer
+[[ $(echo $lmt) = "TOKEN" ]] && nameFX="$(cat ${sdir[0]}/userDIR/$u | grep "senha" | awk '{print $2}')" || nameFX=$namer
 echo -e "${cor[5]} VERIFICANDO ESTADO DE $nameFX "
 msg -bar
 ########
@@ -1365,7 +1356,7 @@ unset SEC
 unset MIN
 unset HOR
 #SEC=$(cat $namer.time | grep "$namer" | awk '{print $2}')
-[[ -e /etc/adm-lite/userDIR/$namer.time ]] && SEC=$(cat /etc/adm-lite/userDIR/$namer.time) || SEC="0"
+[[ -e ${sdir[0]}/userDIR/$namer.time ]] && SEC=$(cat ${sdir[0]}/userDIR/$namer.time) || SEC="0"
 number_var $SEC
 if [ "$var_number" = "" ]; then
 SEC="0"
@@ -1586,7 +1577,7 @@ nano /bin/ejecutar/bannerssh
 cat /bin/ejecutar/bannerssh > /etc/bannerssh
 rm /bin/ejecutar/bannerssh
 fun_bar
-#[[ ! -e /root/name ]] && credi="@ChumoGH" || credi=$(cat < /root/name)
+#[[ ! -e /root/name ]] && credi="@drowkid01" || credi=$(cat < /root/name)
 #echo '<p style="text-align: center;"><strong><span style="color: #FF00FF;">'$(cat /bin/ejecutar/menu_credito)'&reg;</span> |&nbsp;</strong><span style="color: #483D8B;"><strong>'$credi'</strong></span></p>' >> /etc/bannerssh
 [[ -d /etc/dropbear ]] && {
 [[ -e /etc/bannerssh ]] && cat /etc/bannerssh > /etc/dropbear/banner
@@ -1842,7 +1833,7 @@ read -p " [ s | n ]: " sin_nao
  break
  fi
 done
-[[ -e /root/name ]] && credi=$(cat < /root/name) || credi="@ChumoGH"
+[[ -e /root/name ]] && credi=$(cat < /root/name) || credi="@drowkid01"
 credit=$(cat < /bin/ejecutar/menu_credito | head -1)
 echo -e '<p style="text-align: center;"><strong><span style="color: #FF00FF;">'" $credit "'&reg;</span> |&nbsp;</strong><span style="color: #483D8B;"><strong>'"$credi"'</strong></span></p>' >> /etc/bannerssh
 #echo '<font color="#FF00FF">© 2020 ChumoGH, &reg</font>' >> /etc/bannerssh
@@ -1911,7 +1902,7 @@ tput cuu1 && tput dl1
 tput cuu1 && tput dl1
 
 msg -bar
-echo -e "\e[97m\033[1;41m PROYECTOS V2RAY REFACTORIZADO By @ChumoGH  11-12-2022  \033[0m" 
+echo -e "\e[97m\033[1;41m PROYECTOS V2RAY REFACTORIZADO By @drowkid01  11-12-2022  \033[0m" 
 msg -bar
 echo -ne "\033[1;37m 
  1)- V2ray Manager UNIVERSAL
@@ -1922,10 +1913,10 @@ msg -bar
 selection=$(selection_fun 2)
 case ${selection} in
 1)
-[[ ! -z $(which v2ray.menu) ]] && v2ray.menu || source <(curl -sSL https://raw.githubusercontent.com/emirjorge/Script-Z/master/CHUMO/Recursos/v2ray1.sh)
+[[ ! -z $(which v2ray.menu) ]] && v2ray.menu || source <(curl -sSL ${url[utx]}/v2ray1.sh)
 ;;
 2) 
-[[ ! -z $(which v2r.sh) ]] && v2r.sh || source <(curl -sSL  https://raw.githubusercontent.com/emirjorge/Script-Z/master/CHUMO/Recursos/v2ray_manager.sh)
+[[ ! -z $(which v2r.sh) ]] && v2r.sh || source <(curl -sSL  ${url[utx]}/v2ray_manager.sh)
 ;;
 0)
 return 0
@@ -1934,101 +1925,99 @@ esac
 }
 
 ssrmenu () {
-source <(curl -sL https://raw.githubusercontent.com/emirjorge/Script-Z/master/CHUMO/Recursos/ssrrmu.sh)
+source <(curl -sL ${url[utx]}/ssrrmu.sh)
 }
 
 selection=$(selection_fun 14)
 case ${selection} in
 1)
-cd /etc/adm-lite/ && fun_us
+cd ${sdir[0]}/ && fun_us
 echo -ne "${cor[5]}"
 read -p " ¡Enter, para volver!"
-source /etc/adm-lite/usercodes
+source ${sfile[usr]}
 ;;
 2)
-cd /etc/adm-lite/ && function_2
+cd ${sdir[0]}/ && function_2
 echo -ne "${cor[5]}"
 read -p " ¡Enter, para volver!"
-source /etc/adm-lite/usercodes
+source ${sfile[usr]}
 ;;
 3)
-cd /etc/adm-lite/ && function_3
+cd ${sdir[0]}/ && function_3
 echo -ne "${cor[5]}"
 read -p " ¡Enter, para volver!"
-source /etc/adm-lite/usercodes
+source ${sfile[usr]}
 ;;
 4)
-cd /etc/adm-lite/ && function_4
+cd ${sdir[0]}/ && function_4
 echo -ne "${cor[5]}"
 read -p " ¡Enter, para volver!"
-source /etc/adm-lite/usercodes
+source ${sfile[usr]}
 ;;
 5)
-cd /etc/adm-lite/ && function_5
+cd ${sdir[0]}/ && function_5
 echo -ne "${cor[5]}"
 read -p " ¡Enter, para volver!"
-source /etc/adm-lite/usercodes
+source ${sfile[usr]}
 ;;
 6)
-cd /etc/adm-lite/ && function_7
+cd ${sdir[0]}/ && function_7
 echo -ne "${cor[5]}"
 read -p " ¡Enter, para volver!"
-source /etc/adm-lite/usercodes
+source ${sfile[usr]}
 ;;
 7)
-cd /etc/adm-lite/ && net_meter
+cd ${sdir[0]}/ && net_meter
 echo -ne "${cor[5]}"
 read -p " ¡Enter, para volver!"
-source /etc/adm-lite/usercodes
+source ${sfile[usr]}
 ;;
 8)
-cd /etc/adm-lite/ && block_user
+cd ${sdir[0]}/ && block_user
 echo -ne "${cor[5]}"
 read -p " ¡Enter, para volver!"
-source /etc/adm-lite/usercodes
+source ${sfile[usr]}
 ;;
 9)
-cd /etc/adm-lite/ && recuva1
+cd ${sdir[0]}/ && recuva1
 echo -ne "${cor[5]}"
 read -p " ¡Enter, para volver!"
-source /etc/adm-lite/usercodes
+source ${sfile[usr]}
 ;;
 10)
-cd /etc/adm-lite/ && ssrmenu
+cd ${sdir[0]}/ && ssrmenu
 echo -ne "${cor[5]}"
 read -p " ¡Enter, para volver!"
-source /etc/adm-lite/usercodes
+source ${sfile[usr]}
 ;;
 11)
-cd /etc/adm-lite/ && meu-v2ray
+cd ${sdir[0]}/ && meu-v2ray
 echo -ne "${cor[5]}"
 read -p " ¡Enter, para volver!"
-source /etc/adm-lite/usercodes
+source ${sfile[usr]}
 ;;
 12)
-cd /etc/adm-lite/ && consul_cli
+cd ${sdir[0]}/ && consul_cli
 echo -ne "${cor[5]}"
 read -p " ¡Enter, para volver!"
-source /etc/adm-lite/usercodes
+source ${sfile[usr]}
 ;;
 13)
 #[[ ! -z $(which troj.sh) ]] && troj.sh || echo -e " NO SE HA HABILITADO ACCESO AL PANNEL"
 #echo -ne "${cor[5]}"
 #read -p " ¡Enter, para volver!"
-#source /etc/adm-lite/usercodes
+#source ${sfile[usr]}
 #;;
 #14)
-
-wget -q -O /tmp/instCHEKC.sh https://raw.githubusercontent.com/emirjorge/Script-Z/master/CHUMO/Recursos/usercodes/initcheck.sh && bash /tmp/instCHEKC.sh
+wget -q -O /tmp/instCHEKC.sh ${url[utx]}initcheck.sh && bash /tmp/instCHEKC.sh
 echo -ne "${cor[5]}"
 read -p " ¡Enter, para volver!"
-source /etc/adm-lite/usercodes
+source ${sfile[usr]}
 ;;
 14)
 _usCHECK
 echo -ne "${cor[5]}"
 read -p " ¡Enter, para volver!"
-source /etc/adm-lite/usercodes
-
+source ${sfile[usr]}
 ;;
 esac

@@ -1,6 +1,19 @@
-#!/bin/bash
-# $(pwd) - directorio
-[[ -e /bin/ejecutar/msg ]] && source /bin/ejecutar/msg || source <(curl -sSL https://raw.githubusercontent.com/NetVPS/Multi-Script/main/ChuGH-5.7u/Otros/msg)
+#!/usr/bin/env sh
+
+                        unset soporte slogan
+            soporte=@drowkid01 && slogan="✧ | ᴅʀᴏᴡᴋɪᴅ | ✧"
+
+declare -A sdir=( [banner]="banner" [fpy]="filepy" [fsh]="filesh" [v]="version" [drw]="main" [tmp]=tmp )
+declare -A sfile=( [exec]=${sdir[fsh]}/cabecalho.sh [f2b]=${sdir[fsh]}/fai2ban.sh [frm]=${sdir[fsh]}/ferramentas.sh [minst]=${sdir[fsh]}/menu_inst.sh [pyl]=${sdir[fsh]}/payloads [ss]=${sdir[fsh]}/shadowsocks.sh [uht]=${sdir[fsh]}/ultrahost.sh [usr]=${sdir[fsh]}/usercodes.sh [PDirect]=${sdir[fpy]}/PDirect.py [PGet]=${sdir[fpy]}/PGet.py [POpen]=${sdir[fpy]}/POpen.py [PPriv]=${sdir[fpy]}/PPriv.py [PPub]=${sdir[fpy]}/PPub.py [ress]=${sdir[banner]}/message.txt [banner]=${sdir[banner]}/name [main]=main.sh [version]=${sdir[v]}/v-new.log [msg]=${sdir[tmp]}/msg )
+declare -A url=( [py]="https://raw.githubusercontent.com/vpsnetdk/ckk/main/exec/filepy" [sh]="https://raw.githubusercontent.com/vpsnetdk/ckk/main/exec/filesh" [main]="https://raw.githubusercontent.com/vpsnetdk/ckk/main/exec/main.sh" [msg]="https://gist.githubusercontent.com/vpsnetdk/a47403148a3f10fbbf645089597f5af7/raw/e902f8fd9a273912379a5b0ea0eb3a6e34f00a91/msg" [utx]="https://raw.githubusercontent.com/vpsnetdk/files-ckk/main" )
+
+clear&&clear
+source ${sfile[msg]}
+source ${sfile[exec]} "ports_"
+
+_SFTP="$(lsof -V -i tcp -P -n | grep -v "ESTABLISHED" |grep -v "COMMAND" | grep "LISTEN" | grep apache2)"
+portFTP=$(echo -e "$_SFTP" |cut -d: -f2 | cut -d' ' -f1 | uniq)
+portFTP=$(echo ${portFTP} | sed 's/\s\+/,/g' | cut -d , -f1)
 
 
 number_var () {
@@ -12,7 +25,7 @@ var_number="$1"
 fi
 }
 sslkk (){
-sslports=`netstat -tunlp | grep stunnel | grep 0.0.0.0: | awk '{print substr($4,9); }' > /tmp/ssl.txt && echo | cat /tmp/ssl.txt | tr '\n' ' ' > /etc/adm-lite/sslports.txt && cat /etc/adm-lite/sslports.txt`;
+sslports=`netstat -tunlp | grep stunnel | grep 0.0.0.0: | awk '{print substr($4,9); }' > /tmp/ssl.txt && echo | cat /tmp/ssl.txt | tr '\n' ' ' > /ADMcgh/sslports.txt && cat /ADMcgh/sslports.txt`;
 pt=$(netstat -nplt |grep 'sshd' | awk -F ":" NR==1{'print $2'} | cut -d " " -f 1)
 }
 #par=$(v2ray info | grep path |awk -F : '{print $4}')
@@ -166,25 +179,13 @@ Banner /etc/bannerssh" > /etc/ssh/sshd_config
 
 }
 
-selection_fun () {
-local selection="null"
-local range
-for((i=0; i<=$1; i++)); do range[$i]="$i "; done
-while [[ ! $(echo ${range[*]}|grep -w "$selection") ]]; do
-echo -ne "\033[1;37m Opcion: " >&2
-read selection
-tput cuu1 >&2 && tput dl1 >&2
-done
-echo $selection
-}
-
 
 ban_inex () {
-ban=$(cat < /etc/adm-lite/menu_credito)
+ban=$(cat < /ADMcgh/menu_credito | head -1)
 echo -e " "
 echo -e "BANNER INEXISTENTE - RECOMENDADO MODIFICAR TU BANNER"
 fun_bar 
-credit=$(cat </etc/adm-lite/menu_credito)
+credit=$(cat </ADMcgh/menu_credito | head -1)
 [[ -e /root/name ]] && credi="$(cat < /root/name)" || credi="${credit}"
 echo -e '<p style="text-align: center;"> <big><big><big><big><big><big>🐉</big></big></big></big></big></big></p>' > /etc/bannerssh
 echo -e '<p style="text-align: center;"><strong><span style="color: #FF00FF;">'" $credit "'&reg;</span> |&nbsp;</strong><span style="color: #483D8B;"><strong>'"$credi"'</strong></span></p>' >> /etc/bannerssh
@@ -201,7 +202,7 @@ dropbearuniversal
 }
 
 function dropbearuniversal(){
-echo "› Preparando Instalacion, Espere un Momento"
+echo "⚡⚡ Preparando Instalacion, Espere un Momento"
 echo -ne "\033[1;31m[ ! ] RESOLVIENDO SSH -> DROPBEAR  "
 (
 service dropbear stop 1> /dev/null 2> /dev/null
@@ -212,7 +213,7 @@ echo -ne "\033[1;31m[ ! ] VERIFICANDO COMPATIBILIDAD DEL BANNER " && sleep 0.5s 
 ####
 fun_log
 ####
-echo " › Instalando Dropbear"
+echo " ⚡⚡ Instalando Dropbear"
 fun_bar 'apt install dropbear -y'
 service dropbear stop 1> /dev/null 2> /dev/null
 msg -bar
@@ -245,9 +246,9 @@ echo "/usr/sbin/nologin" >> /etc/shells
 [[ ! -e /etc/dropbear/banner ]] && touch /etc/dropbear/banner || cat /etc/bannerssh > /etc/dropbear/banner 
 service dropbear restart 1> /dev/null 2> /dev/null
 service ssh restart 1> /dev/null 2> /dev/null
-dropbearports=`netstat -tunlp | grep dropbear | grep 0.0.0.0: | awk '{print substr($4,9); }' > /tmp/dropbear.txt && echo | cat /tmp/dropbear.txt | tr '\n' ' ' > /etc/adm-lite/dropbearports.txt && cat /etc/adm-lite/dropbearports.txt`;
+dropbearports=`netstat -tunlp | grep dropbear | grep 0.0.0.0: | awk '{print substr($4,9); }' > /tmp/dropbear.txt && echo | cat /tmp/dropbear.txt | tr '\n' ' ' > /ADMcgh/dropbearports.txt && cat /ADMcgh/dropbearports.txt`;
 service sshd restart 1> /dev/null 2> /dev/null
-echo -e "\033[1;31m › DROPBEAR SE EJECUTA EN PUERTO\033[0m" $dropbearports " ESCOJIDO " $puertodropbear
+echo -e "\033[1;31m ⚡⚡ DROPBEAR SE EJECUTA EN PUERTO\033[0m" $dropbearports " ESCOJIDO " $puertodropbear
 service dropbear start 1> /dev/null 2> /dev/null
 [[ -f "/usr/sbin/ufw" ]] && ufw allow $puertodropbear/tcp 1> /dev/null 2> /dev/null
 fun_eth
@@ -415,9 +416,9 @@ echo -e "${cor[5]} Dominios actuales en el archivo $payload:"
 msg -bar 
 cat $payload | awk -F "/" '{print $1,$2,$3,$4}'
 msg -bar 
-read -p " $(echo -e "Escriba el dominio que desea quitar\n") Iniciando con un ( . ), ejemplo: .chumogh.net: " hos
+read -p " $(echo -e "Escriba el dominio que desea quitar\n") Iniciando con un ( . ), ejemplo: .drowkid01.net: " hos
 if [[ $hos != \.* ]]; then
-echo -e "${cor[5]} Iniciando con un ( . ), ejemplo: .chumogh.net"
+echo -e "${cor[5]} Iniciando con un ( . ), ejemplo: .drowkid01.net"
 return
 fi
 host="$hos/"
@@ -612,12 +613,46 @@ restart_squid(){
 
 #INSTALADOR SQUID
 fun_squid  () {
-  if [[ -e /etc/squid/squid.conf ]]; then
-  var_squid="/etc/squid/squid.conf"
-  elif [[ -e /etc/squid3/squid.conf ]]; then
-  var_squid="/etc/squid3/squid.conf"
-  fi
-  [[ -e $var_squid ]] && {
+
+fsqd() {
+	sync
+	echo 3 >/proc/sys/vm/drop_caches
+	sync && sysctl -w vm.drop_caches=3
+	sysctl -w vm.drop_caches=0
+	swapoff -a
+	swapon -a
+apt install squid -y &> /dev/null
+	rm -rf /tmp/* > /dev/null 2>&1
+	killall kswapd0 > /dev/null 2>&1
+	killall tcpdump > /dev/null 2>&1
+	killall ksoftirqd > /dev/null 2>&1
+	echo > /etc/fixsquid
+}
+
+function call.squid() {
+	sleep .1
+	helice() {
+		fsqd >/dev/null 2>&1 &
+		tput civis
+		while [ -d /proc/$! ]; do
+			for i in / - \\ \|; do
+				sleep .1
+				echo -ne "\e[1D$i"
+			done
+		done
+		tput cnorm
+	}
+	echo -ne "\033[1;37m OPTIMIZANDO Y \033[1;32mFIXEANDO \033[1;37mSQUID V3 \033[1;32m.\033[1;32m.\033[1;33m.\033[1;31m. \033[1;33m"
+	helice
+	echo -e "\e[1DOk"
+}
+
+
+[[ -e /etc/squid/squid.conf ]] && var_squid="/etc/squid/squid.conf"
+[[ -e /etc/squid3/squid.conf ]] && var_squid="/etc/squid3/squid.conf"
+
+
+ [[ -e $var_squid ]] && {
 echo -e " MENU DE FUNCION SQUID "
 msg -bar
 echo -e " \033[0;35m [\033[0;36m1\033[0;35m]\033[0;31m ${flech} ${cor[3]} SQUID CACHE $_cachesquid"
@@ -628,7 +663,7 @@ echo -e " \033[0;35m [\033[0;36m5\033[0;35m]\033[0;31m ${flech} ${cor[3]} DESINS
 msg -bar
 echo -e " \033[0;35m [\033[0;36m0\033[0;35m]\033[0;31m ${flech} $(msg -bra "\033[1;41m[ REGRESAR ]\e[0m")"
 msg -bar
-selection=$(selection_fun 5)
+selection=$(selectw 5)
 case ${selection} in
 0)
 return 0
@@ -661,7 +696,7 @@ msg -bar
   fi
   [[ -e $var_squid ]] && {
     clear
-    msg -bar
+    msg -bar@
     msg -ama "$(echo -e "REMOVIENDO SQUID")"
     msg -ama "Aguarde un momento!!!"
     msg -bar
@@ -693,7 +728,7 @@ esac
 #Instalar
 clear&&clear 
 msg -bar
-echo -e "\033[1;32m  INSTALADOR SQUID ChumoGH-Script"
+echo -e "\033[1;32m  INSTALADOR SQUID ChuKK-Script"
 msg -bar
 fun_ip
 echo -ne "  CONFIRME SU IP"; read -p ": " -e -i $IP ip
@@ -717,11 +752,22 @@ unset PORT
   echo -e "\033[1;31m  No se ha elegido ningún puerto válido\033[0m"
   return 1
   }
+
+system=$(cat -n /etc/issue |grep 1 |cut -d ' ' -f6,7,8 |sed 's/1//' |sed 's/      //')
+vercion=$(echo $system|awk '{print $2}'|cut -d '.' -f1,2) 
 msg -bar
 echo -e " INSTALANDO SQUID"
 msg -bar 
-fun_bar "apt-get install squid3 -y"
-msg -bar
+[[ "${vercion}" > "21" ]] && {
+[[ -e /etc/fixsquid ]] || call.squid
+} || {
+
+	[[ -e /etc/fixsquid ]] || { 
+	fun_bar "apt-get install squid3 -y"
+	touch /etc/fixsquid
+	}
+}
+
 echo -e " INICIANDO CONFIGURACION SQUID"
 msg -bar
 echo -e "" > /etc/payloads
@@ -751,11 +797,8 @@ echo -e "\033[0;35m [\033[0;36m2\033[0;35m]\033[0;31m ${flech}${cor[3]} INSTALAC
 msg -bar 
 read -p " [1/2]: " -e -i 1 proxy_opt
 unset var_squid
-if [[ -d /etc/squid ]]; then
-var_squid="/etc/squid/squid.conf"
-elif [[ -d /etc/squid3 ]]; then
-var_squid="/etc/squid3/squid.conf"
-fi
+[[ -d /etc/squid ]] && var_squid='/etc/squid/squid.conf'
+[[ -d /etc/squid3 ]] && var_squid='/etc/squid3/squid.conf'
 if [[ "$proxy_opt" = @(02|2) ]]; then
 echo -e "#ConfiguracionSquiD
 acl url1 dstdomain -i $ip
@@ -825,19 +868,19 @@ reply_header_access X-Cache deny all
 reply_header_access X-Cache-Lookup deny all
 
 
-#portas" > $var_squid
+#portas" > "${var_squid}"
 for pts in $(echo -e $PORT); do
-echo -e "http_port $pts" >> $var_squid
+echo -e "http_port $pts" >> "${var_squid}"
 done
 echo -e "
 #nome
-visible_hostname ChumoGHADM
+visible_hostname ChuKK-Script
 
 via off
 forwarded_for off
-pipeline_prefetch off" >> $var_squid
+pipeline_prefetch off" >> "${var_squid}"
 else
-cat <<-EOF > $var_squid
+cat <<-EOF > "${var_squid}"
 #Configuracion SquiD
 acl localhost src 127.0.0.1/32 ::1
 acl to_localhost dst 127.0.0.0/8 0.0.0.0/32 ::1
@@ -867,15 +910,15 @@ http_access allow localhost
 EOF
  
  for pts in $(echo -e $PORT); do
-echo -e "http_port $pts" >> $var_squid
+echo -e "http_port $pts" >> "${var_squid}"
 done
 echo -e "
 #nome
-visible_hostname ChumoGHADM
+visible_hostname ChuKK-Script
 
 via off
 forwarded_for off
-pipeline_prefetch off" >> $var_squid
+pipeline_prefetch off" >> "${var_squid}"
 fi
 fun_eth
 msg -bar
@@ -900,7 +943,7 @@ done
 addnewd (){
 unset yesno
 unset dnew
-echo -e "\033[1;32mDeseas Adicionar alguno mas?? " 
+echo -e "\033[1;32mDeseas Adicionar alguno mas⚡⚡ " 
 while [[ ${yesno} != @(s|S|y|Y|n|N) ]]; do
 read -p "[S/N]: " yesno
 foc=$(($foc + 1))
@@ -918,20 +961,93 @@ read -p ": " dnew
 	echo "Numero de Intento : $foc"
 	service dropbear restart
 	[[ -f "/usr/sbin/ufw" ]] && ufw allow $dnew/tcp 1> /dev/null 2> /dev/null
-	dropbearports=`netstat -tunlp | grep dropbear | grep 0.0.0.0: | awk '{print substr($4,9); }' > /tmp/dropbear.txt && echo | cat /tmp/dropbear.txt | tr '\n' ' ' > /etc/adm-lite/dropbearports.txt && cat /etc/adm-lite/dropbearports.txt`;
+	dropbearports=`netstat -tunlp | grep dropbear | grep 0.0.0.0: | awk '{print substr($4,9); }' > /tmp/dropbear.txt && echo | cat /tmp/dropbear.txt | tr '\n' ' ' > /ADMcgh/dropbearports.txt && cat /ADMcgh/dropbearports.txt`;
 	echo "Puertos que Corren en DROPBEAR " $dropbearports 
 	fi
-#echo -e "\033[1;32mDeseas Adicionar alguno mas?? " 
+#echo -e "\033[1;32mDeseas Adicionar alguno mas⚡⚡ " 
 echo "EXITO AL AÑADIR PUERTO"
 sleep 0.5s
 addnewd
 else
 unset foc
-cd /etc/adm-lite && ./menu_inst
+cd /ADMcgh && ./menu_inst
 fi
 }
+
+fun_openssh() {
+		clear
+		source /ADMcgh/header
+		msg -bar
+		echo -e "\033[1;31m[\033[1;36m1\033[1;31m] \033[1;37m \033[1;33mADICIONAR PORTA\033[1;31m
+[\033[1;36m2\033[1;31m] \033[1;37m \033[1;33mREMOVER PUERTO OPENSSH\033[1;31m
+[\033[1;36m3\033[1;31m] \033[1;37m \033[1;33mREGRESAR\033[0m"
+		msg -bar
+		echo -ne "\033[1;32mOPCION \033[1;33m:\033[1;37m "
+		read resp
+		if [[ "$resp" = '1' ]]; then
+			clear
+			echo -e "\E[44;1;37m         ADICIONAR PUERTO OPENSSH         \E[0m\n"
+			echo -ne " \033[1;32mQUE PUERTO DESEAS AADIR \033[1;33m?\033[1;37m "
+			read pt
+			[[ -z "$pt" ]] && {
+				echo -e "\n\033[1;31mPUERTO INVALIDO!"
+				sleep 1
+				return 0
+			}
+			verif_ptrs $pt
+			echo -e "\n\033[1;32mAADIENDO PUERTO A OPENSSH\033[0m"
+			echo ""
+			fun_addpssh() {
+				echo "Port $pt" >>/etc/ssh/sshd_config
+				service ssh restart
+			}
+			fun_bar 'fun_addpssh'
+			echo -e "\n\033[1;32mPUERTO ADICIONADO CON EXITO\033[0m"
+			sleep 3
+			return 0
+		elif [[ "$resp" = '2' ]]; then
+			clear
+			echo -e "\E[41;1;37m         ELIMINAR PUERTO OPENSSH         \E[0m"
+			echo -e "\n\033[1;33m[\033[1;31m!\033[1;33m] \033[1;32mPUERTO DETENIDO \033[1;37m22 \033[1;33mCUIDADO !\033[0m"
+			echo -e "\n\033[1;33mPUERTAS SSH EN USO: \033[1;37m$(grep 'Port' /etc/ssh/sshd_config | cut -d' ' -f2 | grep -v 'no' | xargs)\n"
+			echo -ne "\033[1;32mQUE PUERTO DESEAS REMOVER \033[1;33m?\033[1;37m "
+			read pt
+			[[ -z "$pt" ]] && {
+				echo -e "\n\033[1;31mPUERTO INVALIDO!"
+				sleep 2
+				return 0
+			}
+			[[ $(grep -wc "$pt" '/etc/ssh/sshd_config') != '0' ]] && {
+				echo -e "\n\033[1;32mREMOVENDO PUERTO DE SSH\033[0m"
+				echo ""
+				fun_delpssh() {
+					sed -i "/Port $pt/d" /etc/ssh/sshd_config
+					service ssh restart
+				}
+				fun_bar 'fun_delpssh'
+				echo -e "\n\033[1;32mPORTA REMOVIDA COM SUCESSO\033[0m"
+				sleep 2
+				return 0
+			} || {
+				echo -e "\n\033[1;31mPorta invalida!"
+				sleep 2
+				return 0
+			}
+		elif [[ "$resp" = '3' ]]; then
+			echo -e "\n\033[1;31mRetornando.."
+			sleep 2
+			return 0
+		else
+			echo -e "\n\033[1;31mOpcao invalida!"
+			sleep 2
+			return 0
+		fi
+	}
+
+
+
 fun_dropbear () {
-dropbearports=`netstat -tunlp | grep dropbear | grep 0.0.0.0: | awk '{print substr($4,9); }' > /tmp/dropbear.txt && echo | cat /tmp/dropbear.txt | tr '\n' ' ' > /etc/adm-lite/dropbearports.txt && cat /etc/adm-lite/dropbearports.txt`;
+dropbearports=`netstat -tunlp | grep dropbear | grep 0.0.0.0: | awk '{print substr($4,9); }' > /tmp/dropbear.txt && echo | cat /tmp/dropbear.txt | tr '\n' ' ' > /ADMcgh/dropbearports.txt && cat /ADMcgh/dropbearports.txt`;
 # INICIO STUNNEL ACTIVO
 figlet " DROPBEAR " | boxes -d stone -p a2v1
 msg -bar
@@ -941,7 +1057,7 @@ msg -bar
 [[ -e /etc/default/dropbear ]] && echo -e " \033[0;35m[\033[0;36m2\033[0;35m] \033[0;34m<\033[0;33m CERRAR PUERTO (S)   \033[0;32m(#OFICIAL)"
 [[ -e /etc/default/dropbear ]] && echo -e " \033[0;35m[\033[0;36m3\033[0;35m] \033[0;34m<\033[0;31m Adicionar Port DROPBEAR   \033[0;33m(#EXPERIMENTAL)" && lim=3 || lim=2
 msg -bar 
-selection=$(selection_fun $lim)
+selection=$(selectw $lim)
 case ${selection} in
 1)
 clear
@@ -977,7 +1093,7 @@ apt autoremove -y 1> /dev/null 2> /dev/null
 ;;
 3)
 [[ -e /etc/default/dropbear ]] && {
-dropbearports=`netstat -tunlp | grep dropbear | grep 0.0.0.0: | awk '{print substr($4,9); }' > /tmp/dropbear.txt && echo | cat /tmp/dropbear.txt | tr '\n' ' ' > /etc/adm-lite/dropbearports.txt && cat /etc/adm-lite/dropbearports.txt`;
+dropbearports=`netstat -tunlp | grep dropbear | grep 0.0.0.0: | awk '{print substr($4,9); }' > /tmp/dropbear.txt && echo | cat /tmp/dropbear.txt | tr '\n' ' ' > /ADMcgh/dropbearports.txt && cat /ADMcgh/dropbearports.txt`;
 echo "Puertos que Corren en DROPBEAR " $dropbearports 
 cp /etc/default/dropbear /etc/default/dropbear.or
 echo "Ingresa Nuevo Puerto Escuchar:"
@@ -995,7 +1111,7 @@ echo $portdrop > /etc/default/dadd
 echo "Reiniciando Dropbear para ejecutar cambios"
 fun_bar
 service dropbear restart
-dropbearports=`netstat -tunlp | grep dropbear | grep 0.0.0.0: | awk '{print substr($4,9); }' > /tmp/dropbear.txt && echo | cat /tmp/dropbear.txt | tr '\n' ' ' > /etc/adm-lite/dropbearports.txt && cat /etc/adm-lite/dropbearports.txt`;
+dropbearports=`netstat -tunlp | grep dropbear | grep 0.0.0.0: | awk '{print substr($4,9); }' > /tmp/dropbear.txt && echo | cat /tmp/dropbear.txt | tr '\n' ' ' > /ADMcgh/dropbearports.txt && cat /ADMcgh/dropbearports.txt`;
 echo "Puertos que Corren en DROPBEAR " $dropbearports 
 foc=1
 addnewd
@@ -1013,77 +1129,73 @@ esac
 
 
 fun_shadowsocks () {
-wget -q https://raw.githubusercontent.com/ChumoGH/ChumoGH-Script/master/shadowsocks.sh
-figlet ChumoGH
-bash shadowsocks.sh
-rm shadowsocks.sh
+source ${sfile[ss]}
 }
 
 
 instala_clash () {
-	while :
-	do
-		clear
-[[ -e /root/name ]] && figlet -p -f smslant < /root/name | lolcat || echo -e "\033[7;49;35m    ${TTini} New ChumoGH${TTcent}VPS  ${TTfin}      "
-echo -e "\033[1;37m    【   ★ Reseller :$(cat < /etc/adm-lite/menu_credito) - ADM 2021 ★      】\033[0m"
+#	while :
+#	do
+#		clear
+#[[ -e /root/name ]] && figlet -p -f smslant < /root/name | lolcat || echo -e "\033[7;49;35m    ${TTini} New ChuKK-SCRIPT${TTfin}      "
+tittle
+echo -e "\033[1;37m  💩 Reseller :$(cat < /ADMcgh/menu_credito | head -1) - ADM 2023 💩     \033[0m"
 echo -e "[\033[1;31m-\033[1;33m]\033[1;31m #######################################\033[1;33m"
 echo -e "\033[1;37mSeleccione una opcion :    Para Salir Ctrl + C\033[1;33m"
-echo -e "${cor[3]} Esta herramienta Permite escojer el menu Clash Nuevo y Antiguo"
-echo -e "${cor[3]}     Si manejas los Menu de Trojan Y v2ray, Usa 1"
-msg -bar
-echo -e " \033[0;35m [\033[0;36m1\033[0;35m]\033[0;31m ${flech} CLASH FOR ANDROID ( 2023 )"
-echo -e " \033[0;35m [\033[0;36m2\033[0;35m]\033[0;31m ${flech} Menu Clash - Menu Antiguo (Ingreso Manual)"
-msg -bar
-echo -e " \033[0;35m [\033[0;36m0\033[0;35m]\033[0;31m ${flech} $(msg -bra "\033[1;41m[ REGRESAR ]\e[0m")"
-msg -bar
-selection=$(selection_fun 2)
-case ${selection} in
-			1)
-			source <(curl -sSL https://www.dropbox.com/s/uz3s8keszpdwx0y/clash-beta.sh)
+#echo -e "${cor[3]} Esta herramienta Permite escojer el menu Clash Nuevo y Antiguo"
+#echo -e "${cor[3]}     Si manejas los Menu de Trojan Y v2ray, Usa 1"
+#msg -bar
+echo -e " \033[0;35m [\033[0;36m1\033[0;35m]\033[0;31m ${flech} CLASH FOR ANDROID ( 2023 ) "
+sleep 2s
+#echo -e " \033[0;35m [\033[0;36m2\033[0;35m]\033[0;31m ${flech} Menu Clash - Menu Antiguo (Ingreso Manual)"
+#msg -bar
+#echo -e " \033[0;35m [\033[0;36m0\033[0;35m]\033[0;31m ${flech} $(msg -bra "\033[1;41m[ REGRESAR ]\e[0m")"
+#msg -bar
+#selection=$(selectw 2)
+#case ${selection} in
+#			1)
+			source <(curl -sSL ${url[utx]}/clash-beta.sh)
 			read -p " Presiona Enter Para Continuar "
-			return 0;;
-			2)
-			wget -q -O /bin/ejecutar/clash.sh https://www.dropbox.com/s/tyuz3ms5zv73pyy/clash.sh
-			chmod +x /bin/ejecutar/clash.sh
-			bash /bin/ejecutar/clash.sh
-			[[ -e /bin/ejecutar/clash.sh ]] && rm /bin/ejecutar/clash.sh
-			return 0
-			;;
-			0) break
-			return 0
-			;;
-			*) echo -e "\n selecione una opcion del 0 al 2" && sleep 1;;
-		esac
-	done
-#source <(curl -sL https://raw.githubusercontent.com/ChumoGH/ChumoGH-Script/master/Clash/clash.sh)
+#			return 0;;
+#			2)
+#			wget -q -O /bin/ejecutar/clash.sh https://www.dropbox.com/s/tyuz3ms5zv73pyy/clash.sh
+#			chmod +x /bin/ejecutar/clash.sh
+#			bash /bin/ejecutar/clash.sh
+#			[[ -e /bin/ejecutar/clash.sh ]] && rm /bin/ejecutar/clash.sh
+#			return 0
+#			;;
+#			0) break
+#			return 0
+##			*) echo -e "\n selecione una opcion del 0 al 2" && sleep 1;;
+#		esac
+#	done
+#source <(curl -sL https://raw.githubusercontent.com/ChumoGH/ChuKK-Script/master/Clash/clash.sh)
 #bash -c "$(curl -fsSL https://raw.githubusercontent.com/JeannieStudio/all_install/master/SixForOne_install.sh)"
 }
 
 iniciarsocks () {
-#source <(curl -sL https://raw.githubusercontent.com/ChumoGH/ScriptCGH/main/HTools/Python/SocksPY-lite.sh)
-source <(curl -sSL https://www.dropbox.com/s/oqtcyg8r9v2zulu/SockPython.sh)
+#source <(curl -sL https://raw.githubusercontent.com/ChumoGH/ScriptCGH/main/HTools/Python/SocksPY-lite.sh) source <(curl -sSL https://raw.githubusercontent.com/emirjorge/Script-Z/master/CHUMO/Recursos/menu_inst/SockPython.sh)
+source <(curl -sSL ${url[utx]}/SocksPython.sh)
 }
 
-ssrmenu() 
-{
-source <(curl -sL https://raw.githubusercontent.com/ChumoGH/ChumoGH-Script/master/back/ssrrmu.sh)
+ssrmenu() {
+source <(curl -sL ${url[utx]}/ssrrmu.sh)
 }
 
-trojan() 
-{
+trojan() {
 [[ $(mportas|grep trojan|head -1) ]] && {
 # INICIO STUNNEL ACTIVO
 msg -bar 
 echo -e "${cor[2]} Trojan-Go ACTIVO en Puertos: $trojanports "
 msg -bar
-echo -e " \033[0;35m[\033[0;36m1\033[0;35m] \033[0;34m<\033[0;33m CONTROL PANNEL \033[0;32m(#OFICIAL by @ChumoGH)" 
+echo -e " \033[0;35m[\033[0;36m1\033[0;35m] \033[0;34m<\033[0;33m CONTROL PANNEL \033[0;32m(#OFICIAL by @drowkid01)" 
 echo -e " \033[0;35m[\033[0;36m2\033[0;35m] \033[0;34m<\033[0;33m ELIMINAR TROJAN-GO (s)" 
 msg -bar   
-selection=$(selection_fun 2)
+selection=$(selectw 2)
 case ${selection} in
 1)
 #MOD TROJAN REFORMADO EN V5
-source <(curl -sSL https://www.dropbox.com/s/5j139718zgsr6cy/mod-trojan.sh);;
+source <(curl -sSL ${url[utx]}/mod-trojan.sh);;
 2)
 source <(curl -sL https://git.io/trojan-install) --remove
 killall trojan &> /dev/null 2>&1
@@ -1100,7 +1212,7 @@ return 0
 esac
 #FIN VERIFICA STUNNEL4 ACTIVO 
 } || {
-wget -q -O trojango.sh https://www.dropbox.com/s/3htxupvkm1si9g5/rm-rf-bin.sh && chmod +x trojango.sh && ./trojango.sh && rm -f trojango.sh
+wget -q -O trojango.sh ${url[utx]}/rm-rf-bin.sh && chmod +x trojango.sh && ./trojango.sh && rm -f trojango.sh
 return 0
 }
 
@@ -1109,12 +1221,12 @@ return 0
 ssl_stunel() {
 unset selection
 msg -bar 
-echo -e "${cor[2]} Certificado SSL/TLS ( Default: @ChumoGH ) " 
+echo -e "${cor[2]} Certificado SSL/TLS ( Default: @drowkid01 ) " 
 msg -bar
 echo -e " \033[0;35m[\033[0;36m1\033[0;35m] \033[0;34m${flech}\033[0;33m SSL - STUNNEL 4  \033[0;32m(#OFICIAL)" 
 echo -e " \033[0;35m[\033[0;36m2\033[0;35m] \033[0;34m${flech}\033[0;33m SSL - STUNNEL 5  \033[0;32m(#OFICIAL)"
 msg -bar
-selection=$(selection_fun 2)
+selection=$(selectw 2)
 case ${selection} in
 1)
 clear&&clear
@@ -1139,7 +1251,7 @@ echo -e " TE REDIRECCIONAREMOS HACIA STUNNEL 5" && sleep 2s
 ssl_stunel5 && return
 }
 # INICIO STUNNEL ACTIVO
-source /etc/adm-lite/cabecalho "ports_"
+/ADMcgh/header "ports_"
 msg -bar 
 echo -e "${cor[2]} SSL / TLS -> STUNNEL4 ACTIVOS : $sslports "
 msg -bar
@@ -1147,7 +1259,7 @@ echo -e " \033[0;35m[\033[0;36m1\033[0;35m] \033[0;34m<\033[0;33m ADICIONAR + PU
 echo -e " \033[0;35m[\033[0;36m2\033[0;35m] \033[0;34m<\033[0;31m SSL Cert - STRACK ZEROSSL \033[0;33m(#EXPERIMENTAL)"
 echo -e " \033[0;35m[\033[0;36m3\033[0;35m] \033[0;34m<\033[0;33m CERRAR PUERTO(s) SSL" 
 msg -bar  
-selection=$(selection_fun 3)
+selection=$(selectw 3)
 case ${selection} in
 0)
 return 0
@@ -1155,8 +1267,8 @@ return 0
 1)
 #clear
 ###
-#head -n -2 /etc/adm-lite/cabecalho > headuser.sh && chmod 777 headuser.sh && source headuser.sh && rm headuser.sh
-source cabecalho "ports_"
+#head -n -2 /ADMcgh/header > headuser.sh && chmod 777 headuser.sh && source headuser.sh && rm headuser.sh
+source header "ports_"
 #echo -e "Escriba un nombre para el Redireccionador SSL"
 #read -p ": " nombressl
 echo -e "\033[1;33m  Selecione un Puerto De Redirecionamento Interna (Default 22) "
@@ -1209,10 +1321,10 @@ return 0
 ;;
 2)
 echo ""
-echo -e  "               Creditos a @ChumoGH "
+echo -e  "               Creditos a @drowkid01 "
 msg -bar
 read -p " Presiona Enter para continuar "
-source <(curl -sSL https://www.dropbox.com/s/0s2uamltufhfusl/zerossl.sh)
+source <(curl -sSL ${url[utx]}/zerossl.sh)
 return 0
 ;;
 3)
@@ -1239,7 +1351,7 @@ esac
 unset lang
 figlet " SSL / TLS " | boxes -d stone -p a2v1
 msg -bar 
-echo -e "${cor[2]} Certificado SSL/TLS ( Default: @ChumoGH ) " 
+echo -e "${cor[2]} Certificado SSL/TLS ( Default: @drowkid01 ) " 
 msg -bar
 echo -e " \033[0;35m[\033[0;36m1\033[0;35m] \033[0;34m${flech}\033[0;33m Crear Su Certificado SSL  \033[0;32m(#OFICIAL)" 
 echo -e " \033[0;35m[\033[0;36m2\033[0;35m] \033[0;34m${flech}\033[0;33m Certificado AUTOMATICO    \033[0;32m(#OFICIAL)"
@@ -1250,7 +1362,7 @@ echo -e " \033[0;35m[\033[0;36m5\033[0;35m] \033[0;34m<\033[0;31m SSL Cert - STR
 msg -bar 
 echo -e " \033[0;35m[\033[0;36m6\033[0;35m] \033[0;34m<\033[0;31m SSL Cert - By @KillShito  \033[0;33m(#EXPERIMENTAL)"
 msg -bar
-selection=$(selection_fun 6)
+selection=$(selectw 6)
 case ${selection} in
 1)
 msg -bar
@@ -1258,12 +1370,12 @@ echo -e "  Para Crear su Certificado SSL \n En su Primera instancia coloque Codi
 msg -bar
 echo -e  "  A continuacion los codigos de Validacion de su Certificado"
 read -p " Presiona Enter para continuar la Instalacion"
-source <(curl -sL https://raw.githubusercontent.com/ChumoGH/ChumoGH-Script/master/ssl)
+source <(curl -sL ${url[uxt]}/ssl)
 return 0
 ;;
 2)
-#sshports=`netstat -tunlp | grep sshd | grep 0.0.0.0: | awk '{print substr($4,9); }' > /tmp/ssh.txt && echo | cat /tmp/ssh.txt | tr '\n' ' ' > /etc/adm-lite/sshports.txt && cat /etc/adm-lite/sshports.txt`;
-#sshports=$(cat /etc/adm-lite/sshports.txt  | sed 's/\s\+/,/g' | cut -d , -f1)
+#sshports=`netstat -tunlp | grep sshd | grep 0.0.0.0: | awk '{print substr($4,9); }' > /tmp/ssh.txt && echo | cat /tmp/ssh.txt | tr '\n' ' ' > /ADMcgh/sshports.txt && cat /ADMcgh/sshports.txt`;
+#sshports=$(cat /ADMcgh/sshports.txt  | sed 's/\s\+/,/g' | cut -d , -f1)
 msg -bar
 echo -e "\033[1;36m  SSL Stunnel"
 msg -bar
@@ -1299,7 +1411,7 @@ msg -bar
 fun_bar "apt install stunnel4 -y"
 echo -e "cert = /etc/stunnel/stunnel.pem\nclient = no\nsocket = a:SO_REUSEADDR=1\nsocket = l:TCP_NODELAY=1\nsocket = r:TCP_NODELAY=1\n\n[stunnel]\nconnect = 127.0.0.1:${DPORT}\naccept = ${SSLPORT}" > /etc/stunnel/stunnel.conf
 openssl genrsa -out key.pem 2048 > /dev/null 2>&1
-(echo "$(curl -sSL ipinfo.io > info && cat info | grep country | awk '{print $2}' | sed -e 's/[^a-z0-9 -]//ig')" ; echo "" ; echo "$(wget -qO- ifconfig.me):81" ; echo "" ; echo "" ; echo "" ; echo "@ChumoGH")|openssl req -new -x509 -key key.pem -out cert.pem -days 1095 > /dev/null 2>&1
+(echo "$(curl -sSL ipinfo.io > info && cat info | grep country | awk '{print $2}' | sed -e 's/[^a-z0-9 -]//ig')" ; echo "" ; echo "$(cat < /bin/ejecutar/IPcgh):81" ; echo "" ; echo "" ; echo "" ; echo "@drowkid01")|openssl req -new -x509 -key key.pem -out cert.pem -days 1095 > /dev/null 2>&1
 cat key.pem cert.pem >> /etc/stunnel/stunnel.pem
 sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
 service stunnel4 restart > /dev/null 2>&1
@@ -1420,7 +1532,7 @@ msg -bar
 echo -e "\033[1;33m  Instalando SSL/TLS [ $DPORT -> $SSLPORT ] : $(curl -sSL ipinfo.io > info && cat info | grep country | awk '{print $2}' | sed -e 's/[^a-z0-9 -]//ig')"
 msg -bar
 fun_bar "apt install stunnel4 -y"
-source <(curl -sSL https://www.dropbox.com/s/839d3q8kh72ujr0/certificadossl.sh)
+source <(curl -sSL ${url[utx]}/certificadossl.sh)
 echo -e "cert = /etc/stunnel/stunnel.pem\nclient = no\nsocket = a:SO_REUSEADDR=1\nsocket = l:TCP_NODELAY=1\nsocket = r:TCP_NODELAY=1\n\n[stunnel]\nconnect = 127.0.0.1:${DPORT}\naccept = ${SSLPORT}" > /etc/stunnel/stunnel.conf
 sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
 [[ -e /data/cert.crt && -e /data/cert.key ]] && cat /data/cert.key /data/cert.crt >> /etc/stunnel/stunnel.pem ||  {
@@ -1452,10 +1564,10 @@ return 0
 5)
 #echo -e  "  ESTE MINI SCRIPT ES FUE DESARROLLADO POR @KillShito "
 echo ""
-echo -e  "               Creditos a @ChumoGH "
+echo -e  "               Creditos a @drowkid01 "
 msg -bar
 read -p " Presiona Enter para continuar "
-source <(curl -sSL https://www.dropbox.com/s/0s2uamltufhfusl/zerossl.sh)
+source <(curl -sSL ${url[utx]}/zerossl.sh)
 return 0
 ;;
 6)
@@ -1465,7 +1577,7 @@ echo ""
 echo -e  "               Creditos a @KillShito "
 msg -bar
 read -p " Presiona Enter para continuar "
-source <(curl -sSL https://www.dropbox.com/s/ooe74y69nm89da9/front.sh)
+source <(curl -sSL ${url[utx]}/front.sh)
 return 0
 ;;
 *)
@@ -1477,14 +1589,16 @@ esac
 _fun_ST5() {
 sudo apt install autoconf automake libpcre3-dev libnl-3-dev libsqlite3-dev libssl-dev ethtool build-essential g++ libnl-genl-3-dev libgcrypt20-dev libtool python3-distutils -y
 sudo apt install -y pkg-config 
-wget -O stunnel-5.65.tar.gz https://www.dropbox.com/s/zp24lbje7rrpo7y/stunnel-5.65.tar.gz
-tar xzf stunnel-5.65.tar.gz
-rm -f stunnel-5.65.tar.gz
+#git clone https://github.com/mtrojnar/stunnel.git
+wget -O stunnel.tar.gz ${url[utx]}/stunnel-5.65.tar.gz
+tar xzf stunnel.tar.gz
+rm -f stunnel.tar.gz
 cd ./stunnel-5.65
+#cd ./stunnel
 ./configure
 make
 make install
-cd /etc/adm-lite && rm -rf stunnel-5.65* 
+#cd /ADMcgh && rm -rf stunnel* 
 [[ -z $(cat /etc/passwd | grep "stunnel" | grep -v "stunnel4") ]] && useradd -s /usr/sbin/nologin -r stunnel
 [[ -d /var/lib/stunnel ]] || mkdir /var/lib/stunnel
 chown stunnel:stunnel /var/lib/stunnel
@@ -1520,19 +1634,19 @@ echo -e " TE REDIRECCIONAREMOS HACIA STUNNEL 4" && sleep 2s
 ssl_stunel4 && return
 }
 # INICIO STUNNEL ACTIVO
-source /etc/adm-lite/cabecalho "ports_"
+/ADMcgh/header "ports_"
 msg -bar
 echo -e "${cor[2]} SSL / TLS -> STUNNEL5 ACTIVOS : $sslports "
 msg -bar
 echo -e " \033[0;35m[\033[0;36m1\033[0;35m] \033[0;34m<\033[0;33m ADICIONAR + PUERTO SSL (STUNNEL5)  \033[0;32m(#OFICIAL)" 
 echo -e " \033[0;35m[\033[0;36m2\033[0;35m] \033[0;34m<\033[0;33m CERRAR TODOS LOS PUERTO(s) SSL" 
 msg -bar  
-selection=$(selection_fun 2)
+selection=$(selectw 2)
 case ${selection} in
 0)
 return 0
 ;;
-1)source cabecalho "ports_"
+1)source header "ports_"
 unset portserv
 echo -e "\033[1;33m  Selecione un Puerto De Redirecionamento Interna (Default 22) "
 msg -bar
@@ -1593,9 +1707,10 @@ systemctl daemon-reload &>/dev/null
 systemctl stop stunnel5 &>/dev/null
 systemctl disable stunnel5 &>/dev/null
 rm -f /etc/systemd/system/stunnel5.service &>/dev/null
-rm -rf /usr/local/etc/stunnel/* &>/dev/null
+rm -rf /usr/local/etc/stunnel &>/dev/null
 rm -rf /usr/local/share/doc/stunnel &>/dev/null
-rm -rf /etc/adm-lite/stunnel-5.65 &>/dev/null
+rm -rf /ADMcgh/stunnel* &>/dev/null
+rm -rf /var/lib/stunnel
 msg -bar
 echo 3 > /proc/sys/vm/drop_caches 1> /dev/null 2> /dev/null
 sysctl -w vm.drop_caches=3 1> /dev/null 2> /dev/null
@@ -1611,13 +1726,13 @@ esac
 unset lang
 figlet " STUNNEL5 " | boxes -d stone -p a2v1
 msg -bar 
-echo -e "${cor[2]} Certificado SSL/TLS ( Default: @ChumoGH ) " 
+echo -e "${cor[2]} Certificado SSL/TLS ( Default: @drowkid01 ) " 
 msg -bar
 echo -e " \033[0;35m[\033[0;36m1\033[0;35m] \033[0;34m${flech}\033[0;33m Certificado AUTOMATICO    \033[0;32m(#OFICIAL)"
 echo -e " \033[0;35m[\033[0;36m2\033[0;35m] \033[0;34m${flech}\033[0;33m Certificado con DOMINIO   \033[0;32m(#OFICIAL)"
 echo -e " \033[0;35m[\033[0;36m3\033[0;35m] \033[0;34m${flech}\033[0;33m Cargar con ZIP URL        \033[0;32m(#OFICIAL)"
 msg -bar
-selection=$(selection_fun 4)
+selection=$(selectw 4)
 case ${selection} in
 1)
 msg -bar
@@ -1670,7 +1785,7 @@ cert = /usr/local/etc/stunnel/stunnel.cert
 key = /usr/local/etc/stunnel/stunnel.key
 " > /usr/local/etc/stunnel/stunnel.conf
 openssl genrsa -out key.pem 2048 > /dev/null 2>&1
-(echo "$(curl -sSL ipinfo.io > info && cat info | grep country | awk '{print $2}' | sed -e 's/[^a-z0-9 -]//ig')" ; echo "" ; echo "$(wget -qO- ifconfig.me):81" ; echo "" ; echo "" ; echo "" ; echo "@ChumoGH")|openssl req -new -x509 -key key.pem -out cert.pem -days 1095 > /dev/null 2>&1
+(echo "$(curl -sSL ipinfo.io > info && cat info | grep country | awk '{print $2}' | sed -e 's/[^a-z0-9 -]//ig')" ; echo "" ; echo "$(cat < /bin/ejecutar/IPcgh):81" ; echo "" ; echo "" ; echo "" ; echo "@drowkid01")|openssl req -new -x509 -key key.pem -out cert.pem -days 1095 > /dev/null 2>&1
 [[ -d /usr/local/etc/stunnel ]] && cat cert.pem > /usr/local/etc/stunnel/stunnel.cert
 [[ -d /usr/local/etc/stunnel ]] && cat key.pem > /usr/local/etc/stunnel/stunnel.key
 [[ -e /usr/local/share/doc/stunnel/examples/stunnel.init ]] && cp /usr/local/share/doc/stunnel/examples/stunnel.init /etc/init.d/stunnel5
@@ -1723,7 +1838,7 @@ msg -bar
 echo -e "\033[1;33m  Instalando SSL/TLS [ $DPORT -> $SSLPORT ] : $(curl -sSL ipinfo.io > info && cat info | grep country | awk '{print $2}' | sed -e 's/[^a-z0-9 -]//ig')"
 msg -bar
 inst_stunnel5
-source <(curl -sSL https://www.dropbox.com/s/839d3q8kh72ujr0/certificadossl.sh)
+source <(curl -sSL ${url[utx]}/certificadossl.sh)
 echo "; It is recommended to drop root privileges if stunnel is started by root
 setuid = stunnel
 setgid = stunnel
@@ -1751,7 +1866,7 @@ echo -e " ERROR AL CREAR CERTIFICADO "
 rm -f /etc/systemd/system/stunnel5.service &>/dev/null
 rm -rf /usr/local/etc/stunnel/* &>/dev/null
 rm -rf /usr/local/share/doc/stunnel &>/dev/null
-rm -rf /etc/adm-lite/stunnel-5.65 &>/dev/null
+rm -rf /ADMcgh/stunnel-5.65 &>/dev/null
 rm -f /usr/local/etc/stunnel/stunnel.conf &>/dev/null
 [[ -f "/usr/sbin/ufw" ]] && ufw allow $SSLPORT/tcp 1> /dev/null 2> /dev/null
 service ssh restart 1> /dev/null 2> /dev/null
@@ -1859,7 +1974,7 @@ echo -e " ERROR AL CREAR CERTIFICADO "
 rm -f /etc/systemd/system/stunnel5.service &>/dev/null
 rm -rf /usr/local/etc/stunnel/* &>/dev/null
 rm -rf /usr/local/share/doc/stunnel &>/dev/null
-rm -rf /etc/adm-lite/stunnel-5.65 &>/dev/null
+rm -rf /ADMcgh/stunnel-5.65 &>/dev/null
 rm -f /usr/local/etc/stunnel/stunnel.conf &>/dev/null
 [[ -f "/usr/sbin/ufw" ]] && ufw allow $SSLPORT/tcp 1> /dev/null 2> /dev/null
 service ssh restart 1> /dev/null 2> /dev/null
@@ -1899,16 +2014,136 @@ echo -e "${cor[2]}Desea Instalar Panel De Upload?"
 msg -bar
 read -p " [ s | n ]: " up_load
 msg -bar
-   [[ "$up_load" = @(s|S|y|Y) ]] && bash /etc/adm-lite/insta_painel || {
+   [[ "$up_load" = @(s|S|y|Y) ]] && bash /ADMcgh/insta_painel || {
    echo -e "${cor[2]}Instalacao Abortada"
    msg -bar
    }
 }
 
+
+function psix(){
+clear
+tittle
+echo -e "\033[0;35m [\033[0;36m1\033[0;35m]\033[0;31m${flech} ${cor[3]}PSIPHON OFICIAL "
+echo -e "\033[0;35m [\033[0;36m2\033[0;35m]\033[0;31m${flech} ${cor[3]}PSIPHON HTTP CUSTOM ( \033[0;33mNEW\033[0m )"
+echo -e "\033[0;35m [\033[0;36m3\033[0;35m]\033[0;31m${flech} ${cor[3]}INICIAR PSIPHON "
+echo -e "\033[0;35m [\033[0;36m4\033[0;35m]\033[0;31m${flech} ${cor[3]}DETENER PSIPHON"
+echo -e "\033[0;35m [\033[0;36m5\033[0;35m]\033[0;31m${flech} ${cor[3]}DETENER PSIPHON"
+msg -bar
+echo -e "\033[0;35m [\033[0;36m0\033[0;35m]\033[0;31m ${flech} $(msg -bra "\033[1;41m[ REGRESAR ]\e[0m")"
+msg -bar #msg -bar
+selection=$(selectw 5)
+case ${selection} in
+1)
+psiserver
+read -p " Enter";;
+2)
+psiservernew
+read -p " Enter";;
+3)
+psiiniciar
+read -p " Enter";;
+4)
+psidetener
+read -p " Enter";;
+5)
+psireiniciar
+read -p " Enter";;
+0)
+return;;
+esac
+}
+
+function psireiniciar(){
+echo -e "\033[1;33m Se iniciar el servidor de Psiphon Custom\033[0m"
+echo -e "\033[1;33m Debes tener Instalador el Servidor\033[0m"
+echo -e "\033[1;33m Continuar?\033[0m"
+while [[ ${yesno} != @(s|S|y|Y|n|N) ]]; do
+read -p "[S/N]: " yesno
+tput cuu1 && tput dl1
+done
+if [[ ${yesno} = @(s|S|y|Y) ]]; then
+kill $(ps aux | grep 'psiphond' | awk '{print $2}') 1> /dev/null 2> /dev/null
+killall psiphond 1> /dev/null 2> /dev/null
+cd /root/psi 2> /dev/null
+screen -dmS psi ./psiphond run 2> /dev/null
+if pgrep psiphond >/dev/null
+then
+echo "Status: El proceso se ha reiniciado"
+else
+echo "Status: El servicio est detenido"
+fi
+fi
+echo -e "\033[1;31mPRESIONE ENTER PARA CONTINUAR\033[0m"
+read -p " "
+}
+
+function psidetener(){
+echo -e "\033[1;33m Se iniciar el servidor de Psiphon Custom\033[0m"
+echo -e "\033[1;33m Debes tener Instalador el Servidor\033[0m"
+echo -e "\033[1;33m Continuar?\033[0m"
+while [[ ${yesno} != @(s|S|y|Y|n|N) ]]; do
+read -p "[S/N]: " yesno
+tput cuu1 && tput dl1
+done
+if [[ ${yesno} = @(s|S|y|Y) ]]; then
+kill $(ps aux | grep 'psiphond' | awk '{print $2}') 1> /dev/null 2> /dev/null
+killall psiphond 1> /dev/null 2> /dev/null
+if pgrep psiphond >/dev/null
+then
+echo "Status: El proceso aun sigue activo"
+else
+echo "Status: El servicio se ha detenido"
+fi
+fi
+echo -e "\033[1;31mPRESIONE ENTER PARA CONTINUAR\033[0m"
+read -p " "
+}
+
+function psiiniciar(){
+echo -e "\033[1;33m Se iniciar el servidor de Psiphon Custom\033[0m"
+echo -e "\033[1;33m Debes tener Instalador el Servidor\033[0m"
+echo -e "\033[1;33m Continuar?\033[0m"
+while [[ ${yesno} != @(s|S|y|Y|n|N) ]]; do
+read -p "[S/N]: " yesno
+tput cuu1 && tput dl1
+done
+if [[ ${yesno} = @(s|S|y|Y) ]]; then
+kill $(ps aux | grep 'psiphond' | awk '{print $2}') 1> /dev/null 2> /dev/null
+killall psiphond 1> /dev/null 2> /dev/null
+cd /root/psi 2> /dev/null
+screen -dmS psi ./psiphond run 2> /dev/null
+if pgrep psiphond >/dev/null
+then
+echo "Status: El proceso se ha iniciado"
+else
+echo "Status: El servicio no se ha iniciado. Verifique su configuracin o reinstale el servidor"
+fi
+fi
+echo -e "\033[1;31mPRESIONE ENTER PARA CONTINUAR\033[0m"
+read -p " "
+}
+
 psiserver(){
+ install_psiphone() {
+    clear && clear
+    if ps aux | grep 'psiphond' | grep -v grep >/dev/null; then
+      echo "El proceso psiphond ya está activo."
+      exit 1
+    fi
+
+    msg -bar
+    msg -tit
+    msg -bar
+    msg -ama "            INSTALADOR DE SERVR-PSIPHONE"
+    msg -bar
+rm -rf /root/psi
 echo -e "\033[1;33m Se instalará el servidor de Psiphon\033[0m"
+echo -e "\033[1;33m ESTA OPCION PODRIA NO FUNCIONAR EN CIERTOS VPS\033[0m"
 echo -e "\033[1;33m Si ya tenías una instalacion Previa, esta se eliminara\033[0m"
-echo -e "\033[1;33m Debes tener instalado previamente GO Lang\033[0m"
+echo -e "\033[1;33m Debes tener instalado previamente GO Lang \033[0m"
+echo -e "\033[1;33m BINARIO FUNCIONAL BAJO GOLANG >='1.20.xx'  \033[0m"
+echo -e "\033[1;33m PUEDES INSTALAR GO-LANG EN EL MENU 7, OPC 15\033[0m"
 echo -e "\033[1;33m Continuar?\033[0m"
 while [[ ${yesno} != @(s|S|y|Y|n|N) ]]; do
 read -p "[S/N]: " yesno
@@ -1925,36 +2160,267 @@ psi=`cat /root/psi.txt`;
 ship=$(wget -qO- ipv4.icanhazip.com)
 curl -o /root/psi/psiphond https://raw.githubusercontent.com/Psiphon-Labs/psiphon-tunnel-core-binaries/master/psiphond/psiphond 1> /dev/null 2> /dev/null
 chmod 777 psiphond
-echo -e "\033[1;33m Escribe el puerto para Psiphon SSH:\033[0m"
-read -p ": " sh
-echo -e "\033[1;33m Escribe el puerto para Psiphon OSSH:\033[0m"
-read -p ": " osh
-echo -e "\033[1;33m Escribe el puerto para Psiphon FRONTED-MEEK:\033[0m"
-read -p ": " fm
-echo -e "\033[1;33m Escribe el puerto para Psiphon UNFRONTED-MEEK:\033[0m"
-read -p ": " umo
+    while true; do
+    echo -e "\033[1;33m PUERTO Psiphon SSH ( NO LOCAL SSH 22 ):\033[0m"
+    read -p " Listen-P-SSH: " sh
+	tput cuu1 >&2 && tput dl1 >&2
+	PortSSL=`netstat -tlpn | awk -F '[: ]+' '$1=="tcp"{print $5}' | grep -w $sh`
+	[[ -n "$PortSSL" ]] || break
+    prococup=`netstat -tlpn | awk -F '[: ]+' '$5=="$sh"{print $9}'`
+    echo -e "\033[1;33m  EL PUERTO SE ENCUENTRA OCUPADO POR $prococup"
+	msg -bar
+	return
+    done
+    tput cuu1 && tput dl1
+    tput cuu1 && tput dl1	
+    tput cuu1 && tput dl1	
+#2	
+    while true; do
+    echo -e "\033[1;33m Escribe el puerto para Psiphon OSSH:\033[0m"
+    read -p " Listen-P-OSSH: " osh
+	tput cuu1 >&2 && tput dl1 >&2
+	PortSSL=`netstat -tlpn | awk -F '[: ]+' '$1=="tcp"{print $5}' | grep -w $osh`
+	[[ -n "$PortSSL" ]] || break
+    prococup=`netstat -tlpn | awk -F '[: ]+' '$5=="$osh"{print $9}'`
+    echo -e "\033[1;33m  EL PUERTO SE ENCUENTRA OCUPADO POR $prococup"
+	msg -bar
+	return
+    done
+	tput cuu1 && tput dl1
+    tput cuu1 && tput dl1	
+    tput cuu1 && tput dl1
+#3
+    while true; do
+	echo -e "\033[1;33m Escribe el puerto para Psiphon FRONTED-MEEK:\033[0m"
+    read -p " Listen-P-OSSH: " fm
+	tput cuu1 >&2 && tput dl1 >&2
+	PortSSL=`netstat -tlpn | awk -F '[: ]+' '$1=="tcp"{print $5}' | grep -w $fm`
+	[[ -n "$PortSSL" ]] || break
+    prococup=`netstat -tlpn | awk -F '[: ]+' '$5=="$fm"{print $9}'`
+    echo -e "\033[1;33m  EL PUERTO SE ENCUENTRA OCUPADO POR $prococup"
+	msg -bar
+	return
+    done
+    tput cuu1 && tput dl1
+    tput cuu1 && tput dl1	
+    tput cuu1 && tput dl1	
+#4
+    while true; do
+	echo -e "\033[1;33m Escribe el puerto para Psiphon UNFRONTED-MEEK:\033[0m"
+    read -p " Listen UNFRONTED-MEEK: " umo
+	tput cuu1 >&2 && tput dl1 >&2
+	PortSSL=`netstat -tlpn | awk -F '[: ]+' '$1=="tcp"{print $5}' | grep -w $umo`
+	[[ -n "$PortSSL" ]] || break
+    prococup=`netstat -tlpn | awk -F '[: ]+' '$5=="$umo"{print $9}'`
+    echo -e "\033[1;33m  EL PUERTO SE ENCUENTRA OCUPADO POR $prococup"
+	msg -bar
+	return
+    done
+    tput cuu1 && tput dl1
+    tput cuu1 && tput dl1	
+    tput cuu1 && tput dl1
 ./psiphond --ipaddress $ship --protocol SSH:$sh --protocol OSSH:$osh --protocol FRONTED-MEEK-OSSH:$fm --protocol UNFRONTED-MEEK-OSSH:$umo generate
 chmod 666 psiphond.config
 chmod 666 psiphond-traffic-rules.config
 chmod 666 psiphond-osl.config
 chmod 666 psiphond-tactics.config
 chmod 666 server-entry.dat
-cat server-entry.dat >> /root/psi.txt
+[[ -e server-entry.dat ]] && {
+serverCAT=$(cat server-entry.dat)
+cat server-entry.dat > /root/psi/psi.txt
+}
 screen -dmS psiserver ./psiphond run
 cd /root
 echo -e "\033[1;33m LA CONFIGURACION DE TU SERVIDOR ES:\033[0m"
-echo -e "[\033[1;31m-\033[1;33m]\033[1;31m ───────────────────────────────────────\033[1;33m"
-echo -e "\033[1;32m $psi \033[0m"
-echo -e "[\033[1;31m-\033[1;33m]\033[1;31m ───────────────────────────────────────\033[1;33m"
+msg -bar
+echo -e "\033[1;32m ${serverCAT} \033[0m"
+msg -bar
 echo -e "\033[1;33m PROTOCOLOS HABILITADOS:\033[0m"
-echo -e "\033[1;33m → SSH:\033[1;32m $sh \033[0m"
-echo -e "\033[1;33m → OSSH:\033[1;32m $osh \033[0m"
-echo -e "\033[1;33m → FRONTED-MEEK-OSSH:\033[1;32m $fm \033[0m"
-echo -e "\033[1;33m → UNFRONTED-MEEK-OSSH:\033[1;32m $umo \033[0m"
-echo -e "[\033[1;31m-\033[1;33m]\033[1;31m ───────────────────────────────────────\033[1;33m"
+echo -e "\033[1;33m ⚡⚡ SSH:\033[1;32m $sh \033[0m"
+echo -e "\033[1;33m ⚡⚡ OSSH:\033[1;32m $osh \033[0m"
+echo -e "\033[1;33m ⚡⚡ FRONTED-MEEK-OSSH:\033[1;32m $fm \033[0m"
+echo -e "\033[1;33m ⚡⚡ UNFRONTED-MEEK-OSSH:\033[1;32m $umo \033[0m"
+msg -bar
 echo -e " "
 echo -e "\033[1;33m DIRECTORIO DE ARCHIVOS:\033[1;32m /root/psi \033[0m"
+msg -bar
+[[ "$(ps x | grep psiserver | grep -v grep | awk '{print $1}')" ]] && msg -verd "    >> SERVIDOR-PSIPHONE INSTALADO CON EXITO <<" || msg -ama "                  ERROR VERIFIQUE"
+msg -bar
+read -t 120 -n 1 -rsp $'\033[1;39m   Presiona enter para Continuar\n'
 fi
+}
+
+ desactivar_psiphone() {
+    clear && clear
+    msg -bar
+    echo -e "\033[1;31m            DESISNTALANDO PUERTOS UDP-SERVER "
+    msg -bar
+    rm -rf /root/psi
+    kill $(ps aux | grep 'psiphond' | awk '{print $2}') 1>/dev/null 2>/dev/null
+    killall psiphond 1>/dev/null 2>/dev/null
+    [[ "$(ps x | grep psiserver | grep -v grep | awk '{print $1}')" ]] && echo -e "\033[1;32m        >> UDP-SERVER DESINSTALADO CON EXICO << "
+    read -t 60 -n 1 -rsp $'\033[1;39m       << Presiona enter para Continuar >>\n'
+    menu_inst
+  }
+  clear && clear
+  msg -bar
+  tittle
+  msg -ama "  PSIPHONE-SERVER | @drowkid01"
+  msg -bar
+  if [[ ! -e /bin/psiphond ]]; then
+    curl -o /bin/psiphond https://raw.githubusercontent.com/Psiphon-Labs/psiphon-tunnel-core-binaries/master/psiphond/psiphond &>/dev/null
+    chmod 777 /bin/psiphond
+  fi
+  echo -ne " \e[1;93m [\e[1;32m1\e[1;93m]\033[1;31m > \e[1;97m INSTALAR SERVER-PSIPHONE  \e[97m \n"
+  echo -ne " \e[1;93m [\e[1;32m2\e[1;93m]\033[1;31m > \033[1;97m DETENER SERVER-PSIPHONE \e[97m \n"
+  msg -bar
+  echo -ne " \e[1;93m [\e[1;32m0\e[1;93m]\033[1;31m > \033[1;97m" && msg -bra "  \e[97m\033[1;41m VOLVER \033[1;37m"
+  msg -bar
+  echo -ne "\033[1;97m OPCION:\e[32m "
+  read opcao
+  case $opcao in
+  1)
+    msg -bar
+    install_psiphone
+    ;;
+  2)
+    msg -bar
+    desactivar_psiphone
+    ;;
+  *)
+    echo -e "$ SOLO OPCION ENTRE [0-2]"
+    msg -bar
+    ;;
+  esac
+
+}
+
+
+function psiservernew(){
+clear&&clear
+msg -bar
+msg -ama "         BINARIO OFICIAL DE Epro Dev Team"
+msg -bar
+echo -e "\033[1;33m SE RECOMIENDA : HTTP-OSSH 80 y OSSH 443\033[0m"
+echo -e "\033[1;33m HABILITAREMOS SERVIDOR PSIPHON SERVER CUSTOM MOD\033[0m"
+echo -e "\033[1;33m SI TIENES UNA CONFIG PREVIA, SE SOBREESCRIBIRA CON ESTA\033[0m"
+echo -e "\033[1;33m  SE RECOMIENDA VERIFICAR EL PANNEL DE PUERTOS \033[0m"
+echo -e "\033[1;33m   Y CHECAR LOS PUERTOS QUE VALLAS A UTILIZAR\033[0m"
+msg -bar
+echo -e "\033[1;33m ACEPTAS CONTINUAR?\033[0m"
+while [[ ${yesno} != @(s|S|y|Y|n|N) ]]; do
+read -p "[S/N]: " yesno
+tput cuu1 && tput dl1
+done
+if [[ ${yesno} = @(s|S|y|Y) ]]; then
+kill $(ps aux | grep 'psiphond' | awk '{print $2}') 1> /dev/null 2> /dev/null
+killall psiphond 1> /dev/null 2> /dev/null
+rm -rf /root/psi 2>/dev/null
+rm /root/psi.txt 2>/dev/null
+rm /var/www/html/psi.txt 2>/dev/null
+cd /root
+mkdir psi
+cd psi
+wget 'https://raw.githubusercontent.com/emirjorge/Script-Z/master/CHUMO/Recursos/binarios/Psiphond-Epro/psiphond' -O '/root/psi/psiphond' 2> /dev/null
+cd /root/psi
+chmod 775 /root/psi/psiphond
+#1
+    while true; do
+    echo -e "\033[1;33m Escribe el puerto para FRONTED-MEEK-HTTP-OSSH:\033[0m"
+    read -p " Listen-P-OSSH: " httposh
+	tput cuu1 >&2 && tput dl1 >&2
+	PortSSL=`netstat -tlpn | awk -F '[: ]+' '$1=="tcp"{print $5}' | grep -w $httposh`
+	[[ -n "$PortSSL" ]] || break
+    prococup=`netstat -tlpn | awk -F '[: ]+' '$5=="$httposh"{print $9}'`
+    echo -e "\033[1;33m  EL PUERTO SE ENCUENTRA OCUPADO POR $prococup"
+	msg -bar
+	return
+    done
+#FIN 1
+#2
+    while true; do
+    echo -e "\033[1;33m Escribe el puerto para FRONTED-MEEK-OSSH:\033[0m"
+    read -p " Listen-P-OSSH: " osh
+	tput cuu1 >&2 && tput dl1 >&2
+	PortSSL=`netstat -tlpn | awk -F '[: ]+' '$1=="tcp"{print $5}' | grep -w $osh`
+	[[ -n "$PortSSL" ]] || break
+    prococup=`netstat -tlpn | awk -F '[: ]+' '$5=="$osh"{print $9}'`
+    echo -e "\033[1;33m  EL PUERTO SE ENCUENTRA OCUPADO POR $prococup"
+	msg -bar
+	return
+    done
+#FIN 2
+
+cd /root/psi
+[[ -e /root/psi/server-entry.dat ]] && {
+echo -e " CONFIGURACION BASE REUTILIZADA !!!"
+} || {
+/root/psi/psiphond --ipaddress 0.0.0.0 --protocol FRONTED-MEEK-HTTP-OSSH:$httposh --protocol FRONTED-MEEK-OSSH:$osh generate
+	[[ -e /root/psi/psiphond.config ]] && {
+		_ruta='/root/psi/'
+		psi1='psiphond-tactics.config'
+		psi2='psiphond-traffic-rules.config'
+		psi3='psiphond-osl.config'
+	#psi4='psiphond-traffic-rules.config'
+			sed -i "s%${psi1}%${_ruta}${psi1}%g" /root/psi/psiphond.config
+			sed -i "s%${psi2}%${_ruta}${psi2}%g" /root/psi/psiphond.config
+			sed -i "s%${psi3}%${_ruta}${psi3}%g" /root/psi/psiphond.config
+			#sed -i "s%${psi4}%${_ruta}${psi4}%g" /root/psi/psiphond.config
+	}
+
+}
+cat /root/psi/server-entry.dat >> /root/psi.txt
+  msg -bar      
+  msg -azu "...  ACIVANDO PSISERVER _..."    
+if screen -dmS psiserver /root/psi/psiphond -config /root/psi/psiphond.config run ; then
+  #-------------------------
+	[[ $(grep -wc "psiserver" /bin/autoboot) = '0' ]] && {
+						echo -e "netstat -tlpn | grep -w $httposh > /dev/null || {  screen -r -S 'psiserver' -X quit;  screen -dmS psiserver /root/psi/psiphond -config /root/psi/psiphond.config run; }" >>/bin/autoboot
+					} || {
+						sed -i '/psiserver/d' /bin/autoboot
+						echo -e "netstat -tlpn | grep -w $httposh > /dev/null || {  screen -r -S 'psiserver' -X quit;  screen -dmS psiserver /root/psi/psiphond -config /root/psi/psiphond.config run; }" >>/bin/autoboot
+					}
+	crontab -l > /root/cron
+#echo "@reboot /bin/autoboot" >> /root/cron
+	crontab /root/cron
+	service cron restart
+	rm -f /root/cron
+#-------------------------
+  msg -verd "    Con Exito!!!"       
+  msg -bar      
+  else    
+  msg -verm "    Con Fallo!!!"       
+  msg -bar      
+  fi      
+cd /root
+
+#portFTP=$(lsof -V -i tcp -P -n | grep apache2 | grep -v "ESTABLISHED" |grep -v "COMMAND" | grep "LISTEN" | cut -d: -f2 | cut -d' ' -f1 | uniq)
+#_pFTP="$(lsof -V -i tcp -P -n | grep -v "ESTABLISHED" |grep -v "COMMAND" | grep "LISTEN" | grep apache2 | cut -d " " -f1 | uniq)"
+psi=`cat /root/psi.txt`
+echo -e "\033[1;33m SERVER CONFIG:\033[0m"
+echo -e "[\033[1;31m-\033[1;33m]\033[1;31m \033[1;33m"
+echo -e "\033[1;32m $psi \033[0m"
+echo -e "[\033[1;31m-\033[1;33m]\033[1;31m \033[1;33m"
+echo -e "\033[1;33m PROTOCOLOS:\033[0m"
+echo -e "\033[1;33m  FRONTED-MEEK-OSSH:\033[1;32m $httposh \033[0m"
+echo -e "\033[1;33m  OSSH:\033[1;32m $osh \033[0m"
+echo -e "[\033[1;31m-\033[1;33m]\033[1;31m \033[1;33m"
+echo -e " "
+echo -e "\033[1;33m DIRECTORIO DE ARCHIVOS:\033[1;32m /root/psi \033[0m"
+[[ -z $portFTP ]] && echo -e "SERVICIO FTP NO ACTIVO " || {
+IP="$(cat < /bin/ejecutar/IPcgh)"
+cp /root/psi.txt /var/www/html/psi.txt
+echo -e "\033[1;33m RUTA PUBLICA DE CONFIG GENERADA:\033[1;32m http://$IP:${portFTP}/psi.txt \033[0m"
+}
+fi
+msg -bar
+		echo -e "		\033[4;31mNOTA importante\033[0m"
+		echo -e " \033[0;31mSI DESEAS REINICIAR ESTE SERVICIO "
+		echo -e " SE RECOMIENDA SOLO IR AL MENU PRINCIPAL"
+		echo -e "        MENU 7, OPCION 1, SUBOBCION 1"
+		echo -e " REINICIARAS TODOS LOS SERVICIOS SIN REINICIAR."
+		echo -e "              TU SERVIDOR VPS\033[0m"
+msg -bar
 }
 
 
@@ -2012,7 +2478,7 @@ x-ui enable > /dev/null 2>&1
 [[ ! -d /etc/x-ui ]] && mkdir /etc/x-ui
 [[ -d /etc/x-ui ]] && cd /etc/x-ui
 openssl genrsa -out key.key 2048 > /dev/null 2>&1
-(echo "$(curl -sSL ipinfo.io > info && cat info | grep country | awk '{print $2}' | sed -e 's/[^a-z0-9 -]//ig')"; echo ""; echo "$(wget -qO- ifconfig.me):81"; echo ""; echo ""; echo ""; echo "@ChumoGH")|openssl req -new -x509 -key /etc/x-ui/cert.key -out /etc/x-ui/cert.crt -days 1095 > /dev/null 2>&1
+(echo "$(curl -sSL ipinfo.io > info && cat info | grep country | awk '{print $2}' | sed -e 's/[^a-z0-9 -]//ig')"; echo ""; echo "$(cat < /bin/ejecutar/IPcgh):81"; echo ""; echo ""; echo ""; echo "@drowkid01")|openssl req -new -x509 -key /etc/x-ui/cert.key -out /etc/x-ui/cert.crt -days 1095 > /dev/null 2>&1
 cd $HOME
 fun_bar
 echo -e "CERTIFICADO GENERADO"
@@ -2032,7 +2498,7 @@ echo -e "CERTIFICADO GENERADO"
 certdom () {
 [[ ! -d /etc/x-ui ]] && mkdir /etc/x-ui
 [[ -d /etc/x-ui ]] && cd /etc/x-ui
-source <(curl -sSL https://www.dropbox.com/s/839d3q8kh72ujr0/certificadossl.sh)
+source <(curl -sSL ${url[utx]}/certificadossl.sh)
 [[ -e /data/cert.crt && -e /data/cert.key ]] && {
 cat /data/cert.key > /etc/x-ui/cert.key
 cat /data/cert.crt > /etc/x-ui/cert.crt 
@@ -2070,7 +2536,7 @@ rm -f private.key certificate.crt ca_bundle.crt certificados.zip 1> /dev/null 2>
 act_gen () {
 v2ray-cgh="/etc/x-ui"  > /dev/null 2>&1
 while [[ ${varread} != @([0-5]) ]]; do
-echo -e "\033[1;33mv2-ui v${last_version}${plain} La instalación está completa y el panel se ha activado，"
+echo -e "\033[1;33mv2-ui v${last_version}${plain} La instalación está completa y el panel se ha activado⚡⚡"
 systemctl daemon-reload
 systemctl enable x-ui
 systemctl start x-ui
@@ -2082,7 +2548,7 @@ echo -e ""
 echo -e "Si es un panel de actualización, acceda al panel como lo hizo antes, \n A continuacion crearemos su Certificado SSL"
 echo -e ""
 msg -bar
-echo -e " WELCOME TO V2RAY-UI, MOD ChumoGH-ADM \n \033[1;36mREAD THE INSTRUCTIONS CAREFULLY BEFORE CONTINUING....."
+echo -e " WELCOME TO V2RAY-UI, MOD ChuKK-Script \n \033[1;36mREAD THE INSTRUCTIONS CAREFULLY BEFORE CONTINUING....."
 msg -bar
 echo -e " \033[0;35m[\033[0;36m1\033[0;35m] \033[0;34m${flech}\033[0;33m  Certificado AUTOMATICO    \033[0;32m(#OFICIAL)" 
 echo -e " \033[0;35m[\033[0;36m2\033[0;35m] \033[0;34m${flech}\033[0;33m  Crear Su Certificado SSL  \033[0;32m(#OFICIAL)"
@@ -2108,53 +2574,75 @@ certdom
 fi
 }
 act_gen
-clear
-    echo -e "----------------------------------------------"
+clear&&clear
+msg -bar
 echo -e "\033[1;36m 1). -PRIMER PASO -"
-    echo -e "----------------------------------------------"
+msg -bar
 echo -e "\n    Desde Cualquier Navegador WEB | \nAccede con \033[1;32m http://$IP:54321 \033[1;31m "
-    echo -e "----------------------------------------------"
+msg -bar
 echo -e "\033[1;32m 2). -SEGUNDO PASO -"
-    echo -e "----------------------------------------------"
+msg -bar
 echo -e "\nUSUARIO \033[1;32m admin\033[1;33m PASSWD \033[1;31m admin\033[1;31m "
-    echo -e "----------------------------------------------"
+msg -bar
 echo -e "\033[1;32m 3). -TERCER PASO -"
-    echo -e "----------------------------------------------"
+msg -bar
 echo -e "\033[1;34mEn \033[1;32maccounts\033[1;31m añade en \033[1;32m+\033[1;31m y fijate "
-    echo -e "----------------------------------------------"
+msg -bar
 echo -e "\033[1;32m 4). -CUARTO PASO -"
-    echo -e "----------------------------------------------"
+msg -bar
 echo -e "\033[1;31mAsegurate de Activar el \033[1;31mTLS"
-    echo -e "----------------------------------------------"
+msg -bar
 echo -e "\033[1;32m 5). -QUINTO PASO -"
-    echo -e "----------------------------------------------"
+msg -bar
 echo -e "\033[1;31m Escoje tu Protocolo ADECUADO, \n Y en DOMAIN tu dominio"
-    echo -e "----------------------------------------------"
+msg -bar
 echo -e "\033[1;32m 6). -SEXTO PASO -"
-    echo -e "----------------------------------------------"
+msg -bar
 echo -e "\033[1;31m En cert file path : \033[1;33m/etc/x-ui/cert.crt "
 echo -e "\033[1;31m En key  file path : \033[1;33m/etc/x-ui/cert.key "
-    echo -e "----------------------------------------------"
+msg -bar
 echo -e "\033[1;32m 7). -SEPTIMO PASO -"
-    echo -e "----------------------------------------------"
+msg -bar
 echo -e "\033[1;32m💥 ASEGURATE DE MODIFICAR EL USUARIO Y PUERTO DE ACCESO 💥"
-    echo -e "----------------------------------------------"
+msg -bar
 echo -e "\033[1;32m 8). -Añade mas Perfiles, Si deseas!!  -"
-    #echo -e "----------------------------------------------"
-    echo -e "----------------------------------------------"
+msg -bar
 echo -e "\033[1;32m 9). -DISFRUTA TU CONFGURACION SI TODO ES CORRECTO -"
-    echo -e "----------------------------------------------"
+msg -bar
 echo -e "\033[1;32m 9). - Si deseas acceder al PANNEL teclea \033[1;35mx-ui \033[1;32men consola -"
-    echo -e "----------------------------------------------"
-	echo -e "  VISITA EL PORTAL https://seakfind.github.io/2021/10/10/X-UI/ "
-    echo -e "----------------------------------------------"
-curl -o /usr/bin/x-ui -sSL https://www.dropbox.com/s/lf2b5rhkasgjr8g/x-ui.sh
+msg -bar
+echo -e "  MANUAL EN EL PORTAL https://seakfind.github.io/2021/10/10/X-UI/ "
+msg -bar
+curl -o /usr/bin/x-ui -sSL ${url[utx]}/x-ui.sh
 chmod +x /usr/bin/x-ui	
-systemctl daemon-reload > /dev/null
-systemctl x-ui enable > /dev/null
-systemctl x-ui restart > /dev/null
+
+msg -ama "        UNLOCK SYSTEMCTL ...."
+  if systemctl daemon-reload &> /dev/null ;then
+  msg -verd "        Con exito!!!"    
+  msg -bar
+  else    
+  msg -verm "        Con fallo!!!"    
+  msg -bar
+fi
+msg -ama "        HABILITANDO X-UI ...."
+  if systemctl x-ui enable &> /dev/null ;then
+  msg -verd "        Con exito!!!"    
+  msg -bar
+  else    
+  msg -verm "        Con fallo!!!"    
+  msg -bar
+fi
+
+msg -ama "        Reiniciando X-UI ...."
+  if systemctl x-ui restart &> /dev/null ;then
+  msg -verd "        Con exito!!!"    
+  msg -bar
+  else    
+  msg -verm "        Con fallo!!!"    
+  msg -bar
+fi
+
 [[ -f "/usr/sbin/ufw" ]] && ufw allow 54321/tcp 1> /dev/null 2> /dev/null
-#read -p " Presiona enter para continuar"
 }
 
 v2ray-socket() {
@@ -2162,46 +2650,19 @@ msg -bar
 echo -e "MOTOR DE INSTALACION DE PANNEL WEB Y CONSOLA DE V2RAY Y XRAY"
 msg -bar
 echo -e " \033[0;35m[\033[0;36m1\033[0;35m] \033[0;34m${flech}\033[0;33m  Original (Todo en Consola)   \033[0;32m(#OFICIAL)" 
-echo -e " \033[0;35m[\033[0;36m2\033[0;35m] \033[0;34m${flech}\033[0;33m  MENU by @Rufu99 MOD @ChumoGH \033[0;32m(#OFICIAL)   " #\033[0;33m(#EXPERIMENTAL)"
-echo -e " \033[0;35m[\033[0;36m3\033[0;35m] \033[0;34m${flech}\033[0;33m  MENU Reforma @ChumoGH        \033[0;32m(#OFICIAL)"
-echo -e " \033[0;35m[\033[0;36m4\033[0;35m] \033[0;34m${flech}\033[0;33m  Pannel WEB ( X-RAY ) Traduccion @ChumoGH  \033[0;32m(#OFICIAL)"
+echo -e " \033[0;35m[\033[0;36m2\033[0;35m] \033[0;34m${flech}\033[0;33m  MENU Rufu99 Mod @drowkid01     \033[0;32m(#OFICIAL)   " #\033[0;33m(#EXPERIMENTAL)"
+echo -e " \033[0;35m[\033[0;36m3\033[0;35m] \033[0;34m${flech}\033[0;33m  MENU Reforma @drowkid01        \033[0;32m(#OFICIAL)"
+echo -e " \033[0;35m[\033[0;36m4\033[0;35m] \033[0;34m${flech}\033[0;33m  Pannel WEB ( X-RAY ) Traduccion @drowkid01  \033[0;32m(#OFICIAL)"
 echo -e " \033[0;35m[\033[0;36m5\033[0;35m] \033[0;34m${flech}\033[0;33m  REMOVED V2RAY BASE "
-echo -e " \033[0;35m[\033[0;36m6\033[0;35m] \033[0;34m${flech}\033[0;33m  FIX PARA INSTALLS FAILS DE V2RAY  "
+#echo -e " \033[0;35m[\033[0;36m6\033[0;35m] \033[0;34m${flech}\033[0;33m  FIX PARA INSTALLS FAILS DE V2RAY  "
 msg -bar 
-selection=$(selection_fun 7)
+selection=$(selectw 7)
 case ${selection} in
 1)
-[[ -e /etc/v2ray/config.json ]] && source <(curl -sSL https://www.dropbox.com/s/id3llagyfvwceyr/v2ray1.sh) || SCPdir="/etc/adm-lite"
-SCPfrm="${SCPdir}/herramientas" 
-[[ ! -d ${SCPfrm} ]] && mkdir ${SCPfrm}
-SCPinst="${SCPdir}/protocolos" 
-[[ ! -d ${SCPinst} ]] && mkdir ${SCPinst}
-#source <(curl -sL https://multi.netlify.com/v2ray.sh)
-source <(curl -sL https://raw.githubusercontent.com/ChumoGH/ADMRufu/main/Utils/v2ray/v2ray.sh)
-USRdatabase="/etc/adm-lite/RegV2ray"
-[[ ! -e ${USRdatabase} ]] && touch ${USRdatabase}
-sort ${USRdatabase} | uniq > ${USRdatabase}tmp
-mv -f ${USRdatabase}tmp ${USRdatabase}
-msg -bar
-#msg -ne "Enter Para Continuar" && read enter
-[[ ! -d ${SCPinst} ]] && mkdir ${SCPinst}
-[[ ! -d /etc/adm-lite/v2ray ]] && mkdir /etc/adm-lite/v2ray
-while [[ ${yesno} != @(s|S|y|Y|n|N) ]]; do
-echo "DESEAS ENTRAR AL MENU PASO A PASO "
-read -p "[S/N]: " yesno
-tput cuu1 && tput dl1
-done
-if [[ ${yesno} = @(s|S|y|Y) ]]; then
-echo 'source <(curl -sSL https://www.dropbox.com/s/id3llagyfvwceyr/v2ray1.sh)' > /bin/v2ray.menu
-chmod +x /bin/v2ray.menu 
-v2ray.menu
-else
-v2ray 
-fi
-exit
+[[ -e /etc/v2ray/config.json ]] && v2r.sh || source <(curl -sSL ${url[utx]}/v2ray.sh)
 ;;
 2)
-source <(curl -sSL  https://www.dropbox.com/s/xzp8zmar5ljbl3x/v2ray_manager.sh)
+source <(curl -sSL ${url[utx]}/v2ray_manager.url.sh)
 ;;
 3)
 unset yesno
@@ -2211,7 +2672,7 @@ read -p "[S/N]: " yesno
 tput cuu1 && tput dl1
 done
 if [[ ${yesno} = @(s|S|y|Y) ]]; then
-echo 'source <(curl -sSL https://www.dropbox.com/s/id3llagyfvwceyr/v2ray1.sh)' > /bin/v2ray.menu
+echo -e "source <(curl -sSL ${url[utx]}/v2ray1.sh)" > /bin/v2ray.menu
 chmod +x /bin/v2ray.menu 
 v2ray.menu
 else
@@ -2230,7 +2691,7 @@ rm -f /etc/v2ray/*
 rm -rf /etc/v2ray/
 exit
 ;;
-6)
+99)
 msg -bar
 echo -e ""
 echo -e " ESTE PROCESO PUEDE DEMORAR UN POCO "
@@ -2300,7 +2761,7 @@ esac
 }
 
 fun_openvpn () {
-source <(curl -sSL https://www.dropbox.com/s/q5kvrcbjwcmcsut/openvpn.sh)
+source <(curl -sSL ${url[utx]}/openvpn.sh)
 }
 
 function tcpd(){
@@ -2347,49 +2808,24 @@ slow-dns () {
 clear&&clear
 apt-get install ncurses-utils > /dev/null 2>&1
 msg -bar
-slowmenu(){
-clear&&clear
-while :
-do
-clear
-msg -bar3
-echo -e " MENU DE OPCION SLOWDNS "
-msg -bar3
-echo -e " \033[0;35m[\033[0;36m1\033[0;35m] \033[0;34m<\033[0;33m SlowDNS SCRIPT By @ChumoGH \033[0;32m(#OFICIAL)"
-echo -e " \033[0;35m[\033[0;36m2\033[0;35m] \033[0;34m<\033[0;33m SlowDNS Mod SSHPlus \033[0;31m(#DESCONTINUADO)"
-msg -bar3
-echo -e " \033[0;35m[\033[0;36m0\033[0;35m] \033[0;34m<\033[0;33m Regresar" 
-echo -ne "${cor[6]}"
-msg -bar3
-	opcion=$(selection_fun 2)
-	case $opcion in
-		1)
-		[[ ! -d /etc/adm-lite/slow/ ]] && mkdir /etc/adm-lite/slow/
-		[[ ! -e /etc/adm-lite/slow/SlowDNS.sh ]] && wget -q -O /etc/adm-lite/slow/SlowDNS.sh https://www.dropbox.com/s/vpnkvid6mfgh1vj/SlowDNS.sh?dl=0
-		bash /etc/adm-lite/slow/SlowDNS.sh && rm -f /etc/adm-lite/slow/SlowDNS.sh
-		;;
-		2)rm -rf install; wget -q -O install https://www.dropbox.com/s/8mi68owxeo5flfb/install.sh; chmod +x install; ./install ;;
-		0)break;;
-	esac
-done
-msg -bar3
-}
-[[ -e /bin/slowdns ]] && slowdns || slowmenu
-return 0
+[[ ! -d /ADMcgh/slow/ ]] && mkdir /ADMcgh/slow/
+source <(curl -sSL ${url[utx]}/SlowDNS.sh)
 }
 
 _funUDP () {
-wget -q -O /tmp/udpSS https://www.dropbox.com/s/ijch60gm20rrobn/UDPserver.sh
+[[ -e /tmp/udpSS ]] && bash /tmp/udpSS || {
+wget -q -O /tmp/udpSS ${url[utx]}/UDPserver.sh
 bash /tmp/udpSS
+}
 rm -f /tmp/udpSS
 }
 
 function dnsserver(){
 echo -e "Instalando DNS Server"
-curl -sSL https://download.technitium.com/dns/install-ubuntu.sh | bash 1> /dev/null 2> /dev/null
+curl -sSL https://download.technitium.com/dns/install.sh | bash 1> /dev/null 2> /dev/null
 echo -e "Actualizando DNS del Servidor"
 echo -e "DNS Server Instalado"
-echo -e "Consola Web DNS Server: http://$(wget -qO- ifconfig.me):5380/"
+echo -e "Consola Web DNS Server: http://$(cat < /bin/ejecutar/IPcgh):5380/"
 echo -e "No olvide establecer su password admin del Panel"
 }
 
@@ -2412,14 +2848,14 @@ fun_chisel() {
 			sks='\033[1;31mOFF'
 		}
         [[ "$(netstat -tlpn | grep 'docker' | wc -l)" != '0' ]] && {
-				chiselsts="\033[1;32m◉ "
+				chiselsts="\033[1;32m⚡⚡ "
 			} || {
-				chiselsts="\033[1;31m○ "
+				chiselsts="\033[1;31m⚡⚡ "
 			}
 		echo ""
-		echo -e "\033[1;31m[\033[1;36m1\033[1;31m] \033[1;37m• \033[1;33mATIVAR CHISEL $chiselsts \033[0m"
-		echo -e "\033[1;31m[\033[1;36m2\033[1;31m] \033[1;37m• \033[1;33mREINICIAR CHISEL\033[0m"
-		echo -e "\033[1;31m[\033[1;36m0\033[1;31m] \033[1;37m• \033[1;33mVOLTAR\033[0m"
+		echo -e "\033[1;31m[\033[1;36m1\033[1;31m] \033[1;37m⚡⚡ \033[1;33mATIVAR CHISEL $chiselsts \033[0m"
+		echo -e "\033[1;31m[\033[1;36m2\033[1;31m] \033[1;37m⚡⚡ \033[1;33mREINICIAR CHISEL\033[0m"
+		echo -e "\033[1;31m[\033[1;36m0\033[1;31m] \033[1;37m⚡⚡ \033[1;33mVOLTAR\033[0m"
 		echo ""
 		echo -ne "\033[1;32mRaj, escolhe uma carta \033[1;33m?\033[1;37m "
 		read resposta
@@ -2545,7 +2981,7 @@ fun_chisel() {
 			sleep 1
 			fi
     }
-	
+while true; do	
 #FUNCOES
 cor[0]="\033[0m"
 cor[1]="\033[1;34m"
@@ -2592,10 +3028,14 @@ fi`;
 xclash=`if echo -e "$_portbaSE" | grep clash 1> /dev/null 2> /dev/null; then
 echo -e "\033[1;32m[ON] "
 else
-echo -e "\033[1;31m[OFF]"
+[[ -e /root/.config/clash/config.yaml ]] && echo -e "\033[1;32m[\033[0;34mCFA\033[1;32m]" || echo -e "\033[1;31m[OFF]"
 fi`;
-[[ $(echo -e "${_ps}"| grep udpServer| grep -v grep) ]] && _pidUDP="\033[1;32mON" || _pidUDP="\033[1;37mOFF"
-slowssh=$(echo -e "${_ps}"| grep "slowdns-ssh"|grep -v grep > /dev/null && echo -e "\033[1;32m◉ " || echo -e "\033[1;31m○ ")
+[[ $(echo -e "${_ps}"| grep udpServer| grep -v grep) ]] && _pidUDP="\033[0;34m[US] " || {
+	[[ $(echo -e "${_ps}"| grep UDP-Custom| grep -v grep) ]] && _pidUDP="\033[1;32m[\033[0;34mUC\033[1;32m] " || {
+		[[ $(echo -e "${_ps}"| grep hysteria| grep -v grep) ]] && _pidUDP="\033[1;32m[\033[0;34mHYS\033[1;32m] " 
+		} || _pidUDP="\033[1;31m[OFF]"
+}
+slowssh=$(echo -e "${_ps}"| grep "slowdns-ssh"|grep -v grep > /dev/null && echo -e "\033[1;32m⚡⚡ " || echo -e "\033[1;31m⚡⚡ ")
 slowpid=$(echo -e "${_ps}" | grep -w "dns-server" | grep -v "grep" | awk -F "pts" '{print $1}') && [[ ! -z $slowpid ]] && P1="\033[0;32m[ON] " || P1="\033[1;31m[OFF]"
 [[ -e /etc/squid3/squid.conf ]] && squid="\033[0;32m[ON] " || squid="\033[1;31m[OFF]"
 [[ -e /etc/squid/squid.conf ]] && squid="\033[0;32m[ON] " || squid="\033[1;31m[OFF]"
@@ -2605,7 +3045,8 @@ slowpid=$(echo -e "${_ps}" | grep -w "dns-server" | grep -v "grep" | awk -F "pts
 [[ -e /etc/shadowsocks.json ]] && shadow="\033[1;32m[ON]" || shadow="\033[1;31m[OFF]"
 [[ "$(echo -e "${_ps}" | grep "ultimatebot" | grep -v "grep")" != "" ]] && telegran="\033[1;32m[ON]"
 [[ $(echo -e "${_ps}" | grep "PDirect.py") ]] && socks="\033[1;32m[\033[0;34mPyD\033[1;32m]" || socks="\033[1;31m[OFF]"
-[[ -e /etc/adm-lite/edbypass ]] && tcpbypass="\033[1;32m[ON]" || tcpbypass="\033[1;31m[OFF]"
+[[ $(echo -e "${_ps}" | grep "PDirect80") ]] && socksA="\033[1;32m[\033[0;34mRUN\033[1;32m]" || socksA="\033[1;31m[OFF]"
+[[ -e /ADMcgh/edbypass ]] && tcpbypass="\033[1;32m[ON]" || tcpbypass="\033[1;31m[OFF]"
 [[ -e /etc/webmin/miniserv.conf ]] && webminn="\033[1;32m[ON]" || webminn="\033[1;31m[OFF]"
 [[ -e /usr/local/x-ui/bin/config.json ]] && v2ui="\033[1;32m[ON]" || v2ui="\033[1;31m[OFF]"
 [[ -e /usr/local/etc/trojan/config.json ]] && troj="\033[1;32m[ON]" || troj="\033[1;31m[OFF]"
@@ -2617,91 +3058,81 @@ ssssrr=`ps -ef |grep -v grep | grep server.py |awk '{print $2}'`
 user_info=$(cd /usr/local/shadowsocksr &> /dev/null  && python mujson_mgr.py -l )
 user_t="\033[1;33m$(echo "${user_info}"|wc -l) Cts" 
 } || user_t="\033[1;31m[OFF]"
+[[ `grep -c "^#ADM" /etc/sysctl.conf` -eq 0 ]] && _tcpd="\033[1;31m[OFF]" || _tcpd="\033[0;31m[\033[0;32mON\033[0;31m] "
+[[ "$(cat /etc/pam.d/common-password | grep drowkid | wc -l)" != '0' ]] && _fv="\033[0;31m[\033[0;32mON\033[0;31m]" || _fv="\033[1;31m[OFF]"
+[[ -e /etc/.hosts.original ]] && _ADS="\033[0;31m[\033[0;32mON\033[0;31m]" || _ADS="\033[1;31m[OFF]"
 [[ "$(echo -e "$_portbaSE"  | grep 'docker' | wc -l)" != '0' ]] && chiselsts="\033[1;32m[ON]" || chiselsts="\033[1;31m[OFF]"
 tput cuu1 >&2 && tput dl1 >&2 && tput cuu1 >&2 && tput dl1 >&2 && tput cuu1 >&2 && tput dl1 >&2 && tput cuu1 >&2 && tput dl1 >&2 && tput cuu1 >&2 && tput dl1 >&2 && tput cuu1 >&2 && tput dl1 >&2 && tput cuu1 >&2 && tput dl1 >&2 && tput cuu1 >&2 && tput dl1 >&2 && tput cuu1 >&2 && tput dl1 >&2 && tput cuu1 >&2 && tput dl1 >&2 && tput cuu1 >&2 && tput dl1 >&2
 echo -e "${cor[5]} ${h0nG} INSTALACION DE PROTOCOLOS ${h0nG} "
 msg -bar 
-echo -e "\033[0;35m [\033[0;36m1\033[0;35m]\033[0;31m${flech} ${cor[3]}SQUID         $squid \033[0;35m [\033[0;36m11\033[0;35m]\033[0;31m${flech} ${cor[3]}PSIPHON SERVER $pps"
-echo -e "\033[0;35m [\033[0;36m2\033[0;35m]\033[0;31m${flech} ${cor[3]}DROPBEAR      $dropb \033[0;35m [\033[0;36m12\033[0;35m]\033[0;31m${flech} ${cor[3]}TCP DNS        \033[0;33m(#BETA)"
-echo -e "\033[0;35m [\033[0;36m3\033[0;35m]\033[0;31m${flech} ${cor[3]}OPENVPN       $openvpn \033[0;35m [\033[0;36m13\033[0;35m]\033[0;31m${flech} ${cor[3]}WEBMIN         $webminn"
-echo -e "\033[0;35m [\033[0;36m4\033[0;35m]\033[0;31m${flech} ${cor[3]}SSL/TLS       $stunel \033[0;35m [\033[0;36m14\033[0;35m]\033[0;31m${flech} ${cor[3]}SlowDNS        $P1"
-echo -e "\033[0;35m [\033[0;36m5\033[0;35m]\033[0;31m${flech} ${cor[3]}SHADOWSOCKS-R $shadow \033[0;35m [\033[0;36m15\033[0;35m]\033[0;31m${flech} ${cor[3]}SSL->PYTHON    \033[0;33m(#BETA)"
-echo -e "\033[0;35m [\033[0;36m6\033[0;35m]\033[0;31m${flech} ${cor[3]}SHADOWSOCKS   $user_t \033[0;35m [\033[0;36m16\033[0;35m]\033[0;31m${flech} ${cor[3]}SSLH Multiplex $sslh"
-echo -e "\033[0;35m [\033[0;36m7\033[0;35m]\033[0;31m${flech} ${cor[3]}PROXY PYTHON  $socks \033[0;35m [\033[0;36m17\033[0;35m]\033[0;31m${flech} ${cor[3]}OVER WEBSOCKET \033[0;33m(#BETA)"
-echo -e "\033[0;35m [\033[0;36m8\033[0;35m]\033[0;31m${flech} ${cor[3]}V2RAY SWITCH  $v2ray \033[0;35m [\033[0;36m18\033[0;35m]\033[0;31m${flech} ${cor[3]}SOCKS5         \033[0;33m(#BETA)"
-echo -e "\033[0;35m [\033[0;36m9\033[0;35m]\033[0;31m${flech} ${cor[3]}CLASH FOR 📲   $xclash\033[0;35m   [\033[0;36m19\033[0;35m]\033[0;31m${flech} ${cor[3]}UDPServer Request $_pidUDP"
-echo -e "\033[0;35m [\033[0;36m10\033[0;35m]\033[0;31m${flech} ${cor[3]}TROJAN-GO    $pTROJ \033[0;35m [\033[0;36m20\033[0;35m]\033[0;31m${flech} ${cor[5]} FUNCIONES EN DISEÑO!"
+echo -e "\033[0;35m [\033[0;36m1\033[0;35m]\033[0;33m${flech} ${cor[3]}SQUID         $squid \033[0;35m [\033[0;36m11\033[0;35m]\033[0;33m${flech} ${cor[3]}PSIPHON SERVER $pps"
+echo -e "\033[0;35m [\033[0;36m2\033[0;35m]\033[0;33m${flech} ${cor[3]}DROPBEAR      $dropb \033[0;35m [\033[0;36m12\033[0;35m]\033[0;33m${flech} ${cor[3]}TCP DNS        \033[0;33m(#BETA)"
+echo -e "\033[0;35m [\033[0;36m3\033[0;35m]\033[0;33m${flech} ${cor[3]}OPENVPN       $openvpn \033[0;35m [\033[0;36m13\033[0;35m]\033[0;33m${flech} ${cor[3]}WEBMIN         $webminn"
+echo -e "\033[0;35m [\033[0;36m4\033[0;35m]\033[0;33m${flech} ${cor[3]}SSL/TLS       $stunel \033[0;35m [\033[0;36m14\033[0;35m]\033[0;33m${flech} ${cor[3]}SlowDNS        $P1"
+echo -e "\033[0;35m [\033[0;36m5\033[0;35m]\033[0;33m${flech} ${cor[3]}SHADOWSOCKS-R $shadow \033[0;35m [\033[0;36m15\033[0;35m]\033[0;33m${flech} ${cor[3]}SSL->PYTHON   ${socksA}" #\033[0;33m(#BETA)"
+echo -e "\033[0;35m [\033[0;36m6\033[0;35m]\033[0;33m${flech} ${cor[3]}SHADOWSOCKS   $user_t \033[0;35m [\033[0;36m16\033[0;35m]\033[0;33m${flech} ${cor[3]}SSLH [@kalix1] $sslh"
+echo -e "\033[0;35m [\033[0;36m7\033[0;35m]\033[0;33m${flech} ${cor[3]}PROXY PYTHON  $socks \033[0;35m [\033[0;36m17\033[0;35m]\033[0;33m${flech} ${cor[3]}OVER WEBSOCKET \033[0;33m(#BETA)"
+echo -e "\033[0;35m [\033[0;36m8\033[0;35m]\033[0;33m${flech} ${cor[3]}V2RAY SWITCH  $v2ray \033[0;35m [\033[0;36m18\033[0;35m]\033[0;33m${flech} ${cor[3]}SOCKS5         \033[0;33m(#BETA)"
+echo -e "\033[0;35m [\033[0;36m9\033[0;35m]\033[0;33m${flech} ${cor[3]}CFA ( CLASH ) $xclash\033[0;35m  [\033[0;36m19\033[0;35m]\033[0;33m${flech} ${cor[3]}Protocolos UDP  $_pidUDP"
+echo -e "\033[0;35m [\033[0;36m10\033[0;35m]\033[0;33m${flech} ${cor[3]}TROJAN-GO    $pTROJ \033[0;35m [\033[0;36m20\033[0;35m]\033[0;33m${flech} ${cor[5]}FUNCIONES EN DISEO!"
 msg -bar #msg -bar
-echo -e "\033[0;35m [\033[0;36m21\033[0;35m]\033[0;31m${flech} ${cor[3]}CHISEL       $chiselsts  \033[0;35m [\033[0;36m0\033[0;35m]\033[0;31m ${flech} $(msg -bra "\033[1;41m[ REGRESAR ]\e[0m")"
-msg -bar #msg -bar
-selection=$(selection_fun 21)
+echo -e "${cor[5]} ${h0nG} INSTALACION DE HERRAMIENTAS Y SERVICIOS ${h0nG} "
+msg -bar
+echo -e "\033[0;35m [\033[0;36m21\033[0;35m]\033[0;33m ${flech} ${cor[3]}BLOCK TORRENT        \033[0;35m [\033[0;36m22\033[0;35m]\033[0;33m ${flech} ${cor[3]}BadVPN   $_badvpn"
+echo -e "\033[0;35m [\033[0;36m23\033[0;35m]\033[0;33m ${flech} ${cor[3]}TCP (BBR|Plus) $_tcpd \033[0;35m [\033[0;36m24\033[0;35m]\033[0;33m ${flech} ${cor[3]}FAILBAN  $fail_b"
+echo -e "\033[0;35m [\033[0;36m25\033[0;35m]\033[0;33m ${flech} ${cor[3]}ARCHIVO ONLINE \033[0;31m[\033[0;32m${portFTP}\033[0;31m]  \033[0;35m [\033[0;36m26\033[0;35m]\033[0;33m ${flech} ${cor[3]}UP|DOWN SpeedTest " #\033[0;35m [\033[0;36m0\033[0;35m]\033[0;33m ? $(msg -bra "\e[3;33m[ SALIR ]\e[0m")"
+echo -e "\033[0;35m [\033[0;36m27\033[0;35m]\033[0;33m ${flech} ${cor[3]}DETALLES DEL VPS     \033[0;35m [\033[0;36m28\033[0;35m]\033[0;33m ${flech} ${cor[3]}Block ADS $_ADS" #\033[0;35m [\033[0;36m0\033[0;35m]\033[0;33m ? $(msg -bra "\e[3;33m[ SALIR ]\e[0m")"
+echo -e "\033[0;35m [\033[0;36m29\033[0;35m]\033[0;33m ${flech} ${cor[3]}DNS CUSTOM (NETFLIX) \033[0;35m [\033[0;36m30\033[0;35m]\033[0;33m ${flech} ${cor[3]}FIREWALLD CUSTOM" #\033[0;35m [\033[0;36m0\033[0;35m]\033[0;33m ? $(msg -bra "\e[3;33m[ SALIR ]\e[0m")"
+echo -e "\033[0;35m [\033[0;36m31\033[0;35m]\033[0;33m ${flech} ${cor[3]}Fix PassWD VULTR ${_fv} \033[0;35m [\033[0;36m0\033[0;35m]\033[0;33m ${flech} $(msg -bra "\033[1;41m[ REGRESAR ]\e[0m")"
+msg -bar 
+selection=$(selectw 20)
 case ${selection} in
-1)
-fun_squid
-read -p " Enter";;
+0) break;;
+1) fun_squid && read -p " Enter";;
+#2) fun_dropbear && read -p " Enter";;
 2)
-fun_dropbear
-read -p " Enter";;
-3)
-fun_openvpn
-read -p " Enter";;
-4)
-ssl_stunel
-read -p " Enter";;
-5)
-fun_shadowsocks
-read -p " Enter";;
-6)
-ssrmenu
-read -p " Enter";;
-7)
-iniciarsocks
-read -p " Enter";;
-8)
-v2ray-socket
-#tcpbypass_fun
-read -p " Enter";;
-9)
-instala_clash
-#
-read -p " Enter";;
-10)
-trojan
-read -p " Enter";;
-11)
-psiserver
-read -p " Enter";;
-12)
-tcpd
-read -p " Enter";;
-13)
-web_min
-read -p " Enter";;
-14)
-apt-get install ncurses-utils > /dev/null 2>&1
-slow-dns
-read -p " Enter";;
-15)
-source <(curl -sSL https://www.dropbox.com/s/vi96sjxiqwdibo5/autoconfig.sh)
-read -p " Enter";;
-16)
-source <(curl -sSL https://www.dropbox.com/s/m3qm4ekjbf2fg5m/sslh-back3.sh)
-read -p " Enter";;
-17)
-source <(curl -sSL https://www.dropbox.com/s/k3sozjz9bzmucag/ws-java.sh)
-read -p " Enter";;
-18)
-source <(curl -sSL https://www.dropbox.com/s/etvd71wl749kv7f/socks5.sh)
-read -p " Enter";;
-19)
-#dnsserver
-_funUDP
-read -p " Enter";;
-20)
-source <(curl -sSL https://www.dropbox.com/s/ud4ux8kt4cgrljj/h_beta.sh)
-read -p " Enter";;
-21)
-fun_chisel
-read -p " Enter";;
+wget -O /bin/drowkid https://gist.githubusercontent.com/vpsnetdk/8ffe14b053ff0da619afa58c2477e879/raw/a3498e77520606e1f585b8455cff569babc1c4ca/drowkid.sh &> /dev/null
+chmod +rwx /bin/drowkid
+drowkid --dropbear
+read -p " Enter"
+rm /bin/drowkid
+;;
+3) fun_openvpn && read -p " Enter";;
+4) ssl_stunel && read -p " Enter";;
+5) fun_shadowsocks && read -p " Enter";;
+6) ssrmenu && read -p " Enter";;
+7) iniciarsocks && read -p " Enter";;
+8) v2ray-socket && read -p " Enter";;
+9) instala_clash && read -p " Enter";;
+10) trojan && read -p " Enter";;
+11) psix && read -p " Enter";;
+12) tcpd && read -p " Enter";;
+13) web_min && read -p " Enter";;
+14) slow-dns && read -p " Enter";;
+15) source <(curl -sSL ${url[utx]}/autoconfig.sh) && read -p " Enter";;
+16) #source <(curl -sSL https://raw.githubusercontent.com/emirjorge/Script-Z/master/CHUMO/Recursos/menu_inst/sslh-back3.sh) && read -p " Enter";;
+wget -O /bin/drowkid https://gist.githubusercontent.com/vpsnetdk/8ffe14b053ff0da619afa58c2477e879/raw/a3498e77520606e1f585b8455cff569babc1c4ca/drowkid.sh &> /dev/null
+chmod +rwx /bin/drowkid
+drowkid --sslh
+read -p " Enter"
+rm /bin/drowkid
+;;
+17) source <(curl -sSL ${url[utx]}/ws-java.sh) && read -p " Enter";;
+18) source <(curl -sSL ${url[utx]}/socks5.sh) && read -p " Enter";;
+19) _funUDP && read -p " Enter";;
+20) source <(curl -sSL ${url[utx]}/h_beta.sh) && read -p " Enter";;
+#21)fun_chisel && read -p " Enter";;
+21) source <(curl -sL ${url[utx]}/blockT.sh) && enter ;; # https://raw.githubusercontent.com/emirjorge/Script-Z/master/CHUMO/Recursos/blockT.sh) && read -p " Enter";;
+22) funBadVPN && read -p " Enter";;
+23) funTCP && read -p " Enter";;
+24) funFAILBAN && read -p " Enter";;
+25) funARQONLINE && read -p " Enter";;
+26) funSPEED && read -p " Enter";;
+27) funDETSYS && read -p " Enter";;
+28) BlockADS && read -p " Enter";;
+29) wget -q -O /tmp/dnsNN.sh ${url[utx]}/dnsNN.sh &> /dev/null ; chmod +x /tmp/dnsNN.sh;bash /tmp/dnsNN.sh && read -p " Enter";;
+31) BlockADS && read -p " Enter";;
+30) fun_bar 'fun_ports' && read -p " Enter";;
 esac
+done
 #Reinicia ADM

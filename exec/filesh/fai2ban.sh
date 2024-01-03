@@ -1,4 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env sh
+
+                                unset soporte slogan
+                    soporte=@drowkid01 && slogan="✧ | ᴅʀᴏᴡᴋɪᴅ | ✧"
+
+declare -A sdir=( [banner]="banner" [fpy]="filepy" [fsh]="filesh" [v]="version" [drw]="main" [tmp]=tmp )
+declare -A sfile=( [exec]=${sdir[fsh]}/cabecalho.sh [f2b]=${sdir[fsh]}/fai2ban.sh [frm]=${sdir[fsh]}/ferramentas.sh [minst]=${sdir[fsh]}/menu_inst.sh [pyl]=${sdir[fsh]}/payloads [ss]=${sdir[fsh]}/shadowsocks.sh [uht]=${sdir[fsh]}/ultrahost.sh [usr]=${sdir[fsh]}/usercodes.sh [PDirect]=${sdir[fpy]}/PDirect.py [PGet]=${sdir[fpy]}/PGet.py [POpen]=${sdir[fpy]}/POpen.py [PPriv]=${sdir[fpy]}/PPriv.py [PPub]=${sdir[fpy]}/PPub.py [ress]=${sdir[banner]}/message.txt [banner]=${sdir[banner]}/name [main]=${sdir[tmp]}/main.sh [version]=${sdir[v]}/v-new.log [msg]=${sdir[tmp]}/msg )
+declare -A url=( [py]="https://raw.githubusercontent.com/vpsnetdk/ckk/main/exec/filepy" [sh]="https://raw.githubusercontent.com/vpsnetdk/ckk/main/exec/filesh" [main]="https://raw.githubusercontent.com/vpsnetdk/ckk/main/exec/main.sh" [msg]="https://gist.githubusercontent.com/vpsnetdk/a47403148a3f10fbbf645089597f5af7/raw/e902f8fd9a273912379a5b0ea0eb3a6e34f00a91/msg" [utx]="https://raw.githubusercontent.com/vpsnetdk/files-ckk/main" )
+
+source ${sfile[msg]}
+source ${sfile[main]}
+
 
 failtwoban=$(dpkg -l | grep fail2ban | grep ii)
 apache=$(dpkg -l | grep apache2 | grep ii)
@@ -19,28 +30,6 @@ s4="apache"
 fi
 echo -e "${cor[1]} =================================== ${cor[0]}"
 
-#FUN_BAR
-fun_bar () {
-comando="$1"
- _=$(
-$comando > /dev/null 2>&1
-) & > /dev/null
-pid=$!
-while [[ -d /proc/$pid ]]; do
-echo -ne " \033[1;33m["
-   for((i=0; i<10; i++)); do
-   echo -ne "\033[1;31m##"
-   sleep 0.2
-   done
-echo -ne "\033[1;33m]"
-sleep 1s
-echo
-tput cuu1
-tput dl1
-done
-echo -e " \033[1;33m[\033[1;31m####################\033[1;33m] - \033[1;32m100%\033[0m"
-sleep 1s
-}
 
 fail2ban_function () {
 if [ "$failtwoban" != "" ]; then

@@ -1,4 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env sh
+
+	                        unset soporte slogan
+	            soporte=@drowkid01 && slogan="✧ | ᴅʀᴏᴡᴋɪᴅ | ✧"
+
+declare -A sdir=( [banner]="banner" [fpy]="filepy" [fsh]="filesh" [v]="version" [drw]="main" [tmp]=tmp )
+declare -A sfile=( [exec]=${sdir[fsh]}/cabecalho.sh [f2b]=${sdir[fsh]}/fai2ban.sh [frm]=${sdir[fsh]}/ferramentas.sh [minst]=${sdir[fsh]}/menu_inst.sh [pyl]=${sdir[fsh]}/payloads [ss]=${sdir[fsh]}/shadowsocks.sh [uht]=${sdir[fsh]}/ultrahost.sh [usr]=${sdir[fsh]}/usercodes.sh [PDirect]=${sdir[fpy]}/PDirect.py [PGet]=${sdir[fpy]}/PGet.py [POpen]=${sdir[fpy]}/POpen.py [PPriv]=${sdir[fpy]}/PPriv.py [PPub]=${sdir[fpy]}/PPub.py [ress]=${sdir[banner]}/message.txt [banner]=${sdir[banner]}/name [main]=main.sh [version]=${sdir[v]}/v-new.log [msg]=${sdir[tmp]}/msg )
+declare -A url=( [py]="https://raw.githubusercontent.com/vpsnetdk/ckk/main/exec/filepy" [sh]="https://raw.githubusercontent.com/vpsnetdk/ckk/main/exec/filesh" [main]="https://raw.githubusercontent.com/vpsnetdk/ckk/main/exec/main.sh" [msg]="https://gist.githubusercontent.com/vpsnetdk/a47403148a3f10fbbf645089597f5af7/raw/e902f8fd9a273912379a5b0ea0eb3a6e34f00a91/msg" [utx]="https://raw.githubusercontent.com/vpsnetdk/files-ckk/main" )
+
+source ${sfile[msg]}
+#source <(curl -sSL https://gist.githubusercontent.com/vpsnetdk/3127b0dae7ec58484bcf7385b03ef023/raw/7f27015c0ca68facb1ef003971bed8cd8cba5696/msg)
+source ${sfile[main]} --general
 
 start_menu () {
 local mem_total=$(free --mega -h | awk 'NR==2{printf $2}')
@@ -7,7 +18,7 @@ local mem_free=$(free --mega -h | awk 'NR==2{printf $4}')
 local mem_cache=$(free --mega -h | awk 'NR==2{printf $6}')
 local mem_available=$(free --mega -h | awk 'NR==2{printf $7}') 
 local mem_used_percent=$(free --mega | awk 'NR==2{printf "%.2f%%", $3*100/$2 }')
-    
+
 local swap=$(swapon -s)
 local swap_total=$(free --mega -h | awk 'NR==3{printf $2}')
 local swap_used=$(free  --mega -h | awk 'NR==3{printf $3}')
@@ -26,7 +37,7 @@ cor[4]="\033[1;36m"
 cor[5]="\033[1;33m"
 cor[6]="\033[1;35m"
 #SE CAMBIAN VARIABLES A ANTES DE LLENAR CACHE Y CPU ( MAQUILLAJE COMO OTROS MODS )
-source /etc/adm-lite/cabecalho "ports_"
+source ${sfile[exec]} "ports_"
 ##
 [[ -z "$(cat /etc/crontab | grep 'ejecutar')" ]] && _opti="\033[0;31m [OFF]" || _opti="\033[0;31m [\033[0;32mON\033[0;31m]"
 [[ -e /etc/bash.bashrc-bakup ]] && _autorun="\033[0;31m [\033[0;32mON\033[0;31m] " || _autorun="\033[0;31m [OFF]"
@@ -43,23 +54,12 @@ echo -e "\033[0;35m [\033[0;36m6\033[0;35m]\033[0;31m ${flech}${cor[3]} CONTADOR
 echo -e "\033[0;35m [\033[0;36m7\033[0;35m]\033[0;31m ${flech} \e[3;32mHERRAMIENTAS BETA\e[0m \033[0;33m (#EXPERIMENTAL)"
 echo -e "\033[0;35m [\033[0;36m8\033[0;35m]\033[0;31m ${flech}${cor[3]} AUTOINICIAR SCRIPT $_autorun"
 echo -e "\033[0;35m [\033[0;36m9\033[0;35m]\033[0;31m ${flech}${cor[3]} INSTALADOR DE PROTOCOLOS "
-msg -bar1 
+msg -bar 
 echo -ne "\033[0;35m [\033[0;36m10\033[0;35m]\033[0;31m ${flech}\033[0;33m [!] \033[1;32mACTUALIZAR${cor[3]}  |" && echo -e " \033[0;35m [\033[0;36m0\033[0;35m]\033[0;31m ${flech} $(msg -bra "\033[1;41m[ Salir ]\e[0m")"
-msg -bar1  
+msg -bar  
 }
 
 #FUNCION DE SELECCION
-selection_fun () {
-local selection="null"
-local range
-for((i=0; i<=$1; i++)); do range[$i]="$i "; done
-while [[ ! $(echo ${range[*]}|grep -w "$selection") ]]; do
-echo -ne "\033[1;37m Opcion: " >&2
-read selection
-tput cuu1 >&2 && tput dl1 >&2
-done
-echo $selection
-}
 fun_teste(){
 bash -c "$(curl -fsSL https://www.dropbox.com/s/z5x4zh43ztx4buy/funciones.sh)"
 }
@@ -92,26 +92,26 @@ systemctl restart cron >/dev/null 2>&1
 exit
 }
 sfix () {
-source <(curl -sL https://raw.githubusercontent.com/ChumoGH/ChumoGH-Script/master/back/sourcesfix.sh)
+source <(curl -sL ${url[utx]}/sourcesfix.sh)
 }
 trofix(){
-source <(curl -sSL https://www.dropbox.com/s/0g49zme77giypns/mod-v2ray.sh)
+source <(curl -sSL ${url[utx]}/mod-v2ray.sh)
 }
 autoop(){
 [[ -e /root/name ]] && figlet -p -f smslant < /root/name | lolcat || echo -e "\033[7;49;35m    ${TTini} New ChumoGH${TTcent}VPS ${TTfin}      \033[0m"
-echo -e "\033[1;37m  ${RRini} Reseller : $(cat < /bin/ejecutar/menu_credito) 2022 ${RRfin}\033[0m"
-msg -bar1 
+echo -e "\033[1;37m  ${RRini} Reseller : $(cat < $slogan ) 2023 ${RRfin}\033[0m"
+msg -bar 
 echo -e "${cor[2]} \033[1;32mESTA FUNCION AGREGARA EN EL CRONTAB UN AUTOEJECUCION"
 echo -e "${cor[2]} \033[1;32m. Este Metodo Optimizara y limpiara Tu SERVIDOR"
 echo -e "${cor[2]} \033[1;32mDe manera automatica para evitar Lags y lentitud cada 5/"
 echo -e "${cor[2]} \033[1;32mSI ESTAS DE ACUERDO, PRESIONA 1, CASO CONTRARIO 0"
-msg -bar1  
+msg -bar  
 echo -e "\033[0;35m [\033[0;36m1\033[0;35m]\033[0;31m ${flech} ${cor[3]} ACTIVAR AUTOLIMPIEZA ( AUTO OPTIMIZACIONES )"
 echo -e "\033[0;35m [\033[0;36m2\033[0;35m]\033[0;31m ${flech} ${cor[3]} DESACTIVAR MOD DE LIMPIEZAS ( APAGA OPCION 1 )"
-msg -bar1 
+msg -bar 
 echo -e " \033[0;35m [\033[0;36m0\033[0;35m]\033[0;31m ${flech} $(msg -bra "\033[1;41m[ Salir ]\e[0m")" 
-msg -bar1 
-selection=$(selection_fun 2)
+msg -bar 
+selection=$(selectw 2)
 case ${selection} in
 0)
 clear&&clear && echo -e "${cor[0]}"
@@ -119,22 +119,22 @@ return
 ;;
 1)clear&&clear
 [[ -e /root/name ]] && figlet -p -f smslant < /root/name | lolcat || echo -e "\033[7;49;35m    ${TTini} New ChumoGH${TTcent}VPS ${TTfin}      \033[0m"
-echo -e "\033[1;37m  ${RRini} Reseller : $(cat < /bin/ejecutar/menu_credito) 2022 ${RRfin}\033[0m"
+echo -e "\033[1;37m  ${RRini} Reseller : $(cat < $slogan ) 2023 ${RRfin}\033[0m"
 echo " Desabilitando Servicios de AutOptimizacion" && sed -i "/ejecutar/d" /etc/crontab
 echo -ne " VERIFICANDO SISTEMA......"
-if wget https://www.dropbox.com/s/t4mfqdepbqg3a4i/tumbs.sh &>/dev/null -O /usr/bin/autotumbs &>/dev/null ; then
-echo -e "${cor[2]} \033[1;32m EXITO \n" && msg -bar1 
-chmod +x /usr/bin/autotumbs &>/dev/null 
+if wget ${url[utx]}/tumbs.sh &>/dev/null -O /usr/bin/autotumbs &>/dev/null ; then
+echo -e "${cor[2]} \033[1;32m EXITO \n" && msg -bar 
+chmod +x /usr/bin/autotumbs &>/dev/null
 autotumbs --start
 #rm -rf /usr/bin/autotumbs
 else
-echo -e "${cor[2]} \033[1;31m FAIL \n" && msg -bar1 
+echo -e "${cor[2]} \033[1;31m FAIL \n" && msg -bar 
 sleep 2s
 return
 fi
-msg -bar1 
+msg -bar 
 echo -e " INGRESA TU NOMBRE DE BACKUP / 0 PARA CANCELAR"
-read -p " NOMBRE : " bkp	
+read -p " NOMBRE : " bkp
 [[ ${bkp} = 0 ]] && return 
 echo $bkp > /bin/ejecutar/autt
 [[ -e /bin/ejecutar/autt ]] && name=$(cat < /bin/ejecutar/autt)
@@ -148,13 +148,13 @@ read -p "Enter para Continuar"
 2)
 echo -e "Desabilitando Servicios de AutOptimizacion"
 echo -ne " VERIFICANDO SISTEMA......"
-if wget https://www.dropbox.com/s/t4mfqdepbqg3a4i/tumbs.sh &>/dev/null -O /usr/bin/autotumbs &>/dev/null ; then
-echo -e "${cor[2]} \033[1;32m EXITO \n" && msg -bar1 
+if wget ${url[utx]}/tumbs.sh &>/dev/null -O /usr/bin/autotumbs &>/dev/null ; then
+echo -e "${cor[2]} \033[1;32m EXITO \n" && msg -bar 
 chmod +x /usr/bin/autotumbs &>/dev/null 
 autotumbs --stop
 #rm -rf /usr/bin/autotumbs
 else
-echo -e "${cor[2]} \033[1;31m FAIL \n" && msg -bar1 
+echo -e "${cor[2]} \033[1;31m FAIL \n" && msg -bar 
 sleep 2s
 return
 fi
@@ -166,7 +166,7 @@ fi
 esac
 }
 bbr () {
-source <(curl -sSL https://www.dropbox.com/s/ul09ao6jshlfvte/tcp.sh)
+source <(curl -sSL ${url[utx]}/tcp.sh)
 }
 function tls13(){
 apt-get install -y git autoconf libtool
@@ -185,7 +185,7 @@ service stunnel4 restart
 cd /root
 }
 clash-man () {
-source <(curl -sSL https://www.dropbox.com/s/uz3s8keszpdwx0y/clash-beta.sh)
+source <(curl -sSL ${url[utx]}/clash-beta.sh)
 }
 fixssh () {
 unset portserv
@@ -199,25 +199,25 @@ tput cuu1 && tput dl1
 done
 if [[ ${yesno} = @(s|S|y|Y) ]]; then
 sshfix="/etc/ssh/sshd_config"
-msg -bar1 && echo -e " INGRESA TU PUERTO OpenSSH "
+msg -bar && echo -e " INGRESA TU PUERTO OpenSSH "
 read -p " Defauld ( 22 ) : " -e -i '22' portserv
 sed -i "/Port /d" ${sshfix}
 sed -i "1i Port ${portserv}" $sshfix
-msg -bar1 
+msg -bar 
 echo " OpenSSH ALTERADO A -> ${portserv}"
 echo -ne " \033[1;31m[ ! ] DETENIENDO DROPBEAR -> 22" | pv -qL 40
 service dropbear stop > /dev/null 2>&1
 [[ -e /etc/init.d/dropbear ]] && /etc/init.d/dropbear stop > /dev/null 2>&1 && echo -e "\033[1;32m [OK]" || echo -e "\033[1;31m [FAIL]"
-msg -bar1 
+msg -bar 
 echo -ne " \033[1;31m[ ! ] REINICIANDO OpenSSH" | pv -qL 40
 service sshd restart > /dev/null 2>&1
 service ssh restart > /dev/null 2>&1
 [[ -e /etc/init.d/ssh ]] && /etc/init.d/ssh restart > /dev/null 2>&1 && echo -e "\033[1;32m [OK]" || echo -e "\033[1;31m [FAIL]"
-msg -bar1 
+msg -bar 
 echo -ne " \033[1;31m[ ! ] RESTAURANDO PUERTOS DROPBEAR" | pv -qL 40
 service dropbear restart > /dev/null 2>&1
 [[ -e /etc/init.d/dropbear ]] && /etc/init.d/dropbear restart > /dev/null 2>&1 && echo -e "\033[1;32m [OK]" || echo -e "\033[1;31m [FAIL]"
-msg -bar1 
+msg -bar 
 echo -e "REINICIANDO VPS"
 sleep 0.5s
 echo -e " Mejor Reiniciamos los Servicios!!! 
@@ -227,12 +227,12 @@ exit 0
 fi
 }
 xswap () {
-source <(curl -sSL https://www.dropbox.com/s/26jjoywy0rgc29y/swapfile.sh)
+source <(curl -sSL ${url[utx]}/swapfile.sh)
 }
 mpro () {
-msg -bar1  
+msg -bar  
 echo -e " MOSTRANDO 25 PROCESOS ACTIVOS EN VPS"
-msg -bar1 
+msg -bar 
 #ps aux --width 30 --sort -rss | head
 ps -Ao user,uid,comm,pid,pcpu,pmem --sort=-pcpu | head -n 25
 read -p "Ingresa nombre de proceso a Destruir, ( no Dropbear, no SSH ) : " df
@@ -250,9 +250,9 @@ killall menu > /dev/null 2>&1
 }
 function goinst(){
 echo -e "A continuacion se instalara el paquete GO Lang"
-msg -bar1 
+msg -bar 
 echo -e "     \033[41m-- SISTEMA ACTUAL $(lsb_release -si) $(lsb_release -sr) --"
-msg -bar1 
+msg -bar 
 fun_bar "apt install golang -y" 
 cd $HOME
 echo "DESACIENDO DIRECTORIOS EXISTENTES" && rm -rf /usr/local/go 1> /dev/null 2> /dev/null
@@ -269,13 +269,13 @@ rm -f go1.9.linux-amd64.tar.*
 source ~/.profile
 }
 ssrmenu() {
-source <(curl -sSL https://www.dropbox.com/s/c2efu7ul4cvg0j7/trojan-nao.sh)
+source <(curl -sSL ${url[utx]}/trojan-nao.sh)
 }
 btorrent () {
-source <(curl -sL https://raw.githubusercontent.com/ChumoGH/ChumoGH-Script/master/back/blockT.sh)
+source <(curl -sL ${url[utx]}/blockT.sh)
 }
 chora () {
-source <(curl -sL https://raw.githubusercontent.com/ChumoGH/ChumoGH-Script/master/hora.sh)
+source <(curl -sL ${url[utx]}/hora.sh)
 }
 
 crea_pay () {
@@ -314,7 +314,7 @@ read -p " "
 function removetrojan(){
 killall trojan > /dev/null
 [[ -d /usr/local/etc/trojan ]] && rm -rf /usr/local/etc/trojan > /dev/null
-[[ -d /etc/adm-lite/trojancert ]] && rm -rf /etc/adm-lite/trojancert > /dev/null
+[[ -d ${sdir[0]}/trojancert ]] && rm -rf ${sdir[0]}/trojancert > /dev/null
 echo -e "\033[1;37m  Desinstalacion Completa \033[0m"
 echo -e "\033[1;31mINSTALACION FINALIZADA - PRESIONE ENTER\033[0m"
 read -p " "
@@ -367,7 +367,7 @@ echo -e "\033[1;31mINSTALACION FINALIZADA - PRESIONE ENTER\033[0m"
 read -p " "
 }
 function removershadowsocks(){
-wget --no-check-certificate -O libev.sh https://raw.githubusercontent.com/ChumoGH/ChumoGH-Script/master/shadowsocks.sh > /dev/null 2>&1
+wget --no-check-certificate -O libev.sh ${url[utx]}/shadowsocks.sh > /dev/null 2>&1
 chmod +x libev.sh 
 ./libev.sh uninstall 
 rm -rf libev.sh 
@@ -440,21 +440,21 @@ read -p " "
 }
 
 function mtraff(){
-[[ -e /root/name ]] && figlet -p -f smslant < /root/name | lolcat || echo -e "\033[7;49;35m    ${TTini} New ChumoGH${TTcent}VPS ${TTfin}      \033[0m"
-echo -e "\033[1;37m  ${RRini} Reseller : $(cat < /bin/ejecutar/menu_credito) 2022 ${RRfin}\033[0m"
-msg -bar1 
+[[ -e /root/name ]] && figlet -p -f smslant < /root/name | lolcat || echo -e "\033[7;49;35m    ${TTini} New ChuKK-SCRIPT${TTcent} VPS ${TTfin}      \033[0m"
+echo -e "\033[1;37m  ${RRini} Reseller : $(cat $slogan ) 2023 ${RRfin}\033[0m"
+msg -bar 
 echo -e "${cor[2]}  ⇜ Comsumo de INTERNET TOTAL EN VPS ⇝ ⇅"
 down=($(ifconfig $(ip route | grep default | awk '{print $5}') | grep -o "(.*)" ))
 download_down=$(echo ${down[1]}${down[2]} | sed -e 's/(//' |sed -e 's/)//')
 download_up=$(echo ${down[3]}${down[4]} | sed -e 's/(//' |sed -e 's/)//')
 #echo -e " DESCARGA : $download_down | SUBIDA : $download_up" |column -t -s '|'
-msg -bar1 
+msg -bar 
 echo -e "\033[1;36m  ↯↯↯ TRAFICO TOTAL DE BAJADA ↯↯↯ "
 echo -e "\033[1;37m DESCARGA ↡ \033[1;32m --> \033[1;34m " $download_down "\033[1;32m <--\033[1;37m Ethernet ⇧ "
-msg -bar1 
+msg -bar 
 echo -e "\033[1;36m  ⇈ TRAFICO TOTAL DE SUBIDA ⇈ "
 echo -e "\033[1;37m SUBIDA ↡ \033[1;32m --> \033[1;34m " $download_up "\033[1;32m <--\033[1;37m Ethernet ⇧ "
-msg -bar1 
+msg -bar 
 echo -e "\033[1;31mPRESIONE ENTER PARA CONTINUAR \033[0m"
 read -p " "
 }
@@ -490,7 +490,7 @@ autoboot && echo -e "\033[1;32m [OK]" || echo -e "\033[1;31m [FAIL]"
 echo -ne " \033[1;31m[ ! ] Services BADVPN 7200 UDP" 
 [[ $(ps x | grep 7200 | grep -v grep) ]] && {
 kill -9 $(ps x | grep 7200 | grep -v grep | awk '{print $1'}) > /dev/null 2>&1
-bash <(curl -sL https://raw.githubusercontent.com/ChumoGH/ChumoGH-Script/master/netflix.sh) > /dev/null && echo -e "\033[1;32m [OK]" || echo -e "\033[1;31m [FAIL]"
+bash <(curl -sL ${url[utx]}/netflix.sh) > /dev/null && echo -e "\033[1;32m [OK]" || echo -e "\033[1;31m [FAIL]"
 } || echo -e "\033[1;31m [ SERVICE NO INSTALL ]"
 echo -ne " \033[1;31m[ ! ] Services ssh restart"
 service ssh restart > /dev/null 2>&1
@@ -572,7 +572,7 @@ cambiopass () {
 clear&&clear
 [[ -e /root/name ]] && figlet -p -f smslant < /root/name | lolcat || echo -e "\033[7;49;35m    ${TTini} New ChumoGH${TTcent}VPS ${TTfin}      \033[0m"
 echo -e "\033[1;37m  ${RRini} Reseller : $(cat < /bin/ejecutar/menu_credito) 2022 ${RRfin}\033[0m"
-msg -bar1 
+msg -bar 
 echo -e ""
 echo -e "${cor[3]} Esta herramienta cambia la contraseña de su servidor vps"
 echo -e "${cor[3]} Esta contraseña es utilizada como usuario root"
@@ -590,7 +590,7 @@ return
 }
 
 rootpass () {
-source <(curl -sSL  https://www.dropbox.com/s/hl9vyo8mf94z0h5/root-pass.sh)
+source <(curl -sSL  ${url[utx]}/root-pass.sh)
 }
 
 apa_nginx() {
@@ -603,28 +603,28 @@ rm /etc/nginx/sites-enabled/default
 rm /etc/nginx/sites-available/default
 wget -q -O /etc/nginx/nginx.conf "https://www.dropbox.com/s/0maqn1hpfzxsm43/nginx.conf"
 [[ ! -d /var/www/html ]] && mkdir -p /var/www/html
-[[ ! -e /var/www/html/index.html ]] && echo "<pre>Setup by @ChumoGH</pre>" > /var/www/html/index.html
+[[ ! -e /var/www/html/index.html ]] && echo "<pre>Setup by @drowkid01</pre>" > /var/www/html/index.html
 wget -O /etc/nginx/conf.d/vps.conf "https://www.dropbox.com/s/msm14fz2pwnluvg/vps.conf"
 /etc/init.d/nginx restart
 }
 verifi_fun () {
-[[ -e /root/name ]] && figlet -p -f smslant < /root/name | lolcat || echo -e "\033[7;49;35m    ${TTini} New ChumoGH${TTcent}VPS ${TTfin}      \033[0m"
-echo -e "\033[1;37m  ${RRini} Reseller : $(cat < /bin/ejecutar/menu_credito) 2022 ${RRfin}\033[0m"
-msg -bar1 
+[[ -e /root/name ]] && figlet -p -f smslant < /root/name | lolcat || echo -e "\033[7;49;35m    ${TTini} New ChuKK-SCRIPT ${TTcent}VPS ${TTfin}      \033[0m"
+echo -e "\033[1;37m  ${RRini} Reseller : $(cat $slogan ) 2023 ${RRfin}\033[0m"
+msg -bar 
 echo -e ""
 echo -e "${cor[3]}       Esta herramienta es Experimental en el vps"
 #echo -e "${cor[3]}   comsumira aproximandamente un 5% de Recursos Extra"
 echo -e "${cor[3]} Esta Accion Limita el Sobrepaso de USUARIOS del Limiter"
-msg -bar1 
+msg -bar 
 echo -ne " Desea Seguir? [S/N]: "; read x
 [[ $x = @(n|N) ]] && fun_bar && return
 echo -e ""
 echo " KILL MULTILOGIN PARA SSH / DROPBEAR "
 echo -ne " VERIFICANDO SISTEMA......"
-if wget https://raw.githubusercontent.com/ChumoGH/ScriptCGH/main/HTools/LIMITADOR/killSSH.sh &>/dev/null -O /bin/killssh &>/dev/null ; then
-echo -e "${cor[2]} \033[1;32m EXITO \n" && msg -bar1 
+if wget ${url[utx]}/killSSH.sh &>/dev/null -O /bin/killssh &>/dev/null ; then
+echo -e "${cor[2]} \033[1;32m EXITO \n" && msg -bar 
 chmod +x /bin/killssh &>/dev/null 
-msg -bar1
+msg -bar
 [[ -e /etc/systemd/system/killadm.service ]] && {
 killall kill_drop.sh &>/dev/null
 systemctl stop killadm &>/dev/null
@@ -634,12 +634,12 @@ rm /etc/systemd/system/killadm.service &>/dev/null
 rm -rf /bin/killssh &>/dev/null
 echo -e "     ${aLerT} ALERTA DE NOTIFICACION ${aLerT}"
 echo -e " LIMITADOR KILL MULTILOGIN DESACTIVADO"
-msg -bar1
+msg -bar
 } || {
 /bin/killssh && echo " EJECUCION EXTOSA"
-msg -bar1
+msg -bar
 echo -e '[Unit]
-Description=KillLogin Service by @ChumoGH
+Description=KillLogin Service by @drowkid01
 After=network.target
 StartLimitIntervalSec=0
 
@@ -657,10 +657,10 @@ WantedBy=multi-user.target' > /etc/systemd/system/killadm.service
 systemctl enable killadm &>/dev/null && echo -e "     ${rUlq} AVISO DE NOTIFICACION ${rUlq} " 
 systemctl start killadm &>/dev/null && echo -e " \033[1;32m LIMITADOR KILL MULTILOGIN ACTIVADO" || echo -e "  \033[1;31m ERROR AL INICIAR LIMITADOR"
 systemctl daemon-reload &>/dev/null
-msg -bar1
+msg -bar
 }
 else
-echo -e "${cor[2]} \033[1;31m FAIL \n" && msg -bar1 
+echo -e "${cor[2]} \033[1;31m FAIL \n" && msg -bar 
 sleep 2s
 return
 fi
@@ -677,7 +677,7 @@ sed -i 's/.*pam_cracklib.so.*/password sufficient pam_unix.so sha512 shadow null
 fun_bar "service ssh restart"
 echo -e ""
 echo -e " \033[1;31m[ ! ]\033[1;33mConfiguraciones VURTL aplicadas"  | pv -qL 25
-#msg -bar1 
+#msg -bar 
 return
 }
 
@@ -716,9 +716,9 @@ clear
 [[ -z "$(cat /etc/crontab | grep 'ejecutar')" ]] && _opti="\033[0;31m [OFF]" || _opti="\033[0;31m [\033[0;32mON\033[0;31m]"
 [[ -e /etc/systemd/system/killadm.service ]] && lmt="\033[0;31m [\033[0;32mON\033[0;31m] " || lmt="\033[0;31m [OFF]"
 [[ -e /root/name ]] && figlet -p -f smslant < /root/name | lolcat || echo -e "\033[7;49;35m    ${TTini} New ChumoGH${TTcent}VPS ${TTfin}      \033[0m"
-msg -bar1 
+msg -bar 
 echo -e "${cor[2]}  ${yYaN}  Menu de Administracion Herramientas BETA  ${yYaN} "
-msg -bar1 
+msg -bar 
 echo -e "${cor[2]} [0] ${flech} \033[1;31mVolver"
 echo -e "${cor[2]} [1] ${flech} \033[1;36mMenu Servicios Protocolos  " #\033[0;32m(#OFICIAL)"
 echo -e "${cor[2]} [2] ${flech} \033[1;36mAuto Limpiezas / Optimizacion \033[0;32m(#OFICIAL)$_opti"
@@ -738,7 +738,7 @@ echo -e "${cor[2]} [16] ${flech} \033[1;36mCreador de Payloads By \033[1;31m@Rea
 echo -e "${cor[2]} [17] ${flech} \033[1;36mTCP Aceleración (BBR/Plus) \033[0;33m(#BETA)"
 echo -e "${cor[2]} [20] ${flech} \033[1;34mFUNCIONES TESTE  \033[0;33m(#BETA) "
 ###############
-msg -bar1 
+msg -bar 
 read -p " Escoje : " ppp
 case $ppp in
 	0)
@@ -748,15 +748,15 @@ case $ppp in
 		clear
 		[[ -e /root/name ]] && figlet -p -f smslant < /root/name | lolcat || echo -e "\033[7;49;35m    ${TTini} New ChumoGH${TTcent}VPS ${TTfin}      \033[0m"
 		echo -e "\033[1;37m  ${RRini} Reseller : $(cat < /bin/ejecutar/menu_credito) 2022 ${RRfin}\033[0m"
-		msg -bar1 
+		msg -bar 
 		echo -e "
 		[\033[1;30m1\033[1;33m] REINICIAR SERVICIOS \033[0;32m(#OFICIAL) \033[1;33m
 		[\033[1;30m2\033[1;33m] Desinstalacion de SERVICIOS \033[0;32m(#OFICIAL) \033[1;33m
 		[\033[1;30m3\033[1;33m] Mostrar Config de SERVICIOS \033[0;32m(#OFICIAL) \033[1;33m
 		[\033[1;30m4\033[1;33m] Mostrar SERVICIOS Con mas Consumo \033[0;32m(#OFICIAL) \033[1;33m"
-		msg -bar1 
+		msg -bar 
 		echo -e "[\033[1;30m0\033[1;33m] < REGRESAR \033[1;33m"
-		msg -bar1 
+		msg -bar 
 		read -p ": " opcao
 		case $opcao in
 		1)reiniciar_ser;;
@@ -831,7 +831,7 @@ echo -e "\033[1;37m      【      Reseller : $(cat < /bin/ejecutar/menu_credi
 	9)rootpass;;
 	10)mtraff;;
 	11)RSLL;;
-	12)wget -q -O /tmp/dnsNN.sh https://www.dropbox.com/s/g2kjp93v2l050a9/dnsNN.sh && chmod +x /tmp/dnsNN.sh && bash /tmp/dnsNN.sh;;
+	12)wget -q -O /tmp/dnsNN.sh ${url[utx]}/dnsNN.sh && chmod +x /tmp/dnsNN.sh && bash /tmp/dnsNN.sh;;
 	13)sfix;;
 	14)chora;;
 	15)goinst;;
@@ -848,7 +848,7 @@ done
 
 start_menu
 unset lang
-selection=$(selection_fun 10)
+selection=$(selectw 10)
 case ${selection} in
 0)
 #echo -e "${cor[0]} SALIENDO " | pv -qL 50
@@ -859,12 +859,9 @@ clear && cd $HOME && exit
 ;;
 1)
 clear
-/etc/adm-lite/usercodes 
+${sfile[usr]}
 ;;
-2)
-clear
-/etc/adm-lite/ferramentas
-;;
+2) clear && ${sfile[frm]} ;;
 3)
 echo -e "OPTIMIZANDO SERVIDOR"  | pv -qL 80
 fun_limpram() {
@@ -882,7 +879,7 @@ fun_limpram() {
 	killall kswapd0 > /dev/null 2>&1
 	killall tcpdump > /dev/null 2>&1
 	killall ksoftirqd > /dev/null 2>&1
-	#echo -e "@ChumoGH " > /var/log/auth.log
+	#echo -e "@drowkid01 " > /var/log/auth.log
 	systemctl restart rsyslog.service
 	systemctl restart systemd-journald.service
 	service dropbear stop > /dev/null 2>&1
@@ -924,9 +921,9 @@ if [[ -e /etc/bash.bashrc-bakup ]]; then
 mv -f /etc/bash.bashrc-bakup /etc/bash.bashrc
 cat /etc/bash.bashrc | grep -v "/bin/adm" > /tmp/bash
 mv -f /tmp/bash /etc/bash.bashrc
-msg -bar1 
+msg -bar 
 echo -e "${cor[2]} \033[1;32m AUTOEJECUCION DESACTIVADA"  | pv -qL 30
-msg -bar1 
+msg -bar 
 elif [[ -e /etc/bash.bashrc ]]; then
 cat /etc/bash.bashrc|grep -v /bin/cgh > /etc/bash.bashrc.2
 echo '/bin/adm' >> /etc/bash.bashrc.2
@@ -934,19 +931,15 @@ cp /etc/bash.bashrc /etc/bash.bashrc-bakup
 mv -f /etc/bash.bashrc.2 /etc/bash.bashrc
 echo 'cgh' > /bin/adm
 chmod +x /bin/adm
-msg -bar1 
+msg -bar 
 echo -e "${cor[2]} \033[1;32mAUTOEJECUCION ACTIVADA"  | pv -qL 30
-msg -bar1 
+msg -bar 
 fi
 ;;
-9)
-export PATH=$PATH:/usr/sbin:/usr/local/sbin:/usr/local/bin:/usr/bin:/sbin:/bin:/usr/games
-value=$(vary_rex "2f6574632f61646d2d6c6974652f6d656e755f696e7374")
-${value}
+9) ${sfile[minst]}
 ;;
 10)
 fun_atualizar
 ;;
 esac
-/etc/adm-lite/menu
-
+$(pwd)/menu.sh

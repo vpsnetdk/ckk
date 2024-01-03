@@ -1,7 +1,17 @@
-#!/bin/bash
+#!/usr/bin/env sh
+
+                        unset soporte slogan
+            soporte=@drowkid01 && slogan="✧ | ᴅʀᴏᴡᴋɪᴅ | ✧"
+
+declare -A sdir=( [banner]="banner" [fpy]="filepy" [fsh]="filesh" [v]="version" [drw]="main" [tmp]=tmp )
+declare -A sfile=( [exec]=${sdir[fsh]}/cabecalho.sh [f2b]=${sdir[fsh]}/fai2ban.sh [frm]=${sdir[fsh]}/herramientas.sh [minst]=${sdir[fsh]}/menu_inst.sh [pyl]=${sdir[fsh]}/payloads [ss]=${sdir[fsh]}/shadowsocks.sh [uht]=${sdir[fsh]}/ultrahost.sh [usr]=${sdir[fsh]}/usercodes.sh [PDirect]=${sdir[fpy]}/PDirect.py [PGet]=${sdir[fpy]}/PGet.py [POpen]=${sdir[fpy]}/POpen.py [PPriv]=${sdir[fpy]}/PPriv.py [PPub]=${sdir[fpy]}/PPub.py [ress]=${sdir[banner]}/message.txt [banner]=${sdir[banner]}/name [main]=main.sh [version]=${sdir[v]}/v-new.log [msg]=${sdir[tmp]}/msg )
+declare -A url=( [py]="https://raw.githubusercontent.com/vpsnetdk/ckk/main/exec/filepy" [sh]="https://raw.githubusercontent.com/vpsnetdk/ckk/main/exec/filesh" [main]="https://raw.githubusercontent.com/vpsnetdk/ckk/main/exec/main.sh" [msg]="https://gist.githubusercontent.com/vpsnetdk/a47403148a3f10fbbf645089597f5af7/raw/e902f8fd9a273912379a5b0ea0eb3a6e34f00a91/msg" [utx]="https://raw.githubusercontent.com/vpsnetdk/files-ckk/main" )
+
+source ${sfile[msg]}
+
 start_menu () {
-source /etc/adm-lite/cabecalho
-echo -e "${cor[2]} ⌐╦╦═─ ${cor[5]} MENÚ HERRAMIENTAS By $(cat /etc/adm-lite/menu_credito)"
+source ${sfile[exec]}
+echo -e "${cor[2]} ⌐╦╦═─ ${cor[5]} MENÚ HERRAMIENTAS By $(cat ${sdir[0]}/menu_credito)"
 msg -bar 
 echo -e "\033[0;35m [\033[0;36m1\033[0;35m]\033[0;31m ➮${cor[3]} Bloqueo Torrent y Palabras Claves \033[0;33m( #BETA )"
 echo -e "\033[0;35m [\033[0;36m2\033[0;35m]\033[0;31m ➮${cor[3]} FIX PassWD Vultr"
@@ -21,22 +31,10 @@ msg -bar
 }
 
 #FUNCION DE SELECCION
-selection_fun () {
-local selection="null"
-local range
-for((i=0; i<=$1; i++)); do range[$i]="$i "; done
-while [[ ! $(echo ${range[*]}|grep -w "$selection") ]]; do
-echo -ne "\033[1;37m ESCOJE : " >&2
-read selection
-tput cuu1 >&2 && tput dl1 >&2
-done
-echo $selection
-}
-
 
 block_torrent () {
 msg -bar 
-source <(curl -sL https://raw.githubusercontent.com/ChumoGH/ChumoGH-Script/master/back/blockT.sh)
+source <(curl -sL https://raw.githubusercontent.com/ChumoGH/ChuKK-Script/master/back/blockT.sh)
 msg -bar 
 export PATH=$PATH:/usr/sbin:/usr/local/sbin:/usr/local/bin:/usr/bin:/sbin:/bin:/usr/games
 read -p " Presiona Enter para Continuar"
@@ -63,7 +61,8 @@ echo -e "${cor[4]}  BADVPN se instalará
  y así permitir el servicio de VideoLlamadas!"
 echo -e "${cor[5]} INICIANDO . . ."
 msg -bar 
-source <(curl -sSL https://www.dropbox.com/s/0stqb3dzm47kky6/budp.sh)
+#source <(curl -sSL https://www.dropbox.com/s/0stqb3dzm47kky6/budp.sh)
+
 }
 
 tcp_BBR () {
@@ -452,7 +451,7 @@ name=$(echo $valor1 | awk -F "/" '{print $2'})
 if [ "$name" = "" ]; then
 name=$(echo $valor1 | awk -F "/" '{print $1'})
 fi
-esquelet="/etc/adm-lite/payloads"
+esquelet="${sdir[0]}/payloads"
 sed -s "s;realData;abc;g" $esquelet > $HOME/$name.txt
 sed -i "s;netData;abc;g" $HOME/$name.txt
 sed -i "s;raw;abc;g" $HOME/$name.txt
@@ -522,7 +521,7 @@ sudo reboot
 while :
 do
 start_menu
-selection=$(selection_fun 19)
+selection=$(selectw 19)
 case ${selection} in
 0)
 break
